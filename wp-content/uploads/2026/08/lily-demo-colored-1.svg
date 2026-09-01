@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Demo colored lenses placeholder">
+	<rect width="600" height="600" fill="#EFECDD"/>
+	<circle cx="300" cy="300" r="150" fill="none" stroke="#885337" stroke-width="10"/>
+	<circle cx="300" cy="300" r="112" fill="#586044" opacity="0.28"/>
+	<circle cx="300" cy="300" r="46" fill="#421C14" opacity="0.75"/>
+</svg>

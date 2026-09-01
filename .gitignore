@@ -1,0 +1,32 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+wp-config.php
+
+# Logs / debug
+*.log
+local-xdebuginfo.php
+
+# Temporary diagnostic files
+carttest.txt
+co2.html
+ct2.txt
+diag2.txt
+diag3.txt
+diag4.txt
+diag5.txt
+diag6.txt
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+vendor/
+
+# WordPress temporary directories
+wp-content/cache/
+wp-content/upgrade/

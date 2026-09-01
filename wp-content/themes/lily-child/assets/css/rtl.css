@@ -1,0 +1,100 @@
+/* ==========================================================================
+   LILY — RTL / Arabic overrides
+   Loaded on Arabic requests only. Base styles use logical properties,
+   so this file only handles fonts and direction-specific exceptions.
+   ========================================================================== */
+
+html[dir="rtl"] body {
+	--lily-font-display: var(--lily-font-arabic);
+	--lily-font-body: var(--lily-font-arabic);
+	--lily-font-accent: var(--lily-font-arabic);
+}
+
+/* Arabic script must not be letter-spaced, uppercased or italicised */
+html[dir="rtl"] .lily-site-title,
+html[dir="rtl"] .lily-footer-brand a,
+html[dir="rtl"] .lily-footer-brand .lily-site-title {
+	font-family: var(--lily-font-arabic);
+	font-style: normal;
+	letter-spacing: 0;
+}
+
+html[dir="rtl"] .lily-announcement {
+	text-transform: none;
+	letter-spacing: 0;
+	font-size: 12px;
+}
+
+@media (max-width: 900px) {
+	html[dir="rtl"] .lily-announcement {
+		font-size: 11px;
+	}
+}
+
+html[dir="rtl"] .lily-button,
+html[dir="rtl"] .lily-link-button,
+html[dir="rtl"] .lily-primary-nav a,
+html[dir="rtl"] .lily-nav-link,
+html[dir="rtl"] .lily-dropdown__list a,
+html[dir="rtl"] .lily-lens-option,
+html[dir="rtl"] .lily-footer-menu h2 {
+	letter-spacing: 0;
+}
+
+/* Prescription power selects: mirror the chevron arrow */
+html[dir="rtl"] .lily-rx__select {
+	background-position: left center;
+}
+
+html[dir="rtl"] .lily-dropdown__title,
+html[dir="rtl"] .lily-footer-menu h2 {
+	text-transform: none;
+}
+
+/* Arabic script must not be letter-spaced or uppercased */
+html[dir="rtl"] .lily-footer-since {
+	letter-spacing: 0;
+	text-transform: none;
+	font-size: 0.9rem;
+}
+
+html[dir="rtl"] .lily-dropdown__title {
+	font-size: 0.86rem;
+}
+
+html[dir="rtl"] .lily-footer-menu h2 {
+	text-transform: none;
+	font-size: 0.92rem;
+}
+
+/* Footer CTA arrow flips with direction */
+html[dir="rtl"] .lily-footer-cta__arrow {
+	transform: scaleX(-1);
+}
+
+html[dir="rtl"] .lily-footer-cta:hover .lily-footer-cta__arrow {
+	translate: -3px 0;
+}
+
+/* Header utilities */
+html[dir="rtl"] .lily-search-bar input[type="search"] {
+	font-family: var(--lily-font-arabic);
+}
+
+/* Horizontal scrollers keep natural RTL direction */
+html[dir="rtl"] .lily-products-row {
+	direction: rtl;
+}
+
+/* Shop archive: Arabic pills/links lose latin letter-spacing */
+html[dir="rtl"] .lily-shop__sidebar-title,
+html[dir="rtl"] .lily-shop-pill {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Sort select arrow sits on the reading side */
+html[dir="rtl"] .lily-sort-form select {
+	background-position: left 14px center;
+	padding: 8px 14px 8px 34px;
+}

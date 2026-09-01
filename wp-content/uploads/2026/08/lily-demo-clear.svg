@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Demo clear lenses placeholder">
+	<rect width="600" height="600" fill="#EFECDD"/>
+	<circle cx="300" cy="300" r="150" fill="none" stroke="#885337" stroke-width="10"/>
+	<path d="M210 260 a120 120 0 0 1 90 -55" fill="none" stroke="#885337" stroke-opacity="0.5" stroke-width="8" stroke-linecap="round"/>
+</svg>

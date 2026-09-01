@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Demo accessories placeholder">
+	<rect width="600" height="600" fill="#EFECDD"/>
+	<rect x="190" y="200" width="220" height="220" rx="30" fill="none" stroke="#885337" stroke-width="10"/>
+	<line x1="190" y1="310" x2="410" y2="310" stroke="#885337" stroke-width="6"/>
+	<path d="M250 200 v-26 a50 50 0 0 1 100 0 v26" fill="none" stroke="#885337" stroke-width="10"/>
+	<circle cx="300" cy="382" r="16" fill="#586044" opacity="0.35"/>
+</svg>
