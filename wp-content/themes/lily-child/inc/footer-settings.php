@@ -400,7 +400,7 @@ function lily_render_footer_settings_page() {
 function lily_render_footer_fields( $settings, $destinations ) {
 	?>
 			<h2><?php esc_html_e( 'Brand', 'lily' ); ?></h2>
-			<?php lily_admin_image_field( $settings, 'brand_logo', esc_html__( 'Logo', 'lily' ), 300, 90 ); ?>
+			<?php lily_admin_image_field( $settings, 'brand_logo', esc_html__( 'Logo', 'lily' ), 300, 90, 'lily_footer' ); ?>
 			<label><span><?php esc_html_e( 'Since text', 'lily' ); ?></span><input type="text" name="lily_footer[since_text]" value="<?php echo esc_attr( $settings['since_text'] ); ?>"></label>
 			<label><span><?php esc_html_e( 'Since text (Arabic)', 'lily' ); ?></span><input type="text" name="lily_footer[since_text_ar]" value="<?php echo esc_attr( $settings['since_text_ar'] ?? '' ); ?>" placeholder="<?php esc_attr_e( 'Arabic — blank reuses English', 'lily' ); ?>"></label>
 			<label><span><?php esc_html_e( 'CTA label', 'lily' ); ?></span><input type="text" name="lily_footer[cta_label]" value="<?php echo esc_attr( $settings['cta_label'] ); ?>" placeholder="<?php esc_attr_e( 'Blank uses “Find Your Best Lenses”', 'lily' ); ?>"></label>

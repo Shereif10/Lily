@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function lily_navigation_settings_defaults() {
 	return array(
+		'logo'                 => 0,
 		'show_shop'            => 1,
 		'shop_label'          => 'Shop',
 		'shop_label_ar'       => 'تسوقي',

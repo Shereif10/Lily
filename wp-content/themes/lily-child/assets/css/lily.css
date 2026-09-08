@@ -10467,3 +10467,37 @@ html body.woocommerce-checkout #payment div.payment_box {
 	padding: 0;
 	padding-inline-start: 0;
 }
+
+/* ==========================================================================
+   Dashboard-controlled logos (Navigation Settings logo / Footer Settings
+   logo). They render in the exact same footprint as the existing fallback
+   logo paths — no layout change.
+   ========================================================================== */
+
+.lily-site-branding .lily-nav-logo {
+	display: inline-flex;
+	align-items: center;
+	line-height: 1;
+}
+
+.lily-site-branding .lily-nav-logo-img {
+	display: block;
+	width: 78px;
+	height: auto;
+	object-fit: contain;
+}
+
+@media (max-width: 900px) {
+	.lily-site-branding .lily-nav-logo-img {
+		width: 64px;
+	}
+}
+
+/* Footer dashboard logo keeps the same footprint as the Site Identity
+   custom-logo fallback (max-height 60px) so it can never overflow. */
+.lily-footer-brand .lily-footer-logo img {
+	display: block;
+	max-height: 60px;
+	width: auto;
+	object-fit: contain;
+}

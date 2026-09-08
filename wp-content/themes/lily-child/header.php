@@ -23,7 +23,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php lily_container_open( 'lily-site-header__inner' ); ?>
 		<div class="lily-site-branding">
 			<?php
-			if ( has_custom_logo() ) {
+			/*
+			 * Navbar logo — canonical source is the dashboard-controlled
+			 * Navigation Settings logo (Lily → Navigation Settings). When no
+			 * logo is selected there, the existing fallbacks stay intact:
+			 * the WordPress Site Identity custom logo, then the site title.
+			 */
+			$lily_nav_logo_id = absint( lily_nav_get_option( 'logo', 0 ) );
+
+			if ( $lily_nav_logo_id && 'attachment' === get_post_type( $lily_nav_logo_id ) ) {
+				printf(
+					'<a class="lily-nav-logo" href="%1$s" aria-label="%2$s">%3$s</a>',
+					esc_url( home_url( '/' ) ),
+					esc_attr( get_bloginfo( 'name' ) ),
+					wp_get_attachment_image(
+						$lily_nav_logo_id,
+						'full',
+						false,
+						array(
+							'class' => 'lily-nav-logo-img',
+							'alt'   => get_bloginfo( 'name' ),
+						)
+					)
+				);
+			} elseif ( has_custom_logo() ) {
 				the_custom_logo();
 			} else {
 				printf(

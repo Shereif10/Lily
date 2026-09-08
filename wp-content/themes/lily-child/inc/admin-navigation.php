@@ -41,35 +41,118 @@ function lily_save_navigation_settings() {
 	}
 
 	$raw  = isset( $_POST['lily_nav'] ) ? (array) wp_unslash( $_POST['lily_nav'] ) : array();
-	$out  = lily_navigation_settings_defaults();
 
-	$out['show_shop']         = empty( $raw['show_shop'] ) ? 0 : 1;
-	$out['shop_label']        = sanitize_text_field( isset( $raw['shop_label'] ) ? $raw['shop_label'] : '' );
-	$out['shop_label_ar']     = sanitize_text_field( isset( $raw['shop_label_ar'] ) ? $raw['shop_label_ar'] : '' );
-	$out['show_colored']      = empty( $raw['show_colored'] ) ? 0 : 1;
-	$out['colored_label']     = sanitize_text_field( isset( $raw['colored_label'] ) ? $raw['colored_label'] : '' );
-	$out['colored_label_ar']  = sanitize_text_field( isset( $raw['colored_label_ar'] ) ? $raw['colored_label_ar'] : '' );
-	$out['show_clear']        = empty( $raw['show_clear'] ) ? 0 : 1;
-	$out['clear_label']       = sanitize_text_field( isset( $raw['clear_label'] ) ? $raw['clear_label'] : '' );
-	$out['clear_label_ar']    = sanitize_text_field( isset( $raw['clear_label_ar'] ) ? $raw['clear_label_ar'] : '' );
-	$out['show_accessories']  = empty( $raw['show_accessories'] ) ? 0 : 1;
-	$out['accessories_label'] = sanitize_text_field( isset( $raw['accessories_label'] ) ? $raw['accessories_label'] : '' );
-	$out['accessories_label_ar'] = sanitize_text_field( isset( $raw['accessories_label_ar'] ) ? $raw['accessories_label_ar'] : '' );
-	$out['accessories_url']   = esc_url_raw( isset( $raw['accessories_url'] ) ? $raw['accessories_url'] : '' );
-	$out['show_find']         = empty( $raw['show_find'] ) ? 0 : 1;
-	$out['find_label']        = sanitize_text_field( isset( $raw['find_label'] ) ? $raw['find_label'] : '' );
-	$out['find_label_ar']     = sanitize_text_field( isset( $raw['find_label_ar'] ) ? $raw['find_label_ar'] : '' );
-	$out['find_url']          = esc_url_raw( isset( $raw['find_url'] ) ? $raw['find_url'] : '' );
-	$out['show_company']      = empty( $raw['show_company'] ) ? 0 : 1;
-	$out['company_label']     = sanitize_text_field( isset( $raw['company_label'] ) ? $raw['company_label'] : '' );
-	$out['company_label_ar']  = sanitize_text_field( isset( $raw['company_label_ar'] ) ? $raw['company_label_ar'] : '' );
-	$out['about_page']        = absint( isset( $raw['about_page'] ) ? $raw['about_page'] : 0 );
-	$out['faqs_page']         = absint( isset( $raw['faqs_page'] ) ? $raw['faqs_page'] : 0 );
-	$out['contact_page']      = absint( isset( $raw['contact_page'] ) ? $raw['contact_page'] : 0 );
+	/*
+	 * Field map shared by both save paths (same sanitization semantics).
+	 * toggle = checkbox (full form: absent means unchecked); text = text/url
+	 * input (always posted by the real form); id = absint.
+	 */
+	$lily_nav_fields = array(
+		'logo'              => 'id',
+		'show_shop'         => 'toggle',
+		'shop_label'        => 'text',
+		'shop_label_ar'     => 'text',
+		'show_colored'      => 'toggle',
+		'colored_label'     => 'text',
+		'colored_label_ar'  => 'text',
+		'show_clear'        => 'toggle',
+		'clear_label'       => 'text',
+		'clear_label_ar'    => 'text',
+		'show_accessories'  => 'toggle',
+		'accessories_label' => 'text',
+		'accessories_label_ar' => 'text',
+		'accessories_url'   => 'text',
+		'show_find'         => 'toggle',
+		'find_label'        => 'text',
+		'find_label_ar'     => 'text',
+		'find_url'          => 'text',
+		'show_company'      => 'toggle',
+		'company_label'     => 'text',
+		'company_label_ar'  => 'text',
+		'about_page'        => 'id',
+		'faqs_page'         => 'id',
+		'contact_page'      => 'id',
+	);
+
+	/*
+	 * Full navigation form vs partial save: the real form always posts
+	 * `shop_label` (text inputs submit even when empty), so its presence
+	 * distinguishes a genuine navigation-form save from a partial one
+	 * (e.g. a logo-only update). Partial saves merge over the currently
+	 * saved settings and can never wipe navigation data.
+	 */
+	$is_full_form = array_key_exists( 'shop_label', $raw );
+	$out          = $is_full_form ? lily_navigation_settings_defaults() : array();
+
+	lily_save_navigation_settings_apply( $out, $raw, $lily_nav_fields, $is_full_form );
 
 	update_option( 'lily_navigation_settings', $out );
 
 	add_settings_error( 'lily_navigation', 'saved', esc_html__( 'Navigation settings saved.', 'lily' ), 'updated' );
+}
+
+/**
+ * Apply navigation settings values with their sanitization semantics.
+ *
+ * Full-form save: every field is written exactly as before (checkboxes
+ * absent from POST mean unchecked → off).
+ *
+ * Partial save (e.g. a logo-only update posted from outside the navigation
+ * form): only the keys actually present in POST are written, merged over
+ * the currently saved settings — navigation data can never be wiped.
+ *
+ * @param array  $out    Settings array to fill (by reference).
+ * @param array  $raw    Posted values.
+ * @param array  $fields Field map (key => type).
+ * @param bool   $full   Whether this is a full navigation-form save.
+ */
+function lily_save_navigation_settings_apply( &$out, $raw, $fields, $full ) {
+	if ( $full ) {
+		// Full navigation form: existing canonical behavior.
+		foreach ( $fields as $key => $type ) {
+			$out[ $key ] = lily_save_navigation_settings_value( $key, $type, $raw );
+		}
+
+		return;
+	}
+
+	// Partial save: merge posted keys over the current saved settings.
+	$current = get_option( 'lily_navigation_settings', array() );
+	$out     = wp_parse_args( is_array( $current ) ? $current : array(), lily_navigation_settings_defaults() );
+
+	foreach ( $fields as $key => $type ) {
+		if ( 'toggle' === $type ) {
+			continue; // Toggles can only be judged by the full form.
+		}
+
+		if ( array_key_exists( $key, $raw ) ) {
+			$out[ $key ] = lily_save_navigation_settings_value( $key, $type, $raw );
+		}
+	}
+}
+
+/**
+ * Sanitize one navigation settings value.
+ *
+ * @param string $key  Field key.
+ * @param string $type Field type.
+ * @param array  $raw  Posted values.
+ * @return mixed
+ */
+function lily_save_navigation_settings_value( $key, $type, $raw ) {
+	if ( 'toggle' === $type ) {
+		return empty( $raw[ $key ] ) ? 0 : 1;
+	}
+
+	if ( 'id' === $type ) {
+		return absint( isset( $raw[ $key ] ) ? $raw[ $key ] : 0 );
+	}
+
+	if ( 'text' === $type && in_array( $key, array( 'accessories_url', 'find_url' ), true ) ) {
+		return esc_url_raw( isset( $raw[ $key ] ) ? $raw[ $key ] : '' );
+	}
+
+	return sanitize_text_field( isset( $raw[ $key ] ) ? $raw[ $key ] : '' );
 }
 add_action( 'admin_init', 'lily_save_navigation_settings' );
 
@@ -131,8 +214,24 @@ function lily_render_navigation_settings_page() {
  * (lily_nav[...]) and the save flow stay canonical.
  */
 function lily_render_navigation_fields() {
+	$lily_nav_logo_id = absint( lily_nav_get_option( 'logo', 0 ) );
 	?>
 	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Navbar Logo', 'lily' ); ?></th>
+			<td>
+				<div class="lily-image-field">
+					<input type="hidden" name="lily_nav[logo]" value="<?php echo esc_attr( $lily_nav_logo_id ); ?>" data-lily-image-input>
+					<div class="lily-image-preview" data-lily-image-preview>
+						<?php echo $lily_nav_logo_id && 'attachment' === get_post_type( $lily_nav_logo_id ) ? wp_get_attachment_image( $lily_nav_logo_id, 'thumbnail' ) : ''; ?>
+					</div>
+					<button type="button" class="button" data-lily-image-select><?php esc_html_e( 'Choose Image', 'lily' ); ?></button>
+					<button type="button" class="button" data-lily-image-remove><?php esc_html_e( 'Remove', 'lily' ); ?></button>
+					<?php lily_image_guidance( 240, 96 ); ?>
+					<p class="description"><?php esc_html_e( 'Shown in the website navbar. Leave empty to keep the current WordPress Site Identity logo (or the site title when no logo exists).', 'lily' ); ?></p>
+				</div>
+			</td>
+		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Shop', 'lily' ); ?></th>
 			<td>

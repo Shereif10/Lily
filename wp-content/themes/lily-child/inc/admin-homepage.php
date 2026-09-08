@@ -665,11 +665,11 @@ function lily_image_guidance( $width, $height ) {
 	);
 }
 
-function lily_admin_image_field( $settings, $name, $label, $width = 0, $height = 0 ) {
+function lily_admin_image_field( $settings, $name, $label, $width = 0, $height = 0, $field_prefix = 'lily_homepage' ) {
 	$image_id = absint( $settings[ $name ] ?? 0 );
 	echo '<div class="lily-image-field">';
 	echo '<span>' . esc_html( $label ) . '</span>';
-	printf( '<input type="hidden" name="lily_homepage[%1$s]" value="%2$d" data-lily-image-input>', esc_attr( $name ), $image_id );
+	printf( '<input type="hidden" name="%3$s[%1$s]" value="%2$d" data-lily-image-input>', esc_attr( $name ), $image_id, esc_attr( $field_prefix ) );
 	echo '<div class="lily-image-preview" data-lily-image-preview>';
 	if ( $image_id ) {
 		echo wp_get_attachment_image( $image_id, 'thumbnail' );
