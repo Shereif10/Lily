@@ -2,9 +2,10 @@
 	'use strict';
 
 	function openMedia($input, $preview) {
+		var i18n = (typeof window.lilyAdminI18n === 'object' && window.lilyAdminI18n) ? window.lilyAdminI18n : {};
 		var frame = wp.media({
-			title: 'Choose Image',
-			button: { text: 'Use Image' },
+			title: i18n.chooseImage || 'Choose Image',
+			button: { text: i18n.useImage || 'Use Image' },
 			multiple: false
 		});
 
@@ -29,6 +30,19 @@
 		var $wrap = $(this).closest('.lily-image-field, .lily-brand-row, td, .form-field');
 		$wrap.find('[data-lily-image-input]').first().val('');
 		$wrap.find('[data-lily-image-preview]').first().empty();
+	});
+
+	/* Product screen: show recommended image dimensions inside the native
+	 * WooCommerce Product Image / Gallery metabox. */
+	$(function () {
+		var i18n = (typeof window.lilyAdminI18n === 'object' && window.lilyAdminI18n) ? window.lilyAdminI18n : {};
+		var $imagesBox = $('#woocommerce-product-images .inside');
+		if (!$imagesBox.length || $imagesBox.find('.lily-image-guidance').length) {
+			return;
+		}
+		$imagesBox.prepend(
+			'<p class="lily-image-guidance">' + (i18n.productImageGuidance || 'Recommended size: 1000 × 1000 px (square — same source for the main image and every gallery image)') + '</p>'
+		);
 	});
 
 	$(document).on('click', '[data-lily-add-brand]', function (event) {
@@ -67,23 +81,7 @@
 		$(this).closest('.lily-hero-row').remove();
 	});
 
-	$(document).on('click', '[data-lily-add-best]', function (event) {
-		event.preventDefault();
-		var template = $('#tmpl-lily-best-row').html();
-		var index = Date.now();
-		$('[data-lily-best-rows]').append(template.replaceAll('__INDEX__', index));
-	});
-
-	$(document).on('click', '[data-lily-remove-best]', function (event) {
-		event.preventDefault();
-		$(this).closest('.lily-best-row').remove();
-	});
-
 	$('[data-lily-brand-rows]').sortable({
-		handle: '.dashicons-move'
-	});
-
-	$('[data-lily-best-rows]').sortable({
 		handle: '.dashicons-move'
 	});
 

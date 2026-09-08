@@ -20,23 +20,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function lily_navigation_settings_defaults() {
 	return array(
-		'show_shop'         => 1,
-		'shop_label'       => 'Shop',
-		'show_colored'      => 1,
-		'colored_label'     => 'Colored Lenses',
-		'show_clear'        => 1,
-		'clear_label'       => 'Clear Lenses',
-		'show_accessories'  => 1,
-		'accessories_label' => 'Accessories & Lens Care',
-		'accessories_url'   => '',
-		'show_find'         => 1,
-		'find_label'        => 'Find My Lenses',
-		'find_url'          => '',
-		'show_company'      => 1,
-		'company_label'     => 'Company',
-		'about_page'        => 0,
-		'faqs_page'         => 0,
-		'contact_page'      => 0,
+		'show_shop'            => 1,
+		'shop_label'          => 'Shop',
+		'shop_label_ar'       => 'تسوقي',
+		'show_colored'         => 1,
+		'colored_label'        => 'Colored Lenses',
+		'colored_label_ar'     => 'عدسات ملونة',
+		'show_clear'           => 1,
+		'clear_label'          => 'Clear Lenses',
+		'clear_label_ar'       => 'عدسات شفافة',
+		'show_accessories'     => 1,
+		'accessories_label'    => 'Accessories & Lens Care',
+		'accessories_label_ar' => 'إكسسوارات والعناية بالعدسات',
+		'accessories_url'      => '',
+		'show_find'            => 1,
+		'find_label'           => 'Find My Lenses',
+		'find_label_ar'        => 'اعثري على عدساتك',
+		'find_url'             => '',
+		'show_company'         => 1,
+		'company_label'        => 'Company',
+		'company_label_ar'     => 'الشركة',
+		'about_page'           => 0,
+		'faqs_page'            => 0,
+		'contact_page'         => 0,
 	);
 }
 
@@ -53,9 +59,25 @@ function lily_nav_get_option( $name, $default = null ) {
 		? wp_parse_args( $settings, lily_navigation_settings_defaults() )
 		: lily_navigation_settings_defaults();
 
-	$value = isset( $settings[ $name ] ) ? $settings[ $name ] : null;
+	// Bilingual dashboard: on Arabic requests a non-empty "<name>_ar"
+	// label wins; empty Arabic falls back to the shared Arabic dictionary
+	// (real Arabic for known Lily labels), then to English. Scalar only.
+	if ( function_exists( 'lily_is_arabic_request' ) && lily_is_arabic_request() && ! is_array( $default ) ) {
+		$ar_key = $name . '_ar';
 
-	return null === $value ? $default : $value;
+		if ( isset( $settings[ $ar_key ] ) && is_scalar( $settings[ $ar_key ] ) && '' !== trim( (string) $settings[ $ar_key ] ) ) {
+			return $settings[ $ar_key ];
+		}
+	}
+
+	$value = isset( $settings[ $name ] ) ? $settings[ $name ] : null;
+	$value = null === $value ? $default : $value;
+
+	if ( function_exists( 'lily_is_arabic_request' ) && lily_is_arabic_request() && ! is_array( $default ) && is_string( $value ) && '' !== trim( $value ) && function_exists( 'lily_ar_fallback' ) ) {
+		return lily_ar_fallback( $value );
+	}
+
+	return $value;
 }
 
 /**
@@ -77,20 +99,29 @@ function lily_nav_find_taxonomy( $candidates ) {
 /**
  * Build filtered shop links for every term of an attribute taxonomy.
  *
- * @param string $taxonomy Attribute taxonomy.
+ * Labels are the localized term names (stored Arabic name on Arabic
+ * requests) so navbar entries, product data and filters always agree.
+ * `$parents_only` keeps only top-level terms (Parent Colors in the navbar).
+ *
+ * @param string $taxonomy     Attribute taxonomy.
+ * @param bool   $parents_only Restrict to top-level terms.
  * @return array[] Array of [ 'label' => string, 'url' => string ].
  */
-function lily_nav_term_links( $taxonomy ) {
+function lily_nav_term_links( $taxonomy, $parents_only = false ) {
 	if ( ! $taxonomy || ! taxonomy_exists( $taxonomy ) ) {
 		return array();
 	}
 
-	$terms = get_terms(
-		array(
-			'taxonomy'   => $taxonomy,
-			'hide_empty' => false,
-		)
+	$args = array(
+		'taxonomy'   => $taxonomy,
+		'hide_empty' => false,
 	);
+
+	if ( $parents_only ) {
+		$args['parent'] = 0;
+	}
+
+	$terms = get_terms( $args );
 
 	if ( is_wp_error( $terms ) || empty( $terms ) ) {
 		return array();
@@ -100,7 +131,7 @@ function lily_nav_term_links( $taxonomy ) {
 
 	foreach ( $terms as $term ) {
 		$links[] = array(
-			'label' => $term->name,
+			'label' => function_exists( 'lily_term_name' ) ? lily_term_name( $term ) : $term->name,
 			'url'   => lily_get_attribute_filter_url( $taxonomy, $term ),
 		);
 	}
@@ -191,7 +222,9 @@ function lily_nav_get_structure() {
 			);
 		}
 
-		$colors = lily_nav_term_links( lily_nav_find_taxonomy( array( 'pa_color' ) ) );
+		// Parent Colors only in the navigation — shades are product data.
+		$lily_color_taxonomy = lily_nav_find_taxonomy( array( 'pa_color' ) );
+		$colors = lily_nav_term_links( $lily_color_taxonomy, true );
 		if ( $colors ) {
 			$columns[] = array(
 				'title' => __( 'By Color', 'lily' ),

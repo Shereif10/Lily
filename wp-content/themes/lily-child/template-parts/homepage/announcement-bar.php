@@ -31,7 +31,11 @@ if ( empty( $items ) ) {
 					'  ·  ',
 					array_map(
 						static function ( $item ) {
-							return trim( (string) $item['text'] );
+							$text = trim( (string) $item['text'] );
+
+							return function_exists( 'lily_ml_value' )
+								? (string) lily_ml_value( $text, $item['text_ar'] ?? '' )
+								: $text;
 						},
 						array_values( $items )
 					)

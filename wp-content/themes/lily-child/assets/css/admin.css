@@ -213,3 +213,453 @@
 	}
 }
 
+
+/* ==========================================================================
+   Lily Pages hub — dashboard-only styles (no frontend impact)
+   ========================================================================== */
+
+.lily-pages-hub .lily-pages-hub__intro {
+	max-width: 760px;
+	font-size: 14px;
+	line-height: 1.6;
+	color: #50575e;
+}
+
+.lily-pages-hub__group {
+	margin-top: 28px;
+	font-size: 15px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #50575e;
+}
+
+.lily-pages-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 14px;
+	margin-top: 14px;
+}
+
+.lily-page-card-tile {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 16px 18px;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	background: #fff;
+	color: #1d2327;
+	text-decoration: none;
+	transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.lily-page-card-tile:hover,
+.lily-page-card-tile:focus {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+	color: #1d2327;
+}
+
+.lily-page-card-tile .dashicons {
+	width: 22px;
+	height: 22px;
+	font-size: 22px;
+	color: #885337;
+}
+
+.lily-page-card-tile__title {
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.lily-page-card-tile__desc {
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: #646970;
+}
+
+.lily-pages-hub__quick {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 14px;
+}
+
+.lily-page-back {
+	display: inline-block;
+	margin-top: 14px;
+	text-decoration: none;
+}
+
+.lily-page-screen-desc {
+	margin-top: 6px;
+	max-width: 760px;
+	font-size: 14px;
+	color: #50575e;
+}
+
+.lily-page-view-link {
+	font-size: 13px;
+	font-weight: 400;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.lily-page-notice {
+	margin: 14px 0 0;
+	padding: 10px 14px;
+	border-left: 4px solid #885337;
+	background: #fff;
+	max-width: 920px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.lily-page-group {
+	margin-top: 22px;
+}
+
+.lily-page-group__title {
+	font-size: 16px;
+	color: #1d2327;
+}
+
+/* Collapsible management cards */
+.lily-page-card {
+	max-width: 980px;
+	margin: 0 0 16px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.lily-page-card__head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 16px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.lily-page-card__head::-webkit-details-marker {
+	display: none;
+}
+
+.lily-page-card__title {
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.lily-page-card__sub {
+	font-size: 12.5px;
+	color: #646970;
+}
+
+.lily-page-card__chevron {
+	margin-inline-start: auto;
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 6px solid #50575e;
+	transition: transform 120ms ease;
+}
+
+.lily-page-card[open] .lily-page-card__chevron {
+	transform: rotate(180deg);
+}
+
+.lily-page-card__body {
+	padding: 18px 16px 20px;
+	border-top: 1px solid #dcdcde;
+}
+
+.lily-page-card__actions {
+	margin-top: 18px;
+}
+
+/* Sections rendered inside cards are always visible (no tab switching). */
+.lily-page-card .lily-admin-panel {
+	display: block;
+	max-width: none;
+	margin: 0 0 8px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+.lily-page-card .lily-admin-panel h2 {
+	font-size: 15px;
+}
+
+.lily-page-card .lily-admin-panel h3 {
+	margin-top: 18px;
+	font-size: 13px;
+	color: #50575e;
+}
+
+.lily-page-field {
+	display: block;
+	margin: 0 0 14px;
+	max-width: 620px;
+}
+
+.lily-page-field > span {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+}
+
+.lily-page-field input[type="text"],
+.lily-page-field textarea {
+	width: 100%;
+}
+
+.lily-page-field input[readonly] {
+	background: #f6f7f7;
+	color: #646970;
+}
+
+.lily-page-template-notes {
+	max-width: 760px;
+	margin: 0;
+	padding-inline-start: 20px;
+	list-style: disc;
+}
+
+.lily-page-template-notes li {
+	margin: 0 0 8px;
+	font-size: 13.5px;
+	line-height: 1.6;
+	color: #3c434a;
+}
+
+/* -- Lily ? Brands / Colors / Looks / Durations ----------------------- */
+
+.lily-catalog-desc {
+	max-width: 760px;
+	color: #3c434a;
+}
+
+.lily-catalog-columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 24px;
+	align-items: flex-start;
+}
+
+.lily-catalog-list {
+	flex: 1 1 560px;
+	min-width: 0;
+}
+
+.lily-catalog-form {
+	flex: 0 1 380px;
+	min-width: 300px;
+}
+
+.lily-catalog-form__card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 16px 20px 20px;
+}
+
+.lily-catalog-search {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.lily-catalog-search input[type="search"] {
+	min-width: 220px;
+}
+
+.lily-catalog-row--child td {
+	background: #fbfbfc;
+}
+
+.lily-catalog-branch {
+	color: #a7aaad;
+	margin-inline-end: 4px;
+}
+
+.lily-swatch-dot {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	vertical-align: middle;
+}
+
+.lily-swatch-dot--empty {
+	background: #f0f0f1;
+}
+
+.lily-catalog-logo {
+	max-height: 36px;
+	width: auto;
+	border-radius: 3px;
+	vertical-align: middle;
+}
+
+/* ── Lily Product Editor (product add/edit screen) ───────────────────── */
+
+.lily-editor {
+	display: grid;
+	gap: 14px;
+	margin: 10px 0 20px;
+	max-width: 900px;
+}
+
+.lily-editor__intro {
+	margin: 0;
+	padding: 10px 14px;
+	background: #f0f6fc;
+	border-inline-start: 4px solid #2271b1;
+	color: #1d4c73;
+	border-radius: 4px;
+}
+
+.lily-editor-card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 14px 18px 16px;
+}
+
+.lily-editor-card h3 {
+	margin: 0 0 12px;
+	font-size: 14px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #50575e;
+}
+
+.lily-editor-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 14px;
+}
+
+.lily-editor-grid--3 {
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.lily-editor-field {
+	margin: 0;
+}
+
+.lily-editor-field > label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.lily-editor-field input[type="text"],
+.lily-editor-field input[type="number"],
+.lily-editor-field select,
+.lily-editor-field textarea {
+	width: 100%;
+	max-width: 100%;
+}
+
+.lily-editor-field--number input {
+	max-width: 120px;
+}
+
+.lily-editor-field .description {
+	margin: 5px 0 0;
+}
+
+.lily-editor-radios,
+.lily-editor-checks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 18px;
+	margin: 0;
+}
+
+.lily-editor-radios label,
+.lily-editor-checks label {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin: 0;
+}
+
+.lily-editor-card .description {
+	color: #646970;
+}
+
+/* ── Editor: numeric spec inputs with units + How To Use steps ──────── */
+
+.lily-editor-unit-field {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.lily-editor-unit-field input {
+	flex: 1;
+	min-width: 0;
+}
+
+.lily-editor-unit {
+	color: #646970;
+	font-weight: 600;
+}
+
+.lily-steps {
+	display: grid;
+	gap: 8px;
+	margin: 0 0 10px;
+}
+
+.lily-step-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.lily-step-row input {
+	flex: 1;
+	min-width: 0;
+}
+
+.lily-step-num {
+	flex: 0 0 24px;
+	height: 24px;
+	display: inline-grid;
+	place-items: center;
+	background: #f0f0f1;
+	border-radius: 50%;
+	font-size: 12px;
+	font-weight: 700;
+	color: #50575e;
+}
+
+.lily-editor-group-label {
+	display: inline-block;
+	font-weight: 700;
+	color: #50575e;
+	margin-bottom: 2px;
+}
+
+/* ── Consistent image-size guidance for every Lily image field ──────── */
+
+.lily-image-guidance {
+	margin: 6px 0 0;
+	color: #2271b1;
+	font-size: 12px;
+	font-style: italic;
+}
+
+.lily-image-field .lily-image-guidance {
+	margin-top: 8px;
+}
+
+tr.form-field .lily-image-guidance {
+	margin: 6px 0 0;
+}

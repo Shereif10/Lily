@@ -1,0 +1,253 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Lily 0.4.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-07 00:00+0000\n"
+"PO-Revision-Date: 2026-09-07 00:00+0000\n"
+"Last-Translator: Lily\n"
+"Language-Team: Lily\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Lily i18n-ar.php dictionary\n"
+
+#. Runtime source of truth is inc/i18n-ar.php (gettext filter) so Arabic
+#. shows immediately without compiling this file. This .po mirrors that
+#. dictionary for translators and for WordPress language packs.
+#. TranslatePress DB entries override both when present.
+
+msgid "Shop Now"
+msgstr "تسوقي الآن"
+
+msgid "Colored Lenses"
+msgstr "عدسات ملونة"
+
+msgid "Clear Lenses"
+msgstr "عدسات شفافة"
+
+msgid "Accessories & Lens Care"
+msgstr "إكسسوارات والعناية بالعدسات"
+
+msgid "Start Lens Finder"
+msgstr "ابدئي دليل العدسات"
+
+msgid "Find your perfect lenses"
+msgstr "اعثري على عدساتك المثالية"
+
+msgid "Add to Cart"
+msgstr "أضيفي إلى السلة"
+
+msgid "Sale"
+msgstr "خصم"
+
+msgid "Best Sellers"
+msgstr "الأكثر مبيعاً"
+
+msgid "Shop Best Sellers"
+msgstr "تسوقي الأكثر مبيعاً"
+
+msgid "View All Colors"
+msgstr "عرض كل الألوان"
+
+msgid "Shop by Colors"
+msgstr "تسوقي حسب اللون"
+
+msgid "Fast Delivery"
+msgstr "توصيل سريع"
+
+msgid "Cash on Delivery"
+msgstr "الدفع عند الاستلام"
+
+msgid "Premium Quality"
+msgstr "جودة فاخرة"
+
+msgid "About Lily"
+msgstr "عن ليلي"
+
+msgid "Our Story"
+msgstr "حكايتنا"
+
+msgid "Our Mission"
+msgstr "مهمتنا"
+
+msgid "Our Vision"
+msgstr "رؤيتنا"
+
+msgid "Our Approach"
+msgstr "أسلوبنا"
+
+msgid "Find Your Perfect Lens"
+msgstr "اعثري على عدستك المثالية"
+
+msgid "Shop Lenses"
+msgstr "تسوقي العدسات"
+
+msgid "FAQs"
+msgstr "الأسئلة الشائعة"
+
+msgid "Contact Us"
+msgstr "تواصلي معنا"
+
+msgid "Send Us a Message"
+msgstr "ابعتيلنا رسالة"
+
+msgid "Full Name"
+msgstr "الاسم بالكامل"
+
+msgid "Phone Number"
+msgstr "رقم التليفون"
+
+msgid "Email Address"
+msgstr "البريد الإلكتروني"
+
+msgid "Subject"
+msgstr "الموضوع"
+
+msgid "Message"
+msgstr "الرسالة"
+
+msgid "Send Message"
+msgstr "إرسال الرسالة"
+
+msgid "Shipping Policy"
+msgstr "سياسة الشحن"
+
+msgid "Returns & Exchange"
+msgstr "الاسترجاع والاستبدال"
+
+msgid "Terms & Conditions"
+msgstr "الشروط والأحكام"
+
+msgid "Refund Policy"
+msgstr "سياسة الاسترداد"
+
+msgid "Cookie Policy"
+msgstr "سياسة ملفات الارتباط"
+
+msgid "My Wishlist"
+msgstr "مفضلتي"
+
+msgid "Your Wishlist is Empty"
+msgstr "قائمة مفضلتك فاضية"
+
+msgid "Add to wishlist"
+msgstr "أضيفي للمفضلة"
+
+msgid "Remove from wishlist"
+msgstr "احذفي من المفضلة"
+
+msgid "Add to Wishlist"
+msgstr "أضيفي للمفضلة"
+
+msgid "Saved to Wishlist"
+msgstr "اتحفظت في المفضلة"
+
+msgid "Reviews"
+msgstr "التقييمات"
+
+msgid "Write a review"
+msgstr "اكتبي تقييمك"
+
+msgid "Submit review"
+msgstr "إرسال التقييم"
+
+msgid "Your cart is empty."
+msgstr "سلتك فاضية."
+
+msgid "Subtotal"
+msgstr "المجموع الفرعي"
+
+msgid "Shipping"
+msgstr "الشحن"
+
+msgid "Calculated at checkout"
+msgstr "يُحسب أثناء إتمام الطلب"
+
+msgid "CHECKOUT"
+msgstr "إتمام الطلب"
+
+msgid "Your Cart"
+msgstr "سلة التسوق"
+
+msgid "Filter"
+msgstr "تصفية"
+
+msgid "Sort by"
+msgstr "ترتيب حسب"
+
+msgid "Description"
+msgstr "الوصف"
+
+msgid "Details"
+msgstr "التفاصيل"
+
+msgid "How to use"
+msgstr "طريقة الاستخدام"
+
+msgid "You May Also Like"
+msgstr "ممكن يعجبك أيضاً"
+
+msgid "View All"
+msgstr "عرض الكل"
+
+msgid "Back"
+msgstr "رجوع"
+
+msgid "Next"
+msgstr "التالي"
+
+msgid "Find My Lenses"
+msgstr "اعثري على عدساتك"
+
+msgid "Find Your Best Lenses"
+msgstr "اعثري على عدساتك المثالية"
+
+msgid "Shop"
+msgstr "تسوقي"
+
+msgid "Company"
+msgstr "الشركة"
+
+msgid "About Us"
+msgstr "من نحن"
+
+msgid "Privacy Policy"
+msgstr "سياسة الخصوصية"
+
+msgid "Follow Us"
+msgstr "تابعينا"
+
+msgid "Cash on Delivery Available"
+msgstr "الدفع عند الاستلام متاح"
+
+msgid "Prescription Power"
+msgstr "مقاس النظر"
+
+msgid "Right Eye (OD)"
+msgstr "العين اليمين (OD)"
+
+msgid "Left Eye (OS)"
+msgstr "العين الشمال (OS)"
+
+msgid "Quantity"
+msgstr "الكمية"
+
+msgid "Governorate / Area"
+msgstr "المحافظة / المنطقة"
+
+msgid "Detailed Address"
+msgstr "العنوان بالتفصيل"
+
+msgid "Proceed to Checkout"
+msgstr "إتمام الطلب"
+
+msgid "Continue Shopping"
+msgstr "مواصلة التسوق"
+
+msgid "Update cart"
+msgstr "تحديث السلة"
+
+msgid "Apply"
+msgstr "تطبيق"

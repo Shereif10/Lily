@@ -268,20 +268,22 @@ function lily_register_contact_form_route() {
 function lily_contact_form_markup() {
 	$nonce = wp_create_nonce( 'lily_contact_form' );
 
-	return '<h2>Send Us a Message</h2>'
+	// All labels use the "lily" textdomain so the shared Arabic dictionary
+	// (inc/i18n-ar.php) serves real Arabic on Arabic requests automatically.
+	return '<h2>' . esc_html__( 'Send Us a Message', 'lily' ) . '</h2>'
 		. '<form class="lily-contact-form" action="" method="post">'
 		. '<input type="hidden" name="lily_contact_handler" value="1">'
 		. '<input type="hidden" name="lily_contact_nonce" value="' . esc_attr( $nonce ) . '">'
-		. '<p class="lily-form-row"><label for="lily_cf_name">Full Name</label>'
+		. '<p class="lily-form-row"><label for="lily_cf_name">' . esc_html__( 'Full Name', 'lily' ) . '</label>'
 		. '<input class="lily-input" type="text" id="lily_cf_name" name="lily_cf_name" required></p>'
-		. '<p class="lily-form-row"><label for="lily_cf_email">Email</label>'
+		. '<p class="lily-form-row"><label for="lily_cf_email">' . esc_html__( 'Email', 'lily' ) . '</label>'
 		. '<input class="lily-input" type="email" id="lily_cf_email" name="lily_cf_email" required></p>'
-		. '<p class="lily-form-row"><label for="lily_cf_phone">Phone</label>'
+		. '<p class="lily-form-row"><label for="lily_cf_phone">' . esc_html__( 'Phone', 'lily' ) . '</label>'
 		. '<input class="lily-input" type="tel" id="lily_cf_phone" name="lily_cf_phone"></p>'
-		. '<p class="lily-form-row"><label for="lily_cf_message">Message</label>'
+		. '<p class="lily-form-row"><label for="lily_cf_message">' . esc_html__( 'Message', 'lily' ) . '</label>'
 		. '<textarea class="lily-input" id="lily_cf_message" name="lily_cf_message" rows="5" required></textarea></p>'
-		. '<p class="lily-form-hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="lily_cf_hp" tabindex="-1" autocomplete="off"></label></p>'
-		. '<p><button type="submit" class="lily-btn">SEND MESSAGE</button></p>'
+		. '<p class="lily-form-hp" aria-hidden="true"><label>' . esc_html__( 'Leave this field empty', 'lily' ) . '<input type="text" name="lily_cf_hp" tabindex="-1" autocomplete="off"></label></p>'
+		. '<p><button type="submit" class="lily-btn">' . esc_html__( 'Send Message', 'lily' ) . '</button></p>'
 		. '</form>';
 }
 
@@ -317,6 +319,7 @@ function lily_handle_contact_message() {
 	$name    = isset( $_POST['lily_cf_name'] ) ? sanitize_text_field( wp_unslash( $_POST['lily_cf_name'] ) ) : '';
 	$email   = isset( $_POST['lily_cf_email'] ) ? sanitize_email( wp_unslash( $_POST['lily_cf_email'] ) ) : '';
 	$phone   = isset( $_POST['lily_cf_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lily_cf_phone'] ) ) : '';
+	$subject = isset( $_POST['lily_cf_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['lily_cf_subject'] ) ) : '';
 	$message = isset( $_POST['lily_cf_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['lily_cf_message'] ) ) : '';
 
 	if ( ! $name || ! $message || ! is_email( $email ) ) {
@@ -325,10 +328,11 @@ function lily_handle_contact_message() {
 	}
 
 	$body = sprintf(
-		"Name: %s\nEmail: %s\nPhone: %s\n\n%s",
+		"Name: %s\nEmail: %s\nPhone: %s\nSubject: %s\n\n%s",
 		$name,
 		$email,
 		$phone,
+		$subject,
 		$message
 	);
 

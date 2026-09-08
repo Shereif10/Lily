@@ -1,10 +1,18 @@
 ﻿/* ==========================================================================
-   LILY â€” Design System
-   Official brand palette:
-     Cream      #EFECDD  (~50% visual foundation)
+   LILY — Design System
+   Official brand palette (UI only — backgrounds, text, buttons, borders,
+   cards, icons, badges, hover/focus/active, form controls, overlays,
+   shadows, decorative elements):
+     Cream      #FEFCDD  (~50% visual foundation)
      Warm Brown #885337  (~25%)
-     Olive      #586044  (~15%)
-     Dark Brown #421C14  (~10%)
+     Soft Peach #FAD3CA  (~10%)
+     Warm Tan   #AC7D61  (~20% accents)
+     Deep Brown #723427  (~40% contrast)
+     Espresso   #4B2E2B / #331C16  (text, footer, strong accents)
+   Images are exempt: product, lifestyle, hero, collection and editorial
+   photography always keeps its original colors. Never apply color filters,
+   monochrome effects, blend modes or tint overlays to photography to force
+   it into the palette.
    Local brand fonts: Elms Sans Light (EN), Amiri (AR), Sellendra (accent).
    Logical properties throughout; RTL overrides live in rtl.css.
    ========================================================================== */
@@ -34,20 +42,22 @@
 }
 
 :root {
-	--lily-cream: #efecdd;
+	--lily-cream: #FEFCDD;
 	--lily-warm-brown: #885337;
-	--lily-olive: #586044;
-	--lily-dark-brown: #421c14;
+	--lily-peach: #FAD3CA;
+	--lily-tan: #AC7D61;
+	--lily-deep-brown: #723427;
+	--lily-espresso: #4B2E2B;
+	--lily-dark-brown: #331C16;
 
 	--lily-bg: var(--lily-cream);
-	--lily-surface: #efecdd;
-	--lily-white: #efecdd;
+	--lily-surface: #FEFCDD;
+	--lily-white: #FEFCDD;
 	--lily-text: var(--lily-dark-brown);
-	--lily-espresso: var(--lily-dark-brown);
 	--lily-muted: #885337;
-	--lily-line: rgba(66, 28, 20, 0.14);
+	--lily-line: rgba(51, 28, 22, 0.14);
 	--lily-accent: var(--lily-warm-brown);
-	--lily-accent-dark: #421c14;
+	--lily-accent-dark: #331C16;
 	--lily-error: #885337;
 
 	--lily-font-display: "Elms Sans Light", "Georgia", "Times New Roman", serif;
@@ -60,13 +70,22 @@
 	--lily-radius-lg: 22px;
 	--lily-pill: 999px;
 
-	--lily-shadow-sm: 0 10px 24px -18px rgba(66, 28, 20, 0.35);
-	--lily-shadow: 0 24px 48px -28px rgba(66, 28, 20, 0.35);
+	--lily-shadow-sm: 0 10px 24px -18px rgba(51, 28, 22, 0.35);
+	--lily-shadow: 0 24px 48px -28px rgba(51, 28, 22, 0.35);
 
 	--lily-container: 1280px;
 	--lily-gutter: clamp(20px, 4vw, 44px);
 
 	--lily-ease: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Astra bridge — the Customizer link palette ships WordPress blues that
+   drive every inherited a:hover / a:focus state (specificity beats Lily's
+   single-class component colors). Re-point the link pair at Lily warm
+   tones; this later stylesheet wins the cascade. Admin is untouched. */
+:root {
+	--ast-global-color-0: #885337;
+	--ast-global-color-1: #723427;
 }
 
 /* --------------------------------------------------------------------------
@@ -90,10 +109,11 @@ html body.ast-page-builder-template {
 	background: var(--lily-bg);
 }
 
-html body.lily-home main#primary.site-main {
+html body.home main#primary.site-main {
 	display: block;
 	overflow-x: clip;
-	/* Astra gives #primary a 4em block margin; the first screen must connect seamlessly */
+	/* Astra gives #primary a 4em block margin; the homepage must connect
+	   seamlessly with the navbar above AND the footer below (no cream gap) */
 	margin-block-start: 0;
 	margin-block-end: 0;
 }
@@ -112,12 +132,34 @@ html h4 {
 	color: var(--lily-text);
 }
 
+html {
+	-webkit-tap-highlight-color: rgba(136, 83, 55, 0.16);
+}
+
 a:focus-visible,
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
 	outline: 2px solid var(--lily-accent);
 	outline-offset: 3px;
 	border-radius: 4px;
+}
+
+/* Astra's inline CSS sets a literal blue input focus border; outrank it
+   with a Lily warm border on every text-like control. Range, checkbox and
+   radio inputs are excluded — they keep their custom Lily styling. */
+html body input[type="text"]:focus,
+html body input[type="number"]:focus,
+html body input[type="email"]:focus,
+html body input[type="url"]:focus,
+html body input[type="password"]:focus,
+html body input[type="search"]:focus,
+html body input[type="tel"]:focus,
+html body input[type="date"]:focus,
+html body textarea:focus,
+html body select:focus {
+	border-color: #885337;
 }
 
 .skip-link:focus {
@@ -304,21 +346,21 @@ html.lily-reveal .lily-reveal.is-visible {
 .lily-button--secondary,
 .lily-link-button {
 	background: transparent;
-	border-color: rgba(66, 28, 20, 0.25);
+	border-color: rgba(51, 28, 22, 0.25);
 	color: var(--lily-text);
 }
 
 .lily-button--secondary:hover,
 .lily-link-button:hover {
-	background: rgba(66, 28, 20, 0.06);
-	border-color: rgba(66, 28, 20, 0.6);
+	background: rgba(51, 28, 22, 0.06);
+	border-color: rgba(51, 28, 22, 0.6);
 	color: var(--lily-text);
 	box-shadow: none;
 }
 
 .lily-site-footer .lily-button--secondary {
-	color: rgba(239, 236, 221, 0.92);
-	border-color: rgba(239, 236, 221, 0.35);
+	color: rgba(254, 252, 221, 0.92);
+	border-color: rgba(254, 252, 221, 0.35);
 }
 
 .lily-button--small {
@@ -367,7 +409,7 @@ html.lily-reveal .lily-reveal.is-visible {
 .lily-announcement {
 	position: relative;
 	z-index: 60;
-	background: var(--lily-olive);
+	background: #4B2E2B;
 	color: var(--lily-cream);
 }
 
@@ -377,9 +419,9 @@ html.lily-reveal .lily-reveal.is-visible {
 	padding-inline: 24px;
 	overflow: hidden;
 	font-family: var(--lily-font-body);
-	font-size: 13px;
-	font-weight: 400;
-	letter-spacing: 0.04em;
+	font-size: 12.5px;
+	font-weight: 500;
+	letter-spacing: 0.1em;
 	line-height: 38px;
 	text-align: center;
 	text-transform: none;
@@ -391,7 +433,7 @@ html.lily-reveal .lily-reveal.is-visible {
 	.lily-announcement__text {
 		height: 34px;
 		padding-inline: 16px;
-		font-size: 11px;
+		font-size: 11.5px;
 		line-height: 34px;
 	}
 }
@@ -409,7 +451,7 @@ html.lily-reveal .lily-reveal.is-visible {
 }
 
 .lily-site-header.is-scrolled {
-	box-shadow: 0 4px 18px rgba(66, 28, 20, 0.08);
+	box-shadow: 0 4px 18px rgba(51, 28, 22, 0.08);
 }
 
 .lily-site-header__inner {
@@ -417,7 +459,7 @@ html.lily-reveal .lily-reveal.is-visible {
 	display: grid;
 	grid-template-columns: auto 1fr auto;
 	align-items: center;
-	gap: 36px;
+	gap: 28px;
 	min-height: 82px;
 }
 
@@ -459,10 +501,27 @@ html.lily-reveal .lily-reveal.is-visible {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 28px;
+	gap: 20px;
 	margin: 0;
 	padding: 0;
 	list-style: none;
+}
+
+.lily-primary-nav {
+	min-width: 0;
+}
+
+/* Wide desktop: the full menu fits — lock every label to one line.
+   Below this width the previous wrapping behavior is preserved so the
+   header never forces page overflow. */
+@media (min-width: 1280px) {
+	html .lily-primary-nav .lily-nav-link {
+		white-space: nowrap;
+	}
+
+	.lily-primary-nav > .lily-nav-menu > li {
+		flex-shrink: 0;
+	}
 }
 
 /* Strong reset â€” Astra styles bare <button> elements site-wide */
@@ -480,7 +539,7 @@ html .lily-primary-nav .lily-nav-link {
 	font-family: var(--lily-font-body);
 	font-size: 15px;
 	font-weight: 400;
-	letter-spacing: 0.01em;
+	letter-spacing: 0;
 	line-height: 1.2;
 	text-decoration: none;
 	text-transform: none;
@@ -509,8 +568,8 @@ html .lily-primary-nav .lily-nav-link:focus {
 .lily-nav-badge {
 	display: inline-block;
 	flex-shrink: 0;
-	padding: 3px 6px;
-	border-radius: 4px;
+	padding: 3px 8px;
+	border-radius: var(--lily-pill);
 	background: var(--lily-warm-brown);
 	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
@@ -549,10 +608,10 @@ html .lily-primary-nav .lily-nav-link:focus {
 	visibility: hidden;
 	opacity: 0;
 	transform: translateY(-4px);
-	background: #f7f4ec;
-	border: 1px solid rgba(66, 28, 20, 0.1);
+	background: #FEFCDD;
+	border: 1px solid rgba(51, 28, 22, 0.1);
 	border-radius: 8px;
-	box-shadow: 0 12px 30px rgba(66, 28, 20, 0.08);
+	box-shadow: 0 12px 30px rgba(51, 28, 22, 0.08);
 	transition:
 		opacity 180ms ease,
 		transform 180ms ease,
@@ -571,7 +630,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	margin: 0;
 	padding: 16px;
 	list-style: none;
-	border-inline-end: 1px solid rgba(66, 28, 20, 0.1);
+	border-inline-end: 1px solid rgba(51, 28, 22, 0.1);
 }
 
 .lily-mega__cats li + li {
@@ -607,7 +666,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 
 .lily-mega__cat:hover,
 .lily-mega__cat.is-active {
-	background: #efe8de;
+	background: #FAD3CA;
 	color: var(--lily-dark-brown);
 }
 
@@ -664,7 +723,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 .lily-dropdown__pending {
 	display: inline-block;
 	padding-block: 8px;
-	color: rgba(66, 28, 20, 0.42);
+	color: rgba(51, 28, 22, 0.42);
 	font-size: 14px;
 }
 
@@ -699,14 +758,15 @@ html .lily-primary-nav .lily-nav-link:focus {
 .lily-nav-link:focus-visible,
 .lily-mega__cat:focus-visible,
 .lily-mega__links a:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
 .lily-header-actions {
 	display: flex;
 	align-items: center;
-	gap: 14px;
+	flex-shrink: 0;
+	gap: 10px;
 }
 
 .lily-language-switcher {
@@ -718,12 +778,12 @@ html .lily-primary-nav .lily-nav-link:focus {
    !important is required — TRP sets these vars inline. */
 .lily-header-actions .lily-language-switcher .trp-shortcode-switcher__wrapper {
 	--bg: transparent !important;
-	--bg-hover: rgba(66, 28, 20, 0.05) !important;
-	--text: #421c14 !important;
+	--bg-hover: rgba(51, 28, 22, 0.05) !important;
+	--text: #331C16 !important;
 	--text-hover: #885337 !important;
-	--border: 1px solid rgba(66, 28, 20, 0.18) !important;
+	--border: 1px solid rgba(51, 28, 22, 0.18) !important;
 	--border-width: 1px !important;
-	--border-color: rgba(66, 28, 20, 0.18) !important;
+	--border-color: rgba(51, 28, 22, 0.18) !important;
 	--border-radius: 8px !important;
 	--flag-size: 16px !important;
 	--font-size: 13px !important;
@@ -739,7 +799,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	min-height: 42px;
 	margin: 0;
 	padding: 0 14px;
-	border: 1px solid rgba(66, 28, 20, 0.18);
+	border: 1px solid rgba(51, 28, 22, 0.18);
 	border-radius: 8px;
 	background: transparent;
 	color: var(--lily-dark-brown);
@@ -775,16 +835,16 @@ html .lily-primary-nav .lily-nav-link:focus {
 /* Dropdown menu: cream panel matching the Lily palette. */
 .lily-header-actions .lily-language-switcher .trp-switcher-dropdown-list {
 	background: var(--lily-cream);
-	border: 1px solid rgba(66, 28, 20, 0.14);
+	border: 1px solid rgba(51, 28, 22, 0.14);
 	border-radius: 8px;
 }
 
 .lily-header-actions .lily-language-switcher .trp-switcher-dropdown-list .trp-language-item:hover {
-	background: var(--lily-olive);
+	background: #FAD3CA;
 }
 
 .lily-header-actions .lily-language-switcher .trp-switcher-dropdown-list .trp-language-item:hover .trp-language-item-name {
-	color: var(--lily-cream);
+	color: #4B2E2B;
 }
 
 .lily-header-actions .trp-language-switcher .trp-ls-shortcode-item,
@@ -798,12 +858,19 @@ html .lily-primary-nav .lily-nav-link:focus {
 	text-decoration: none;
 }
 
+/* TranslatePress ships its switcher caret with a non-brand stroke;
+   presentation attributes lose to real declarations, so this wins. */
+.lily-language-switcher .trp-shortcode-arrow path {
+	stroke: var(--lily-dark-brown);
+}
+
 /* Drawer copy is only revealed inside the open mobile navigation */
 .lily-language-switcher--drawer {
 	display: none;
 }
 
-.lily-cart-link {
+.lily-cart-link,
+.lily-wishlist-link {
 	position: relative;
 	display: inline-grid;
 	place-items: center;
@@ -814,7 +881,8 @@ html .lily-primary-nav .lily-nav-link:focus {
 	transition: background-color 180ms ease;
 }
 
-.lily-cart-link:hover {
+.lily-cart-link:hover,
+.lily-wishlist-link:hover {
 	background: rgba(136, 83, 55, 0.12);
 }
 
@@ -822,7 +890,8 @@ html .lily-primary-nav .lily-nav-link:focus {
 	display: block;
 }
 
-.lily-cart-count {
+.lily-cart-count,
+.lily-wishlist-count {
 	position: absolute;
 	top: 0;
 	inset-inline-end: 0;
@@ -844,7 +913,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 /* Search bar (toggled from the header) */
 .lily-search-bar {
 	border-block-start: 1px solid var(--lily-line);
-	background: rgba(239, 236, 221, 0.97);
+	background: rgba(254, 252, 221, 0.97);
 }
 
 .lily-search-bar[hidden] {
@@ -867,10 +936,16 @@ html .lily-primary-nav .lily-nav-link:focus {
 	border-radius: 0;
 	background: transparent;
 	color: var(--lily-text);
+	caret-color: var(--lily-warm-brown);
 	font-family: var(--lily-font-body);
 	font-size: 1.02rem;
 	appearance: none;
 	-webkit-appearance: none;
+}
+
+.lily-search-bar input[type="search"]::placeholder {
+	color: rgba(51, 28, 22, 0.52);
+	opacity: 1;
 }
 
 .lily-search-bar input[type="search"]:focus {
@@ -949,10 +1024,8 @@ html .lily-primary-nav .lily-nav-link:focus {
 	padding-block: 0;
 }
 
-/* The full-bleed hero must start flush under the navbar: announcement + navbar + hero = 100vh */
-html body.home main#primary.site-main {
-	margin-block-start: 0;
-}
+/* The full-bleed hero must start flush under the navbar: announcement + navbar + hero = 100vh
+   (margin-block-end is zeroed by the base homepage rule near the top of this file) */
 
 /* Announcement bar + navbar sit above; the hero fills the rest of the first viewport */
 .lily-hero__media {
@@ -989,15 +1062,9 @@ html body.home main#primary.site-main {
 	max-width: 520px;
 }
 
-/* Flat solid veil for text contrast over photography â€” palette-safe flat color. */
-.lily-hero__media::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: 0;
-	background: rgba(239, 236, 221, 0.38);
-	pointer-events: none;
-}
+/* Hero photography keeps its original colors — no tint veil, color filter,
+   blend mode or overlay is applied to force it into the palette. Text
+   legibility comes from brand-colored type only. */
 
 /* Slide without a photo: solid cream editorial field (until photography arrives) */
 
@@ -1017,11 +1084,11 @@ html body.home main#primary.site-main {
 /* Editorial overlay â€” sits on the lower-start area of the photography */
 .lily-hero__eyebrow {
 	margin: 0 0 18px;
-	color: var(--lily-dark-brown);
+	color: var(--lily-warm-brown);
 	font-family: var(--lily-font-body);
 	font-size: 12px;
-	font-weight: 400;
-	letter-spacing: 0.12em;
+	font-weight: 600;
+	letter-spacing: 0.14em;
 	line-height: 1.2;
 	text-transform: uppercase;
 }
@@ -1056,30 +1123,32 @@ html body.home main#primary.site-main {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	gap: 10px;
 	margin-block-start: 32px;
-	min-height: 48px;
-	padding: 14px 24px;
-	border: 0;
-	border-radius: 8px;
+	min-height: 52px;
+	padding: 14px 34px;
+	border: 1px solid transparent;
+	border-radius: var(--lily-pill);
 	background: var(--lily-warm-brown);
 	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
-	font-size: 13px;
-	font-weight: 400;
-	letter-spacing: 0.08em;
-	line-height: 1;
+	font-size: 0.95rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	line-height: 1.2;
 	text-decoration: none;
-	text-transform: uppercase;
 	cursor: pointer;
 	appearance: none;
 	-webkit-appearance: none;
-	transition: background-color 180ms ease, color 180ms ease;
+	transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .lily-hero__cta:hover {
-	background: var(--lily-olive);
+	background: #4B2E2B;
+	border-color: #4B2E2B;
 	color: var(--lily-cream);
-	box-shadow: none;
+	box-shadow: var(--lily-shadow-sm);
+	transform: translateY(-1px);
 }
 
 @media (max-width: 900px) {
@@ -1093,7 +1162,7 @@ html body.home main#primary.site-main {
 	}
 
 	.lily-hero__description {
-		font-size: 14px;
+		font-size: 15px;
 	}
 
 	.lily-hero__cta {
@@ -1108,7 +1177,7 @@ html body.home main#primary.site-main {
    -------------------------------------------------------------------------- */
 
 .lily-brands {
-	background: var(--lily-olive);
+	background: #FAD3CA;
 	padding-block: 48px;
 }
 
@@ -1123,8 +1192,8 @@ html body.home main#primary.site-main {
 	display: flex;
 	align-items: center;
 	width: max-content;
-	/* Raster logos multiply against this olive; the section bg matches seamlessly. */
-	background: var(--lily-olive);
+	/* Raster logos multiply against this peach; the section bg matches seamlessly. */
+	background: #FAD3CA;
 	animation: lily-marquee-scroll var(--lily-marquee-duration, 40s) linear infinite;
 	will-change: transform;
 }
@@ -1165,9 +1234,9 @@ html body.home main#primary.site-main {
 	text-decoration: none;
 }
 
-/* Logos read cleanly against the olive strip:
-   SVG logos (incl. text fallback) whiten to cream; opaque raster logos
-   multiply so their white background disappears into the olive. */
+/* Brand strip UI is Soft Peach; brand logos and artwork always keep their
+   original colors (like product photography) — no blend modes, filters or
+   recoloring are applied to force them into the palette. */
 .lily-brand img,
 .lily-brand__logo {
 	display: block;
@@ -1175,15 +1244,6 @@ html body.home main#primary.site-main {
 	height: 32px;
 	max-width: 160px;
 	object-fit: contain;
-	mix-blend-mode: multiply;
-	opacity: 0.9;
-}
-
-.lily-brand img[src$=".svg"],
-.lily-brand__logo[src$=".svg"] {
-	mix-blend-mode: normal;
-	filter: brightness(0) invert(1);
-	opacity: 0.92;
 }
 
 @media (max-width: 900px) {
@@ -1228,7 +1288,7 @@ html body.home main#primary.site-main {
 
 /* Collections: editorial split layout — text left, three images right. */
 .lily-collections {
-	padding-block: 72px;
+	padding-block: clamp(64px, 7vw, 96px);
 }
 
 .lily-collections__layout {
@@ -1239,12 +1299,12 @@ html body.home main#primary.site-main {
 }
 
 .lily-collections__eyebrow {
-	margin: 0 0 12px;
-	color: var(--lily-dark-brown);
+	margin: 0 0 14px;
+	color: var(--lily-warm-brown);
 	font-family: var(--lily-font-body);
 	font-size: 12px;
-	font-weight: 400;
-	letter-spacing: 0.08em;
+	font-weight: 600;
+	letter-spacing: 0.14em;
 	line-height: 1.2;
 	text-transform: uppercase;
 }
@@ -1261,34 +1321,39 @@ html body.home main#primary.site-main {
 }
 
 .lily-collections .lily-section-heading p {
-	max-width: 350px;
-	margin: 16px 0 0;
+	max-width: 380px;
+	margin: 18px 0 0;
 	color: var(--lily-dark-brown);
-	font-size: 15px;
-	line-height: 1.6;
+	font-size: 16px;
+	line-height: 1.7;
 }
 
 .lily-collections__cta {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
+	justify-content: center;
+	gap: 10px;
 	margin-block-start: 30px;
-	padding-block-end: 6px;
-	border-block-end: 1px solid rgba(136, 83, 55, 0.4);
-	color: var(--lily-warm-brown);
+	min-height: 50px;
+	padding: 12px 30px;
+	border: 1px solid rgba(51, 28, 22, 0.25);
+	border-radius: var(--lily-pill);
+	background: transparent;
+	color: var(--lily-text);
 	font-family: var(--lily-font-body);
-	font-size: 13px;
-	font-weight: 400;
-	letter-spacing: 0.06em;
+	font-size: 0.95rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
 	line-height: 1.2;
 	text-decoration: none;
-	text-transform: uppercase;
-	transition: color 180ms ease, border-color 180ms ease;
+	transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .lily-collections__cta:hover {
-	border-block-end-color: var(--lily-dark-brown);
-	color: var(--lily-dark-brown);
+	background: rgba(51, 28, 22, 0.06);
+	border-color: rgba(51, 28, 22, 0.6);
+	color: var(--lily-text);
+	box-shadow: none;
 }
 
 .lily-collections__grid {
@@ -1296,9 +1361,10 @@ html body.home main#primary.site-main {
 	gap: 12px;
 }
 
-/* Colors: centered editorial swatch grid, five per row. */
+/* Colors: centered editorial swatch band on soft peach, five per row. */
 .lily-colors {
-	padding-block: 72px;
+	padding-block: clamp(64px, 8vw, 104px);
+	background: #FAD3CA;
 }
 
 .lily-colors__intro {
@@ -1310,11 +1376,11 @@ html body.home main#primary.site-main {
 
 .lily-colors__eyebrow {
 	margin: 0 0 16px;
-	color: var(--lily-dark-brown);
+	color: var(--lily-warm-brown);
 	font-family: var(--lily-font-body);
 	font-size: 12px;
-	font-weight: 400;
-	letter-spacing: 0.08em;
+	font-weight: 600;
+	letter-spacing: 0.14em;
 	line-height: 1.2;
 	text-transform: uppercase;
 }
@@ -1336,11 +1402,11 @@ html body.home main#primary.site-main {
 }
 
 .lily-colors .lily-section-heading p {
-	max-width: 520px;
-	margin: 16px 0 0;
+	max-width: 560px;
+	margin: 18px auto 0;
 	color: var(--lily-dark-brown);
-	font-size: 15px;
-	line-height: 1.6;
+	font-size: 16px;
+	line-height: 1.7;
 }
 
 .lily-colors__grid {
@@ -1360,26 +1426,27 @@ html body.home main#primary.site-main {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 8px;
-	min-height: 44px;
-	padding: 12px 24px;
-	border: 1px solid var(--lily-olive);
-	border-radius: 0;
+	gap: 10px;
+	min-height: 50px;
+	padding: 12px 30px;
+	border: 1px solid rgba(51, 28, 22, 0.25);
+	border-radius: var(--lily-pill);
 	background: transparent;
-	color: var(--lily-olive);
+	color: var(--lily-text);
 	font-family: var(--lily-font-body);
-	font-size: 13px;
-	font-weight: 400;
-	letter-spacing: 0.06em;
-	line-height: 1;
+	font-size: 0.95rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	line-height: 1.2;
 	text-decoration: none;
-	text-transform: uppercase;
-	transition: background-color 180ms ease, color 180ms ease;
+	transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .lily-colors__cta:hover {
-	background: rgba(88, 96, 68, 0.08);
-	color: var(--lily-olive);
+	background: rgba(51, 28, 22, 0.06);
+	border-color: rgba(51, 28, 22, 0.6);
+	color: var(--lily-text);
+	box-shadow: none;
 }
 
 .lily-color-card a {
@@ -1406,20 +1473,27 @@ html body.home main#primary.site-main {
 }
 
 .lily-color-card .lily-color-card__label {
-	margin-top: 8px;
+	margin-top: 10px;
 	color: var(--lily-dark-brown);
 	font-family: var(--lily-font-body);
-	font-size: 13px;
-	font-weight: 400;
+	font-size: 14px;
+	font-weight: 600;
 	letter-spacing: 0.04em;
 	line-height: 1.2;
 	text-align: center;
 	text-transform: uppercase;
+	transition: color 180ms ease;
+}
+
+.lily-color-card a:hover .lily-color-card__label {
+	color: var(--lily-warm-brown);
 }
 
 /* Collection card: pure editorial image + centered title below. */
 .lily-collection-card a {
 	display: block;
+	overflow: hidden;
+	border-radius: var(--lily-radius-lg);
 	color: inherit;
 	text-decoration: none;
 }
@@ -1429,20 +1503,21 @@ html body.home main#primary.site-main {
 	height: auto;
 	aspect-ratio: 4 / 5;
 	object-fit: cover;
-	transition: opacity 300ms ease;
+	border-radius: var(--lily-radius-lg);
+	transition: transform 420ms var(--lily-ease);
 }
 
 .lily-collection-card a:hover img {
-	opacity: 0.92;
+	transform: scale(1.03);
 }
 
 .lily-collection-card h3 {
-	margin: 14px 0 0;
+	margin: 16px 0 0;
 	color: var(--lily-dark-brown);
 	font-family: var(--lily-font-body);
-	font-size: 13px;
-	font-weight: 400;
-	letter-spacing: 0.06em;
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
 	line-height: 1.3;
 	text-align: center;
 	text-transform: uppercase;
@@ -1466,22 +1541,30 @@ html body.home main#primary.site-main {
 	-webkit-overflow-scrolling: touch;
 }
 
+/* ==========================================================================
+   MASTER PRODUCT CARD — one system for every product on the site.
+   Shop grid, category/search archives, Best Sellers carousel, Related
+   Products, Wishlist and Lens Finder results all render this component.
+   Sections may control layout around the card (columns, gaps, width) but
+   never the card design itself: same container, radius, border, shadow,
+   image ratio, metadata typography, title clamp, price and Add to Cart.
+   ========================================================================== */
 .lily-product-card {
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	min-width: 0;
+	border: 1px solid var(--lily-line);
 	border-radius: var(--lily-radius-lg);
-	background: var(--lily-white);
-	box-shadow: 0 1px 0 rgba(66, 28, 20, 0.05), var(--lily-shadow-sm);
+	background: var(--lily-surface);
+	box-shadow: var(--lily-shadow-sm);
+	overflow: hidden;
 	scroll-snap-align: start;
-	transition:
-		transform 260ms var(--lily-ease),
-		box-shadow 260ms var(--lily-ease);
+	transition: box-shadow 260ms var(--lily-ease);
 }
 
+/* Subtle hover: a quiet shadow deepening only — no lift, no scale. */
 .lily-product-card:hover {
-	transform: translateY(-5px);
 	box-shadow: var(--lily-shadow);
 }
 
@@ -1500,36 +1583,64 @@ html body.home main#primary.site-main {
 	z-index: 2;
 }
 
+/* Image area — identical proportions everywhere: 1 / 1.06, centered,
+   object-fit contain so lens products are never cropped. */
 .lily-product-card__image {
 	display: block;
 	overflow: hidden;
-	border-radius: var(--lily-radius-lg) var(--lily-radius-lg) 0 0;
+	aspect-ratio: 1 / 1.06;
 	background: var(--lily-surface);
 }
 
 .lily-product-card__image img {
 	display: block;
 	width: 100%;
-	aspect-ratio: 1 / 1.06;
-	object-fit: cover;
-	transition: transform 420ms var(--lily-ease);
-}
-
-.lily-product-card__image:hover img {
-	transform: scale(1.03);
+	height: 100%;
+	object-fit: contain;
+	box-sizing: border-box;
+	padding: clamp(10px, 1.6vw, 18px);
 }
 
 .lily-product-card__content {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
-	gap: 8px;
-	padding: 18px 18px 20px;
+	gap: 7px;
+	padding: 16px 18px 20px;
 	text-align: start;
 }
 
+/* Brand + color metadata stack — quietest layer of the hierarchy.
+   Both rows always reserve their height, so cards stay aligned whether a
+   product has a brand, a color, both or neither (no fake fallback text). */
+.lily-product-card__meta {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 4px;
+	min-height: 40px;
+}
+
+/* Manufacturer brand (real product brand term — pa_brand / product_brand). */
+.lily-product-card__brand {
+	min-height: 1em;
+	color: var(--lily-warm-brown);
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+/* Product name — fixed two-line reserve, same height in every card. */
 .lily-product-card h3 {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	margin: 0;
+	min-height: 2.7em;
 	font-family: var(--lily-font-body);
 	font-size: 1.02rem;
 	font-weight: 600;
@@ -1542,14 +1653,84 @@ html body.home main#primary.site-main {
 	text-decoration: none;
 }
 
+/* The title anchor carries its own color so page-scoped link treatments
+   (e.g. the single-product warm-brown link rule) never repaint it. */
+.lily-product-card h3 a {
+	color: inherit;
+}
+
 .lily-product-card h3 a:hover {
 	color: var(--lily-warm-brown);
 }
 
+/* Color metadata row (swatch + color name) — same quiet typography. */
+.lily-product-card__color {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	min-height: 18px;
+}
+
+.lily-product-card__swatch {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	border: 1px solid var(--lily-line);
+	border-radius: 50%;
+	background-size: cover;
+	background-position: center;
+}
+
+.lily-product-card__color-name {
+	color: var(--lily-warm-brown);
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	line-height: 1.2;
+	text-transform: uppercase;
+}
+
+/* Rating row — fixed reserve so cards without reviews stay aligned.
+   Stars always precede the numeric value, regardless of external
+   WooCommerce Blocks order rules on the rating wrapper. */
+.lily-product-card__rating {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	min-height: 12px;
+	line-height: 1;
+}
+
+.lily-product-card__rating > * {
+	order: 0;
+}
+
+.lily-product-card__rating .review-rating,
+.lily-product-card__rating .star-rating {
+	order: -1;
+}
+
+.lily-product-card__rating .star-rating {
+	font-size: 12px;
+	color: var(--lily-warm-brown);
+}
+
+.lily-product-card__rating .star-rating span::before {
+	color: var(--lily-warm-brown) !important;
+}
+
+.lily-product-card__rating-count {
+	color: #723427;
+	font-size: 12px;
+}
+
+/* Price — pinned above the Add to Cart row for vertical alignment. */
 .lily-product-card__price {
+	margin-block-start: auto;
+	padding-block-start: 2px;
 	color: var(--lily-warm-brown);
 	font-size: 1.02rem;
-	font-weight: 700;
+	font-weight: 500;
 }
 
 .lily-product-card__price del {
@@ -1559,18 +1740,31 @@ html body.home main#primary.site-main {
 }
 
 .lily-product-card__price ins {
+	color: #331C16;
 	text-decoration: none;
 }
 
+/* Add to Cart — the global Lily pill: warm brown, cream text, deep-brown
+   hover. Calm interaction: no lift, no glow, no gradient. */
 .lily-product-card .lily-button {
-	margin-block-start: auto;
 	justify-content: center;
 	width: 100%;
-	color: var(--lily-white);
+	min-height: 44px;
+	color: var(--lily-cream);
 }
 
 .lily-product-card .lily-button:hover {
-	color: var(--lily-white);
+	background: #723427;
+	border-color: #723427;
+	color: var(--lily-cream);
+	transform: none;
+	box-shadow: none;
+}
+
+/* Drawer add-to-cart hook keeps its wait state (visual system shared). */
+.lily-best-card__cart:disabled {
+	opacity: 0.6;
+	cursor: wait;
 }
 
 .lily-products-row--results {
@@ -1584,7 +1778,7 @@ html body.home main#primary.site-main {
    -------------------------------------------------------------------------- */
 
 .lily-best-sellers {
-	padding-block: 72px;
+	padding-block: clamp(64px, 7vw, 96px);
 }
 
 .lily-best-sellers__intro {
@@ -1596,11 +1790,11 @@ html body.home main#primary.site-main {
 
 .lily-best-sellers__eyebrow {
 	margin: 0 0 16px;
-	color: var(--lily-dark-brown);
+	color: var(--lily-warm-brown);
 	font-family: var(--lily-font-body);
 	font-size: 12px;
-	font-weight: 400;
-	letter-spacing: 0.08em;
+	font-weight: 600;
+	letter-spacing: 0.14em;
 	line-height: 1.2;
 	text-transform: uppercase;
 }
@@ -1623,33 +1817,38 @@ html body.home main#primary.site-main {
 
 .lily-best-sellers .lily-section-heading p {
 	max-width: 560px;
-	margin: 16px 0 0;
+	margin: 18px auto 0;
 	color: var(--lily-dark-brown);
-	font-size: 15px;
-	line-height: 1.6;
+	font-size: 16px;
+	line-height: 1.7;
 }
 
 .lily-best-sellers__cta {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
+	justify-content: center;
+	gap: 10px;
 	margin-block-start: 24px;
-	padding-block-end: 6px;
-	border-block-end: 1px solid rgba(136, 83, 55, 0.4);
-	color: var(--lily-warm-brown);
+	min-height: 50px;
+	padding: 12px 30px;
+	border: 1px solid rgba(51, 28, 22, 0.25);
+	border-radius: var(--lily-pill);
+	background: transparent;
+	color: var(--lily-text);
 	font-family: var(--lily-font-body);
-	font-size: 13px;
-	font-weight: 400;
-	letter-spacing: 0.06em;
+	font-size: 0.95rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
 	line-height: 1.2;
 	text-decoration: none;
-	text-transform: uppercase;
-	transition: color 180ms ease, border-color 180ms ease;
+	transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .lily-best-sellers__cta:hover {
-	border-block-end-color: var(--lily-dark-brown);
-	color: var(--lily-dark-brown);
+	background: rgba(51, 28, 22, 0.06);
+	border-color: rgba(51, 28, 22, 0.6);
+	color: var(--lily-text);
+	box-shadow: none;
 }
 
 .lily-best-sellers__carousel {
@@ -1674,194 +1873,9 @@ html body.home main#primary.site-main {
 	display: none;
 }
 
-.lily-products-row--best .lily-product-card--best {
+/* Carousel layout only — the cards themselves are the master component. */
+.lily-products-row--best .lily-product-card {
 	flex: 0 0 calc((100% - 72px) / 4);
-}
-
-.lily-product-card--best {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	background: var(--lily-cream);
-	border: 1px solid #e7d7c4;
-	border-radius: 4px;
-	scroll-snap-align: start;
-}
-
-.lily-product-card--best .lily-best-card__media {
-	position: relative;
-	display: block;
-	overflow: hidden;
-	border-radius: 4px 4px 0 0;
-	background: var(--lily-surface);
-}
-
-.lily-product-card--best .lily-best-card__media img {
-	display: block;
-	width: 100%;
-	aspect-ratio: 1 / 1;
-	object-fit: cover;
-	transition: transform 300ms ease;
-}
-
-.lily-product-card--best .lily-best-card__media:hover img {
-	transform: scale(1.02);
-}
-
-.lily-best-card__badge {
-	position: absolute;
-	top: 10px;
-	inset-inline-start: 10px;
-	z-index: 2;
-	padding: 4px 8px;
-	border-radius: 4px;
-	background: var(--lily-warm-brown);
-	color: var(--lily-cream);
-	font-family: var(--lily-font-body);
-	font-size: 11px;
-	font-weight: 600;
-	letter-spacing: 0.05em;
-	line-height: 1;
-	text-transform: uppercase;
-}
-
-.lily-best-card__body {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	padding: 14px;
-}
-
-.lily-best-card__swatches {
-	display: inline-flex;
-	gap: 5px;
-}
-
-.lily-best-card__swatch {
-	display: inline-block;
-	width: 18px;
-	height: 18px;
-	border: 1px solid #e7d7c4;
-	border-radius: 50%;
-	background-size: cover;
-	background-position: center;
-}
-
-.lily-best-card__color {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	min-height: 18px;
-}
-
-.lily-best-card__color-name {
-	color: var(--lily-dark-brown);
-	font-family: var(--lily-font-body);
-	font-size: 12px;
-	font-weight: 400;
-	line-height: 1.2;
-	text-transform: uppercase;
-}
-
-.lily-best-card__name {
-	display: -webkit-box;
-	overflow: hidden;
-	margin-block-start: 8px;
-	/* Fixed two-line reserve: one-line names never shrink the card. */
-	min-height: 38px;
-	color: var(--lily-dark-brown);
-	font-family: var(--lily-font-body);
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 1.35;
-	text-decoration: none;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-}
-
-.lily-best-card__name:hover {
-	color: var(--lily-warm-brown);
-}
-
-.lily-best-card__rating {
-	display: inline-flex;
-	align-items: center;
-	gap: 5px;
-	margin-block-start: 6px;
-	/* Fixed rating reserve so cards without reviews stay aligned. */
-	min-height: 12px;
-	line-height: 1;
-}
-
-.lily-best-card__rating .star-rating {
-	font-size: 12px;
-	color: var(--lily-warm-brown);
-}
-
-.lily-best-card__rating .star-rating span::before {
-	color: var(--lily-warm-brown) !important;
-}
-
-.lily-best-card__count {
-	color: #6b513f;
-	font-size: 12px;
-}
-
-.lily-best-card__price {
-	display: inline-flex;
-	align-items: baseline;
-	margin-block-start: 6px;
-	margin-block-end: 12px;
-	min-height: 17px;
-	color: var(--lily-dark-brown);
-	font-family: var(--lily-font-body);
-	font-size: 14px;
-	font-weight: 500;
-}
-
-.lily-best-card__price del {
-	color: var(--lily-muted);
-	font-weight: 400;
-	opacity: 0.7;
-}
-
-.lily-best-card__price ins {
-	text-decoration: none;
-}
-
-.lily-best-card__cart {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	min-height: 42px;
-	/* Keeps the CTA at the same vertical position in every card. */
-	margin-block-start: auto;
-	padding: 12px 18px;
-	border: 0;
-	border-radius: 4px;
-	background: var(--lily-warm-brown);
-	color: var(--lily-cream);
-	font-family: var(--lily-font-body);
-	font-size: 12px;
-	font-weight: 400;
-	letter-spacing: 0.05em;
-	line-height: 1;
-	text-align: center;
-	text-decoration: none;
-	text-transform: uppercase;
-	transition: background-color 180ms ease, color 180ms ease;
-}
-
-.lily-best-card__cart:hover {
-	background: var(--lily-olive);
-	color: var(--lily-cream);
-}
-
-.lily-best-card__cart:disabled {
-	opacity: 0.6;
-	cursor: wait;
 }
 
 .lily-best-sellers__arrow {
@@ -1873,7 +1887,7 @@ html body.home main#primary.site-main {
 	width: 40px;
 	height: 40px;
 	padding: 0;
-	border: 1px solid #e7d7c4;
+	border: 1px solid var(--lily-line);
 	border-radius: 0;
 	background: transparent;
 	color: var(--lily-dark-brown);
@@ -1887,13 +1901,13 @@ html body.home main#primary.site-main {
 /* html prefix outranks Astra's bare button:hover color overrides */
 html .lily-best-sellers__arrow:hover,
 html .lily-best-sellers__arrow:active {
-	background: var(--lily-olive);
-	border-color: var(--lily-olive);
+	background: #4B2E2B;
+	border-color: #4B2E2B;
 	color: var(--lily-cream);
 }
 
 html .lily-best-sellers__arrow:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
@@ -1925,7 +1939,7 @@ html .lily-best-sellers__arrow:focus-visible {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
-	background: #e7d7c4;
+	background: #FAD3CA;
 }
 
 .lily-best-sellers__dot.is-active {
@@ -1937,7 +1951,7 @@ html .lily-best-sellers__arrow:focus-visible {
    -------------------------------------------------------------------------- */
 
 .lily-lens-finder {
-	background: var(--lily-olive);
+	background: #4B2E2B;
 	color: var(--lily-cream);
 	/* Fits naturally within one viewport on desktop */
 	min-height: calc(100vh - 120px);
@@ -1953,11 +1967,11 @@ html .lily-best-sellers__arrow:focus-visible {
 
 .lily-lens-finder__intro p.lily-lens-finder__eyebrow {
 	margin: 0 0 16px;
-	color: var(--lily-cream);
+	color: #FAD3CA;
 	font-family: var(--lily-font-body);
 	font-size: 12px;
-	font-weight: 400;
-	letter-spacing: 0.08em;
+	font-weight: 600;
+	letter-spacing: 0.14em;
 	line-height: 1.2;
 	text-transform: uppercase;
 }
@@ -1981,11 +1995,11 @@ html .lily-best-sellers__arrow:focus-visible {
 
 .lily-lens-finder__intro p.lily-lens-finder__description {
 	max-width: 480px;
-	margin: 0;
+	margin: 18px 0 0;
 	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
-	font-size: 15px;
-	line-height: 1.6;
+	font-size: 16px;
+	line-height: 1.7;
 }
 
 .lily-lens-finder__benefits {
@@ -2009,7 +2023,7 @@ html .lily-best-sellers__arrow:focus-visible {
 .lily-lens-finder__benefit-text {
 	display: block;
 	margin-block-start: 4px;
-	color: rgba(239, 236, 221, 0.82);
+	color: rgba(254, 252, 221, 0.82);
 	font-family: var(--lily-font-body);
 	font-size: 12px;
 	line-height: 1.5;
@@ -2024,31 +2038,34 @@ html .lily-best-sellers__arrow:focus-visible {
 	max-width: 380px;
 	min-height: 52px;
 	margin-block-start: 32px;
-	padding: 0 24px;
-	border: 0;
-	border-radius: 4px;
-	background: var(--lily-cream);
-	color: var(--lily-dark-brown);
+	padding: 14px 32px;
+	border: 1px solid transparent;
+	border-radius: var(--lily-pill);
+	background: var(--lily-warm-brown);
+	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
-	font-size: 13px;
-	font-weight: 400;
-	letter-spacing: 0.06em;
-	line-height: 1;
-	text-transform: uppercase;
+	font-size: 0.95rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	line-height: 1.2;
+	text-decoration: none;
 	cursor: pointer;
 	appearance: none;
 	-webkit-appearance: none;
-	transition: background-color 180ms ease, color 180ms ease;
+	transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .lily-lens-finder__cta:hover {
-	background: var(--lily-cream);
-	color: rgba(66, 28, 20, 0.75);
+	background: #4B2E2B;
+	border-color: #4B2E2B;
+	color: var(--lily-cream);
+	box-shadow: var(--lily-shadow-sm);
+	transform: translateY(-1px);
 }
 
 .lily-lens-finder__intro p.lily-lens-finder__support {
 	margin: 16px 0 0;
-	color: rgba(239, 236, 221, 0.82);
+	color: rgba(254, 252, 221, 0.82);
 	font-family: var(--lily-font-body);
 	font-size: 12px;
 	line-height: 1.4;
@@ -2063,7 +2080,7 @@ html .lily-best-sellers__arrow:focus-visible {
 	overflow: hidden;
 	border-radius: 4px;
 	/* Clean populating area for the future dashboard image */
-	background: rgba(239, 236, 221, 0.08);
+	background: rgba(254, 252, 221, 0.08);
 }
 
 .lily-lens-finder__visual img {
@@ -2106,7 +2123,7 @@ html .lily-best-sellers__arrow:focus-visible {
 }
 
 .lily-lens-finder__steps-list li + li {
-	border-inline-start: 1px solid rgba(239, 236, 221, 0.2);
+	border-inline-start: 1px solid rgba(254, 252, 221, 0.2);
 	padding-inline-start: 24px;
 }
 
@@ -2129,7 +2146,7 @@ html .lily-best-sellers__arrow:focus-visible {
 
 .lily-lens-finder__step-text {
 	margin-block-start: 4px;
-	color: rgba(239, 236, 221, 0.82);
+	color: rgba(254, 252, 221, 0.82);
 	font-family: var(--lily-font-body);
 	font-size: 12px;
 	line-height: 1.5;
@@ -2185,7 +2202,7 @@ html .lily-best-sellers__arrow:focus-visible {
 	border-radius: var(--lily-radius-lg);
 	background: var(--lily-white);
 	padding: clamp(24px, 3.4vw, 40px);
-	box-shadow: 0 34px 64px -38px rgba(66, 28, 20, 0.65);
+	box-shadow: 0 34px 64px -38px rgba(51, 28, 22, 0.65);
 	color: var(--lily-text);
 }
 
@@ -2247,9 +2264,9 @@ html .lily-best-sellers__arrow:focus-visible {
 }
 
 .lily-lens-option[aria-pressed="true"] {
-	border-color: var(--lily-olive);
-	background: var(--lily-olive);
-	color: var(--lily-white);
+	border-color: #FAD3CA;
+	background: #FAD3CA;
+	color: #4B2E2B;
 }
 
 .lily-lens-controls {
@@ -2344,7 +2361,7 @@ html .lily-best-sellers__arrow:focus-visible {
 .lily-site-footer {
 	position: relative;
 	background: var(--lily-dark-brown);
-	color: rgba(239, 236, 221, 0.9);
+	color: rgba(254, 252, 221, 0.9);
 }
 
 .lily-site-footer__inner {
@@ -2385,7 +2402,7 @@ html .lily-best-sellers__arrow:focus-visible {
 
 .lily-footer-since {
 	margin: 8px 0 0;
-	color: rgba(239, 236, 221, 0.5);
+	color: rgba(254, 252, 221, 0.5);
 	font-family: var(--lily-font-body);
 	font-size: 0.78rem;
 	letter-spacing: 0.16em;
@@ -2395,7 +2412,7 @@ html .lily-best-sellers__arrow:focus-visible {
 .lily-footer-brand p {
 	margin: 10px 0 0;
 	max-width: 300px;
-	color: rgba(239, 236, 221, 0.66);
+	color: rgba(254, 252, 221, 0.66);
 	font-size: 0.9rem;
 	line-height: 1.5;
 }
@@ -2405,7 +2422,7 @@ html .lily-best-sellers__arrow:focus-visible {
 	grid-template-columns: repeat(4, minmax(0, 1fr));
 	gap: clamp(24px, 2.5vw, 40px);
 	padding-block-end: clamp(36px, 4.5vw, 56px);
-	border-inline-start: 1px solid rgba(239, 236, 221, 0.12);
+	border-inline-start: 1px solid rgba(254, 252, 221, 0.12);
 	padding-inline-start: clamp(32px, 4vw, 64px);
 	align-content: start;
 }
@@ -2417,7 +2434,7 @@ html .lily-best-sellers__arrow:focus-visible {
 	font-weight: 600;
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-	color: rgba(239, 236, 221, 0.52);
+	color: rgba(254, 252, 221, 0.52);
 }
 
 .lily-footer-menu ul {
@@ -2434,7 +2451,7 @@ html .lily-best-sellers__arrow:focus-visible {
 	position: relative;
 	display: inline-block;
 	padding-block: 3px;
-	color: rgba(239, 236, 221, 0.84);
+	color: rgba(254, 252, 221, 0.84);
 	font-size: 0.95rem;
 	text-decoration: none;
 	transition: color 180ms ease, padding-inline-start 220ms var(--lily-ease);
@@ -2449,7 +2466,7 @@ html .lily-best-sellers__arrow:focus-visible {
 .lily-footer-placeholder {
 	display: inline-block;
 	padding-block: 4px;
-	color: rgba(239, 236, 221, 0.5);
+	color: rgba(254, 252, 221, 0.5);
 	font-size: 0.95rem;
 }
 
@@ -2457,8 +2474,8 @@ html .lily-best-sellers__arrow:focus-visible {
 	display: block;
 	margin: 0;
 	padding-block: 24px;
-	border-top: 1px solid rgba(239, 236, 221, 0.12);
-	color: rgba(239, 236, 221, 0.55);
+	border-top: 1px solid rgba(254, 252, 221, 0.12);
+	color: rgba(254, 252, 221, 0.55);
 	font-size: 0.86rem;
 	text-align: center;
 }
@@ -2467,7 +2484,7 @@ html .lily-best-sellers__arrow:focus-visible {
 	display: inline-block;
 	margin-block-start: 16px;
 	padding-block: 0 3px;
-	border-block-end: 1px solid rgba(239, 236, 221, 0.35);
+	border-block-end: 1px solid rgba(254, 252, 221, 0.35);
 	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
 	font-size: 0.95rem;
@@ -2479,7 +2496,7 @@ html .lily-best-sellers__arrow:focus-visible {
 
 .lily-footer-brand .lily-footer-cta:hover {
 	color: var(--lily-white);
-	border-block-end-color: rgba(239, 236, 221, 0.85);
+	border-block-end-color: rgba(254, 252, 221, 0.85);
 }
 
 .lily-footer-contact {
@@ -2493,7 +2510,7 @@ html .lily-best-sellers__arrow:focus-visible {
 .lily-footer-number {
 	display: block;
 	margin-block-start: 1px;
-	color: rgba(239, 236, 221, 0.75);
+	color: rgba(254, 252, 221, 0.75);
 	font-size: 0.95rem;
 	letter-spacing: 0.02em;
 	transition: color 180ms ease;
@@ -2519,7 +2536,7 @@ html .lily-best-sellers__arrow:focus-visible {
 	justify-content: space-between;
 	gap: 18px;
 	flex-wrap: wrap;
-	border-top: 1px solid rgba(239, 236, 221, 0.12);
+	border-top: 1px solid rgba(254, 252, 221, 0.12);
 }
 
 .lily-footer-bottom .lily-copyright {
@@ -2530,12 +2547,12 @@ html .lily-best-sellers__arrow:focus-visible {
 .lily-footer-note {
 	margin: 0;
 	padding-block: 16px;
-	color: rgba(239, 236, 221, 0.55);
+	color: rgba(254, 252, 221, 0.55);
 	font-size: 0.86rem;
 }
 
 .lily-site-footer .lily-language-switcher {
-	color: rgba(239, 236, 221, 0.84);
+	color: rgba(254, 252, 221, 0.84);
 }
 
 /* --------------------------------------------------------------------------
@@ -2586,17 +2603,18 @@ html .lily-best-sellers__arrow:focus-visible {
 
 @media (max-width: 600px) {
 	.lily-colors__grid {
-		gap: 14px;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 18px 14px;
 	}
 
 	.lily-color-card img,
 	.lily-color-card__swatch {
-		width: 64px;
-		height: 64px;
+		width: 72px;
+		height: 72px;
 	}
 
 	.lily-color-card .lily-color-card__label {
-		font-size: 11px;
+		font-size: 12px;
 	}
 }
 
@@ -2649,10 +2667,6 @@ html .lily-best-sellers__arrow:focus-visible {
 		width: 34px;
 		height: 34px;
 	}
-
-	.lily-best-card__body {
-		padding: 12px;
-	}
 }
 
 @media (max-width: 900px) {
@@ -2692,7 +2706,8 @@ html .lily-best-sellers__arrow:focus-visible {
 		font-size: 2.5rem;
 	}
 
-	.lily-cart-link {
+	.lily-cart-link,
+	.lily-wishlist-link {
 		width: 34px;
 		height: 34px;
 	}
@@ -2896,42 +2911,112 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 .lily-shop {
-	padding-block: clamp(40px, 5vw, 68px);
+	background: #FEFCDD;
+	padding-block: clamp(40px, 5vw, 64px) clamp(64px, 7vw, 96px);
+	overflow-x: clip;
+}
+
+/* --------------------------------------------------------------------------
+   Optional archive cover hero (Shop + product categories)
+   Dashboard-editable; renders nothing when no cover is selected.
+   Full-bleed by structure: the cover figure renders OUTSIDE .lily-container
+   as a direct child of .lily-shop, so plain 100% width already spans the
+   whole viewport edge-to-edge — no viewport-unit hacks, no negative margins,
+   no horizontal overflow. The archive title + description are centered
+   directly on top of the image.
+   -------------------------------------------------------------------------- */
+.lily-shop--has-cover {
+	padding-block-start: 0;
+}
+
+.lily-shop-cover {
+	position: relative;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	border-radius: 0;
+	overflow: hidden;
+}
+
+/* Specificity note: the archive sits inside WooCommerce's .woocommerce
+   wrapper, whose `img { height: auto }` (0,1,1) would beat a single-class
+   rule — so the img selector carries .lily-shop scope (0,2,0). */
+.lily-shop .lily-shop-cover__img {
+	display: block;
+	width: 100%;
+	height: clamp(280px, 27vw, 400px);
+	object-fit: cover;
+}
+
+/* Text overlay — centered on the cover. Only the position and the light
+   Lily-cream type color change; family, size, weight and spacing inherit
+   from the existing header typography untouched. */
+.lily-shop-cover__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	padding-inline: var(--lily-gutter);
+	text-align: center;
+}
+
+.lily-shop-cover .lily-shop__header {
+	margin: 0;
+}
+
+.lily-shop-cover .lily-shop__title {
+	color: var(--lily-cream);
+}
+
+.lily-shop-cover .lily-shop__description {
+	color: rgba(254, 252, 221, 0.92);
+}
+
+/* Keep the pre-cover → category-nav rhythm of the old header spacing. */
+.lily-shop--has-cover .lily-shop__inner {
+	padding-block-start: clamp(40px, 5vw, 64px);
 }
 
 .lily-shop__header {
-	max-width: 640px;
-	margin-block-end: clamp(24px, 3vw, 36px);
+	max-width: none;
+	margin: 0 auto clamp(40px, 5vw, 64px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
-.lily-shop__title::before {
-	content: "";
-	display: block;
-	width: 44px;
-	height: 2px;
-	margin-block-end: 18px;
-	background: var(--lily-warm-brown);
-}
-
+/* Editorial headline: present but never viewport-dominating */
 .lily-shop__title {
-	margin: 0;
-	font-size: clamp(1.9rem, 3.2vw, 2.75rem);
-	line-height: 1.08;
-	letter-spacing: -0.015em;
+	margin: 0 0 18px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(44px, 5vw, 68px);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: 0;
+	color: #331C16;
 }
 
 .lily-shop__description {
-	max-width: 56ch;
-	margin: 14px 0 0;
-	color: var(--lily-muted);
-	font-size: 1.04rem;
+	max-width: 540px;
+	margin: 0 auto;
+	color: rgba(51, 28, 22, 0.72);
+	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 15px;
+	line-height: 1.7;
 }
 
-/* Layout: sidebar + product area */
+/* Layout: narrow filter column + product area, aligned to global container.
+   The 280px column is fixed so the panel can never shrink unpredictably;
+   minmax(0, 1fr) keeps the product area fluid without blowout. */
 .lily-shop__layout {
 	display: grid;
-	grid-template-columns: 260px minmax(0, 1fr);
-	gap: clamp(32px, 4vw, 56px);
+	grid-template-columns: minmax(280px, 280px) minmax(0, 1fr);
+	gap: clamp(28px, 3vw, 36px);
 	align-items: start;
 }
 
@@ -2939,49 +3024,44 @@ html body.lily-shop-page main#primary.site-main {
 	min-width: 0;
 }
 
-/* Category tabs sit above the whole layout */
+/* Category navigation — quiet centered text links */
 .lily-shop__cats {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 10px;
-	padding-block: 16px;
-	margin-block-end: clamp(24px, 3vw, 34px);
-	border-block: 1px solid var(--lily-line);
+	justify-content: center;
+	gap: clamp(24px, 3vw, 36px);
+	max-width: 100%;
+	margin: 0 auto clamp(28px, 3.5vw, 44px);
+	padding: 0;
+	border: 0;
 }
 
-.lily-shop-pill {
-	display: inline-flex;
-	align-items: center;
-	padding: 8px 18px;
-	border: 1px solid rgba(66, 28, 20, 0.25);
-	border-radius: var(--lily-pill);
-	background: transparent;
-	color: var(--lily-text);
-	font-size: 0.92rem;
-	font-weight: 600;
-	line-height: 1.2;
+.lily-shop__cat {
+	display: inline-block;
+	padding: 2px 0 8px;
+	border-bottom: 1px solid transparent;
+	color: #331C16;
+	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 15px;
+	line-height: 1.4;
 	text-decoration: none;
-	cursor: pointer;
-	transition:
-		background-color 200ms var(--lily-ease),
-		color 200ms var(--lily-ease),
-		border-color 200ms var(--lily-ease);
+	white-space: nowrap;
+	transition: color 200ms ease, border-color 200ms ease;
 }
 
-.lily-shop-pill:hover {
-	border-color: rgba(66, 28, 20, 0.6);
-	color: var(--lily-warm-brown);
+.lily-shop__cat:hover {
+	color: #885337;
 }
 
-.lily-shop-pill.is-active {
-	border-color: var(--lily-olive);
-	background: var(--lily-olive);
-	color: var(--lily-cream);
+.lily-shop__cat.is-active {
+	color: #885337;
+	border-bottom-color: #885337;
 }
 
-.lily-shop-pill.is-active:hover {
-	color: var(--lily-cream);
+/* Legacy pill class kept harmlessly quiet (no longer used on Shop). */
+.lily-shop-pill {
+	display: none;
 }
 
 /* Sidebar */
@@ -2990,35 +3070,111 @@ html body.lily-shop-page main#primary.site-main {
 	display: none;
 }
 
+.lily-shop-toolbar__filter-label {
+	display: inline-block;
+	color: #331C16;
+	font-size: 12px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
 .lily-shop-drawer-overlay {
 	position: fixed;
 	inset: 0;
 	z-index: 60;
-	background: rgba(66, 28, 20, 0.4);
+	background: rgba(51, 28, 22, 0.4);
 	opacity: 0;
-	transition: opacity 240ms ease;
+	transition: opacity 200ms ease;
 }
 
 .lily-shop-drawer-overlay.is-visible {
 	opacity: 1;
 }
 
-.lily-shop__sidebar-title {
-	display: block;
-	margin-block-end: 6px;
-	color: var(--lily-text);
-	font-size: 0.86rem;
-	font-weight: 700;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
+/* Filter panel — one clean sidebar in the page's own cream, gently raised
+   via border + soft official-color shadow. Natural height, never scrolls. */
+.lily-filter-panel {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	max-height: none;
+	overflow: visible;
+	padding: 24px;
+	background: var(--lily-cream);
+	border: 1px solid rgba(172, 125, 97, 0.8);
+	border-radius: 18px;
+	box-shadow:
+		0 1px 2px rgba(172, 125, 97, 0.08),
+		0 18px 36px -22px rgba(114, 52, 39, 0.28);
+}
+
+/* Overflow hardening: nothing inside the panel may widen it */
+.lily-filter-panel *,
+.lily-filter-panel *::before,
+.lily-filter-panel *::after {
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+.lily-filter-panel summary,
+.lily-filter-panel li,
+.lily-filter-panel label {
+	min-width: 0;
+}
+
+.lily-filter-panel__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-block-end: 8px;
+	padding-block-end: 16px;
+	border-block-end: 1px solid rgba(172, 125, 97, 0.3);
+}
+
+.lily-filter-panel__title {
+	color: #331C16;
+	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+}
+
+.lily-filter-panel__clear {
+	flex-shrink: 0;
+	padding: 6px 4px;
+	border-radius: 8px;
+	color: #723427;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 500;
+	text-decoration: none;
+	transition: color 180ms ease;
+}
+
+.lily-filter-panel__clear:hover {
+	color: #4B2E2B;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.lily-filter-panel__clear:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.4);
+	outline-offset: 2px;
 }
 
 .lily-shop-acc {
-	border-block-end: 1px solid var(--lily-line);
+	border-block-end: 1px solid rgba(172, 125, 97, 0.3);
+}
+
+.lily-shop-acc:last-of-type {
+	border-block-end: 0;
 }
 
 .lily-shop-acc:first-of-type .lily-shop-acc__summary {
-	padding-block-start: 18px;
+	padding-block-start: 16px;
 }
 
 .lily-shop-acc__summary {
@@ -3026,11 +3182,13 @@ html body.lily-shop-page main#primary.site-main {
 	align-items: center;
 	justify-content: space-between;
 	gap: 12px;
-	padding-block: 16px;
+	padding-block: 18px;
 	list-style: none;
-	color: var(--lily-text);
-	font-size: 0.98rem;
-	font-weight: 600;
+	color: #4B2E2B;
+	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: 0.01em;
 	cursor: pointer;
 	user-select: none;
 	transition: color 180ms ease;
@@ -3043,14 +3201,20 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 .lily-shop-acc__summary:hover {
-	color: var(--lily-warm-brown);
+	color: #723427;
+}
+
+.lily-shop-acc__summary:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.4);
+	outline-offset: 4px;
+	border-radius: 6px;
 }
 
 .lily-shop-acc__chevron {
 	display: inline-grid;
 	place-items: center;
-	color: var(--lily-muted);
-	transition: transform 240ms var(--lily-ease);
+	color: #723427;
+	transition: transform 200ms ease;
 }
 
 .lily-shop-acc[open] > .lily-shop-acc__summary .lily-shop-acc__chevron {
@@ -3058,83 +3222,122 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 .lily-shop-acc__body {
-	padding-block: 2px 20px;
-	animation: lily-acc-fade 260ms var(--lily-ease);
+	padding-block: 2px 18px;
+	animation: lily-acc-fade 200ms ease;
 }
 
 @keyframes lily-acc-fade {
 	from {
 		opacity: 0;
-		transform: translateY(-4px);
 	}
 
 	to {
 		opacity: 1;
-		transform: none;
 	}
 }
 
-.lily-shop-list {
+/* One checkbox row system shared by Collections / Brand / Color */
+.lily-filter-list {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 8px;
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.lily-shop-link {
-	position: relative;
+.lily-filter-list li {
+	min-width: 0;
+}
+
+.lily-filter-row {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	padding-block: 5px;
-	color: var(--lily-text);
-	font-size: 0.94rem;
+	gap: 12px;
+	min-height: 40px;
+	min-width: 0;
+	padding: 2px 8px 2px 2px;
+	border-radius: 8px;
+	color: #331C16;
+	font-size: 14px;
 	line-height: 1.4;
 	text-decoration: none;
-	transition: color 160ms ease;
+	transition: background-color 180ms ease, color 180ms ease;
 }
 
-.lily-shop-link:hover {
-	color: var(--lily-warm-brown);
+.lily-filter-row:hover {
+	background: rgba(250, 211, 202, 0.45);
+	color: #723427;
 }
 
-/* Selected state: olive text + soft olive underline accent */
-.lily-shop-link.is-active {
-	color: var(--lily-olive);
-	font-weight: 600;
+.lily-filter-row:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.4);
+	outline-offset: 1px;
 }
 
-.lily-shop-link.is-active::after {
-	content: "";
-	position: absolute;
-	inset-inline-start: 0;
-	bottom: 2px;
-	width: 26px;
-	height: 2px;
-	background: var(--lily-olive);
+.lily-filter-row__label {
+	flex: 1;
+	min-width: 0;
 }
 
-.lily-swatch-dot {
+.lily-filter-row__count {
 	flex-shrink: 0;
-	width: 14px;
-	height: 14px;
-	border: 1px solid rgba(66, 28, 20, 0.35);
-	border-radius: var(--lily-pill);
-	background: transparent;
+	margin-inline-start: auto;
+	color: rgba(51, 28, 22, 0.55);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+
+.lily-filter-row.is-checked .lily-filter-row__label {
+	color: #723427;
+	font-weight: 500;
+}
+
+.lily-filter-row.is-checked .lily-filter-row__count {
+	color: rgba(114, 52, 39, 0.75);
+}
+
+/* Custom checkbox — one visual system, no browser defaults */
+.lily-check {
+	position: relative;
+	flex-shrink: 0;
+	width: 18px;
+	height: 18px;
+	border: 1.5px solid #AC7D61;
+	border-radius: 4px;
+	background: var(--lily-cream);
 	transition:
 		background-color 180ms ease,
-		box-shadow 180ms ease;
+		border-color 180ms ease;
 }
 
-.lily-shop-link.is-active .lily-swatch-dot {
-	border-color: var(--lily-olive);
-	background: var(--lily-olive);
-	box-shadow: inset 0 0 0 3px var(--lily-cream);
+.lily-filter-row:hover .lily-check {
+	border-color: #723427;
 }
 
-.lily-shop-list li.is-hidden {
+.lily-filter-row.is-checked .lily-check {
+	background: #723427;
+	border-color: #723427;
+}
+
+.lily-filter-row.is-checked .lily-check::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FEFCDD' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 12px auto no-repeat;
+}
+
+/* Color swatch: product-data color (like homepage color cards), secondary
+   to the checkbox selection state */
+.lily-swatch-dot {
+	flex-shrink: 0;
+	width: 16px;
+	height: 16px;
+	border-radius: var(--lily-pill);
+	box-shadow: inset 0 0 0 1px rgba(51, 28, 22, 0.18);
+}
+
+.lily-filter-list li.is-hidden {
 	display: none;
 }
 
@@ -3142,10 +3345,9 @@ html body.lily-shop-page main#primary.site-main {
 	padding: 0;
 	border: 0;
 	background: none;
-	color: var(--lily-warm-brown);
+	color: #723427;
 	font-family: inherit;
-	font-size: 0.88rem;
-	font-weight: 600;
+	font-size: 13px;
 	cursor: pointer;
 	text-decoration: underline;
 	text-underline-offset: 3px;
@@ -3154,14 +3356,14 @@ html body.lily-shop-page main#primary.site-main {
 .lily-shop-clear-one {
 	display: inline-block;
 	margin-block-start: 10px;
-	color: var(--lily-muted);
-	font-size: 0.85rem;
+	color: rgba(51, 28, 22, 0.65);
+	font-size: 13px;
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
 
 .lily-shop-clear-one:hover {
-	color: var(--lily-warm-brown);
+	color: #723427;
 }
 
 /* --------------------------------------------------------------------------
@@ -3170,17 +3372,17 @@ html body.lily-shop-page main#primary.site-main {
    -------------------------------------------------------------------------- */
 .lily-price-range {
 	position: relative;
-	height: 20px;
-	margin-block: 18px 8px;
+	height: 24px;
+	margin-block: 18px 12px;
 }
 
 .lily-price-range__track {
 	position: absolute;
 	inset-inline: 0;
 	top: 50%;
-	height: 2px;
+	height: 4px;
 	translate: 0 -50%;
-	background: rgba(136, 83, 55, 0.22);
+	background: rgba(172, 125, 97, 0.35);
 	border-radius: var(--lily-pill);
 }
 
@@ -3188,7 +3390,7 @@ html body.lily-shop-page main#primary.site-main {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	background: var(--lily-olive);
+	background: #723427;
 	border-radius: var(--lily-pill);
 }
 
@@ -3211,8 +3413,8 @@ html body.lily-shop-page main#primary.site-main {
 /* ---------- WebKit (Chrome / Safari / Edge) ---------- */
 .lily-price-range__input::-webkit-slider-runnable-track {
 	width: 100%;
-	height: 2px;
-	background: rgba(136, 83, 55, 0.22);
+	height: 4px;
+	background: rgba(172, 125, 97, 0.35);
 	border: none;
 	border-radius: var(--lily-pill);
 	appearance: none !important;
@@ -3221,13 +3423,13 @@ html body.lily-shop-page main#primary.site-main {
 
 .lily-price-range__input::-webkit-slider-thumb {
 	pointer-events: auto;
-	width: 14px;
-	height: 14px;
-	margin-top: -6px;
-	border: 2px solid var(--lily-cream);
+	width: 18px;
+	height: 18px;
+	margin-top: -7px;
+	border: 2px solid #723427;
 	border-radius: var(--lily-pill);
-	background: var(--lily-dark-brown);
-	box-shadow: 0 1px 3px rgba(66, 28, 20, 0.25);
+	background: var(--lily-cream);
+	box-shadow: 0 1px 3px rgba(114, 52, 39, 0.25);
 	appearance: none !important;
 	-webkit-appearance: none !important;
 	cursor: grab;
@@ -3235,18 +3437,18 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 .lily-price-range__input::-webkit-slider-thumb:hover {
-	background: var(--lily-olive);
+	background: #FAD3CA;
 }
 
 .lily-price-range__input::-webkit-slider-thumb:active {
-	background: var(--lily-olive);
+	background: #723427;
 }
 
 /* ---------- Firefox ---------- */
 .lily-price-range__input::-moz-range-track {
 	width: 100%;
-	height: 2px;
-	background: rgba(136, 83, 55, 0.22);
+	height: 4px;
+	background: rgba(172, 125, 97, 0.35);
 	border: none;
 	border-radius: var(--lily-pill);
 	appearance: none !important;
@@ -3254,19 +3456,19 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 .lily-price-range__input::-moz-range-progress {
-	height: 2px;
-	background: var(--lily-olive);
+	height: 4px;
+	background: #723427;
 	border-radius: var(--lily-pill);
 }
 
 .lily-price-range__input::-moz-range-thumb {
 	pointer-events: auto;
-	width: 14px;
-	height: 14px;
-	border: 2px solid var(--lily-cream);
+	width: 18px;
+	height: 18px;
+	border: 2px solid #723427;
 	border-radius: var(--lily-pill);
-	background: var(--lily-dark-brown);
-	box-shadow: 0 1px 3px rgba(66, 28, 20, 0.25);
+	background: var(--lily-cream);
+	box-shadow: 0 1px 3px rgba(114, 52, 39, 0.25);
 	appearance: none !important;
 	-moz-appearance: none !important;
 	cursor: grab;
@@ -3274,48 +3476,68 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 .lily-price-range__input::-moz-range-thumb:hover {
-	background: var(--lily-olive);
+	background: #FAD3CA;
 }
 
 .lily-price-range__input::-moz-range-thumb:active {
-	background: var(--lily-olive);
+	background: #FAD3CA;
 }
 
 .lily-price-hint {
 	display: flex;
 	justify-content: space-between;
 	gap: 10px;
-	margin: 0 0 16px;
-	color: rgba(136, 83, 55, 0.7);
-	font-size: 0.86rem;
+	margin: 0 0 12px;
+	color: rgba(114, 52, 39, 0.75);
+	font-size: 13px;
+	font-variant-numeric: tabular-nums;
 }
 
 .lily-price-fields {
 	display: grid;
-	grid-template-columns: 1fr 1fr auto;
-	gap: 8px;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
 	align-items: end;
 }
 
+/* Min/Max text stays for assistive tech but steps aside visually —
+   the reference shows two clean equal fields only. */
 .lily-price-fields label {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	color: var(--lily-muted);
-	font-size: 0.78rem;
-	font-weight: 600;
+	position: relative;
+	display: block;
+}
+
+.lily-price-fields label > span {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+	border: 0;
 }
 
 .lily-price-fields input[type="number"] {
+	box-sizing: border-box;
 	width: 100%;
-	padding: 8px 10px;
-	border: 1px solid rgba(66, 28, 20, 0.25);
-	border-radius: 10px;
-	background: var(--lily-surface);
-	color: var(--lily-text);
+	height: 44px;
+	padding: 0 12px;
+	border: 1px solid rgba(172, 125, 97, 0.8);
+	border-radius: 12px;
+	background: var(--lily-cream);
+	color: #331C16;
 	font-family: inherit;
-	font-size: 0.9rem;
+	font-size: 15px;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
 	-moz-appearance: textfield;
+}
+
+.lily-price-fields input[type="number"]::placeholder {
+	color: rgba(172, 125, 97, 0.85);
+	opacity: 1;
 }
 
 .lily-price-fields input[type="number"]::-webkit-outer-spin-button,
@@ -3326,145 +3548,138 @@ html body.lily-shop-page main#primary.site-main {
 
 .lily-price-fields input[type="number"]:focus {
 	outline: none;
-	border-color: var(--lily-olive);
-	box-shadow: 0 0 0 2px rgba(88, 96, 68, 0.18);
+	border-color: #723427;
+	box-shadow: 0 0 0 2px rgba(114, 52, 39, 0.18);
 }
 
+/* Apply — full primary Lily button presence (shape/typography/hover come
+   from .lily-button); panel-scoped official palette keeps the strict rule */
 .lily-price-apply {
-	grid-column: span 3;
-	justify-self: start;
+	grid-column: 1 / -1;
+	justify-self: stretch;
 	justify-content: center;
-	width: auto;
-	padding-inline: 24px;
+	width: 100%;
+	min-height: 50px;
+	margin-block-start: 4px;
+	padding: 12px 30px;
+	font-size: 0.95rem;
+	background: #723427;
+	border-color: #723427;
 }
 
-/* Toolbar: count + sort */
+.lily-price-form .lily-price-apply:hover {
+	background: #331C16;
+	border-color: #331C16;
+	color: var(--lily-cream);
+}
+
+/* Filter / Sort bar — quiet editorial hairline row */
 .lily-shop-toolbar {
 	display: flex;
-	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
 	gap: 12px 20px;
-	margin-block-end: clamp(18px, 2.5vw, 26px);
+	min-height: 60px;
+	margin: 0 0 clamp(32px, 4vw, 40px);
+	padding: 8px 4px;
+	border-top: 1px solid rgba(51, 28, 22, 0.12);
+	border-bottom: 1px solid rgba(51, 28, 22, 0.12);
+	box-shadow: none;
+}
+
+.lily-shop-toolbar__left {
+	display: inline-flex;
+	align-items: center;
+	gap: 16px;
+	min-width: 0;
 }
 
 .lily-shop-count {
-	order: 2;
 	margin: 0;
-	color: var(--lily-muted);
-	font-size: 0.94rem;
+	color: rgba(51, 28, 22, 0.6);
+	font-size: 13px;
+	white-space: nowrap;
 }
 
 .lily-sort-form {
-	order: 1;
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
+	gap: 10px;
+	margin: 0;
 	margin-inline-start: auto;
 }
 
 .lily-sort-form__label {
-	color: var(--lily-muted);
-	font-size: 0.9rem;
+	color: #331C16;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
 	white-space: nowrap;
 }
 
 .lily-sort-form select {
-	padding: 8px 34px 8px 14px;
-	border: 1px solid rgba(66, 28, 20, 0.25);
-	border-radius: var(--lily-pill);
-	background-color: var(--lily-surface);
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23421c14' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+	padding: 8px 24px 8px 4px;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23331C16' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
-	background-position: right 14px center;
-	color: var(--lily-text);
+	background-position: right center;
+	color: #331C16;
 	font-family: inherit;
-	font-size: 0.9rem;
+	font-size: 13px;
+	line-height: 1.4;
 	appearance: none;
 	-webkit-appearance: none;
 	cursor: pointer;
+	transition: color 180ms ease;
+}
+
+.lily-sort-form select:hover {
+	color: #885337;
 }
 
 .lily-sort-form__go {
-	padding: 8px 16px;
-	border: 1px solid rgba(66, 28, 20, 0.25);
-	border-radius: var(--lily-pill);
+	padding: 6px 14px;
+	border: 1px solid rgba(51, 28, 22, 0.2);
+	border-radius: 0;
 	background: none;
-	color: var(--lily-text);
+	color: #331C16;
 	font-family: inherit;
+	font-size: 13px;
 	cursor: pointer;
 }
 
-/* Product grid — consistent compact cards, never full-width stretchers */
+/* Product grid — fixed 4-column editorial grid around existing cards */
 .lily-shop-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 218px), 1fr));
-	gap: clamp(14px, 1.8vw, 22px);
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	column-gap: 32px;
+	row-gap: 56px;
 	align-items: stretch;
 }
 
+/* Grid context: cards sit in rows, not a scroll strip. */
 .lily-shop-grid .lily-product-card {
 	scroll-snap-align: none;
 }
 
-/* --- Unified card dimensions: every card the same size --- */
-.lily-shop-grid .lily-product-card__image {
-	aspect-ratio: 1 / 1.06;
-	height: auto;
-}
-
-.lily-shop-grid .lily-product-card__image img {
-	aspect-ratio: 1 / 1.06;
-}
-
-.lily-shop-grid .lily-product-card__content {
-	padding: 14px 16px 16px;
-	gap: 6px;
-}
-
-/* Brand area — reserve consistent space even when absent */
-.lily-shop-grid .lily-product-card__brand {
-	min-height: 1em;
-	font-size: 0.78rem;
-	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: var(--lily-muted);
-}
-
-/* Title: clamp to 2 lines, same height for every card */
-.lily-shop-grid .lily-product-card h3 {
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	min-height: 2.7em;
-	line-height: 1.35;
-}
-
-/* Price pushed to the bottom of the content area for vertical alignment */
-.lily-shop-grid .lily-product-card__price {
-	margin-top: auto;
-	padding-top: 4px;
-}
-
 /* --------------------------------------------------------------------------
-   WooCommerce pagination — compact editorial navigation
-   Overrides Astra parent theme: .woocommerce-js nav.woocommerce-pagination ...
+   WooCommerce pagination — simple editorial text navigation (no boxes)
    -------------------------------------------------------------------------- */
 html body.lily-shop-page .woocommerce-pagination ul {
 	display: flex !important;
 	flex-wrap: wrap;
+	align-items: baseline;
 	justify-content: center;
-	gap: 10px;
+	gap: 22px;
 	margin: clamp(48px, 6vw, 64px) 0 0;
 	padding: 0 !important;
 	list-style: none !important;
 	text-align: center !important;
 }
 
-/* Kill Astra's li-level borders — the blue frame source */
+/* Kill Astra's li-level borders */
 html body.lily-shop-page .woocommerce-pagination ul li {
 	float: none !important;
 	display: inline-block !important;
@@ -3475,79 +3690,68 @@ html body.lily-shop-page .woocommerce-pagination ul li {
 	overflow: visible !important;
 }
 
-/* Kill Astra's padding/width on links inside li */
+/* Text-only page numbers */
 html body.lily-shop-page .woocommerce-pagination ul li a,
 html body.lily-shop-page .woocommerce-pagination ul li span {
-	display: inline-grid !important;
-	place-items: center;
-	width: 36px;
-	height: 36px;
-	padding: 0 !important;
+	display: inline-block !important;
+	width: auto !important;
+	height: auto !important;
+	min-width: 20px;
+	padding: 0 0 3px !important;
 	margin: 0 !important;
-	border: 1px solid rgba(66, 28, 20, 0.18) !important;
-	border-radius: var(--lily-radius-sm) !important;
+	border: 0 none !important;
+	border-radius: 0 !important;
 	background: transparent !important;
-	color: var(--lily-dark-brown) !important;
-	font-weight: 600;
-	font-size: 0.88rem;
-	line-height: 1;
+	color: #331C16 !important;
+	font-size: 15px;
+	font-weight: 400;
+	line-height: 1.4;
 	text-decoration: none !important;
 	outline: 0 !important;
 	box-shadow: none !important;
-	transition:
-		background-color 180ms var(--lily-ease),
-		color 180ms var(--lily-ease),
-		border-color 180ms var(--lily-ease);
+	transition: color 180ms ease, border-color 180ms ease;
 }
 
-/* Active page: Olive bg, cream text */
+/* Active page: warm brown text + hairline rule */
 html body.lily-shop-page .woocommerce-pagination ul li span.current {
-	background: var(--lily-olive) !important;
-	border-color: var(--lily-olive) !important;
-	color: var(--lily-cream) !important;
+	background: transparent !important;
+	border-bottom: 1px solid #885337 !important;
+	color: #885337 !important;
 }
 
-/* Focus-visible: Lily Olive, no blue */
+/* Focus-visible: warm brown, no blue */
 html body.lily-shop-page .woocommerce-pagination ul li a:focus-visible,
 html body.lily-shop-page .woocommerce-pagination ul li a:focus {
-	outline: 2px solid rgba(88, 96, 68, 0.35) !important;
+	outline: 2px solid rgba(136, 83, 55, 0.35) !important;
 	outline-offset: 3px !important;
 	box-shadow: none !important;
 	background: transparent !important;
-	border-color: rgba(66, 28, 20, 0.18) !important;
-	color: var(--lily-dark-brown) !important;
+	color: #331C16 !important;
 }
 
 /* Hover on links */
 html body.lily-shop-page .woocommerce-pagination ul li a:hover {
-	border-color: var(--lily-warm-brown) !important;
-	color: var(--lily-warm-brown) !important;
-	background: rgba(136, 83, 55, 0.06) !important;
+	color: #885337 !important;
+	background: transparent !important;
 }
 
-/* Prev / Next — borderless, muted, no box */
+/* Prev / Next — plain arrow, muted */
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.prev,
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.next {
-	font-size: 1rem;
+	font-size: 16px;
 	font-weight: 400;
-	border-color: transparent !important;
-	background: transparent !important;
-	color: var(--lily-muted) !important;
-	border-radius: var(--lily-radius-sm) !important;
+	color: rgba(51, 28, 22, 0.6) !important;
 }
 
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.prev:hover,
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.next:hover {
-	border-color: transparent !important;
-	background: transparent !important;
-	color: var(--lily-warm-brown) !important;
+	color: #885337 !important;
 }
 
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.prev:focus-visible,
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.prev:focus,
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.next:focus-visible,
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.next:focus {
-	border-color: transparent !important;
 	background: transparent !important;
 }
 
@@ -3556,7 +3760,7 @@ html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.next:focus
 	display: grid;
 	place-items: center;
 	padding: clamp(48px, 7vw, 88px) 20px;
-	border: 1px dashed rgba(66, 28, 20, 0.25);
+	border: 1px dashed rgba(51, 28, 22, 0.25);
 	border-radius: var(--lily-radius-lg);
 	text-align: center;
 }
@@ -3576,14 +3780,14 @@ html body.lily-shop-page a:focus-visible,
 html body.lily-shop-page button:focus-visible,
 html body.lily-shop-page select:focus-visible,
 html body.lily-shop-page textarea:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35) !important;
+	outline: 2px solid rgba(114, 52, 39, 0.35) !important;
 	outline-offset: 2px;
 }
 
 html body.lily-shop-page input:focus-visible {
 	outline: none !important;
-	border-color: var(--lily-olive) !important;
-	box-shadow: 0 0 0 2px rgba(88, 96, 68, 0.18) !important;
+	border-color: #723427 !important;
+	box-shadow: 0 0 0 2px rgba(114, 52, 39, 0.18) !important;
 }
 
 html body.lily-shop-page a:focus:not(:focus-visible),
@@ -3594,9 +3798,63 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 	box-shadow: none !important;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
+	.lily-shop-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		column-gap: 24px;
+		row-gap: 44px;
+	}
+}
+
+@media (max-width: 900px) {
+	.lily-shop__header {
+		margin-bottom: 40px;
+	}
+
+	.lily-shop-cover {
+		border-radius: 0;
+	}
+
+	.lily-shop .lily-shop-cover__img {
+		height: clamp(180px, 55vw, 260px);
+	}
+
+	.lily-shop__title {
+		font-size: clamp(44px, 12vw, 60px);
+	}
+
+	.lily-shop__description {
+		font-size: 14px;
+	}
+
+	/* Category nav becomes a quiet horizontal scroll, never overflowing the page */
+	.lily-shop__cats {
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		gap: 24px;
+		overflow-x: auto;
+		margin-inline: calc(-1 * var(--lily-gutter));
+		padding-inline: var(--lily-gutter);
+		padding-bottom: 8px;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.lily-shop__cats::-webkit-scrollbar {
+		display: none;
+	}
+
 	.lily-shop__layout {
 		grid-template-columns: minmax(0, 1fr);
+	}
+
+	/* Compact FILTER / SORT controls */
+	.lily-shop-toolbar {
+		min-height: 56px;
+	}
+
+	.lily-shop-toolbar__filter-label {
+		display: none;
 	}
 
 	/* Mobile / tablet: sidebar becomes an off-canvas drawer from the reading side */
@@ -3604,16 +3862,21 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		margin-block-end: 18px;
-		padding: 9px 20px;
-		border: 1px solid rgba(66, 28, 20, 0.25);
-		border-radius: var(--lily-pill);
+		padding: 0;
+		border: 0;
+		border-radius: 0;
 		background: transparent;
-		color: var(--lily-text);
+		color: #331C16;
 		font-family: inherit;
-		font-size: 0.9rem;
-		font-weight: 600;
+		font-size: 12px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
 		cursor: pointer;
+		transition: color 180ms ease;
+	}
+
+	.lily-shop-filter-toggle:hover {
+		color: #885337;
 	}
 
 	.lily-shop__sidebar {
@@ -3623,12 +3886,12 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 		z-index: 70;
 		width: min(320px, 86vw);
 		padding: 22px 24px 32px;
-		background: var(--lily-cream);
-		border-inline-end: 1px solid var(--lily-line);
-		box-shadow: var(--lily-shadow);
+		background: #FEFCDD;
+		border-inline-end: 1px solid rgba(51, 28, 22, 0.12);
 		overflow-y: auto;
+		overflow-x: hidden;
 		transform: translateX(calc(var(--lily-dir, 1) * -105%));
-		transition: transform 280ms var(--lily-ease);
+		transition: transform 200ms ease;
 	}
 
 	html[dir="rtl"] .lily-shop__sidebar {
@@ -3642,8 +3905,18 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 	.lily-shop-sidebar-head {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: flex-end;
 		margin-block-end: 10px;
+	}
+
+	.lily-filter-panel {
+		padding: 20px;
+		border-radius: 18px;
+	}
+
+	.lily-filter-row {
+		min-height: 44px;
+		padding-block: 4px;
 	}
 
 	.lily-shop-drawer-close {
@@ -3652,54 +3925,46 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 		width: 36px;
 		height: 36px;
 		border: 0;
-		border-radius: var(--lily-pill);
+		border-radius: 0;
 		background: transparent;
-		color: var(--lily-text);
+		color: #331C16;
 		cursor: pointer;
 	}
 
 	.lily-shop-drawer-close:hover {
-		background: rgba(136, 83, 55, 0.12);
+		color: #885337;
+	}
+
+	.lily-shop-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: 20px;
+		row-gap: 40px;
 	}
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 901px) {
 	.lily-shop-sidebar-head {
-		display: contents;
+		display: none;
+	}
+
+	/* Natural panel height — no max-height, no overflow containers.
+	   The filter grows with its content and the PAGE handles scrolling,
+	   so the sidebar can never grow its own scrollbars. */
+	.lily-shop__sidebar {
+		min-width: 0;
 	}
 }
 
 @media (max-width: 600px) {
 	.lily-shop-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 12px;
-	}
-
-	.lily-shop-pill {
-		padding-block: 7px;
-		font-size: 0.86rem;
-	}
-
-	.lily-price-fields {
-		grid-template-columns: 1fr 1fr;
-	}
-
-	.lily-price-apply {
-		grid-column: span 2;
-		justify-self: stretch;
-		width: 100%;
+		column-gap: 16px;
+		row-gap: 28px;
 	}
 
 	html body.lily-shop-page .woocommerce-pagination ul {
 		margin-block-start: clamp(32px, 5vw, 44px);
-		gap: 8px;
-	}
-
-	html body.lily-shop-page .woocommerce-pagination ul li a,
-	html body.lily-shop-page .woocommerce-pagination ul li span {
-		width: 34px;
-		height: 34px;
-		font-size: 0.84rem;
+		gap: 18px;
 	}
 }
 
@@ -3792,7 +4057,7 @@ html body.lily-product-page main#primary.site-main {
 	background: var(--lily-cream);
 	color: var(--lily-dark-brown);
 	cursor: pointer;
-	box-shadow: 0 4px 14px rgba(66, 28, 20, 0.12);
+	box-shadow: 0 4px 14px rgba(51, 28, 22, 0.12);
 	transition: background-color 180ms var(--lily-ease), color 180ms var(--lily-ease);
 	z-index: 2;
 }
@@ -3806,12 +4071,12 @@ html body.lily-product-page main#primary.site-main {
 }
 
 .lily-sp-gallery__arrow:hover {
-	background: var(--lily-olive);
+	background: #4B2E2B;
 	color: var(--lily-cream);
 }
 
 .lily-sp-gallery__arrow:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
@@ -3842,12 +4107,12 @@ html body.lily-product-page main#primary.site-main {
 	width: 76px;
 	height: 76px;
 	padding: 0;
-	border: 2px solid rgba(136, 83, 55, 0.28);
+	border: 1px solid rgba(51, 28, 22, 0.16);
 	border-radius: var(--lily-radius-sm);
 	background: var(--lily-surface);
 	cursor: pointer;
 	overflow: hidden;
-	transition: border-color 180ms ease;
+	transition: border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .lily-sp-gallery__thumb img {
@@ -3859,15 +4124,16 @@ html body.lily-product-page main#primary.site-main {
 }
 
 .lily-sp-gallery__thumb:hover {
-	border-color: rgba(136, 83, 55, 0.6);
+	border-color: rgba(136, 83, 55, 0.55);
 }
 
 .lily-sp-gallery__thumb.is-active {
-	border-color: var(--lily-olive);
+	border-color: var(--lily-warm-brown);
+	box-shadow: inset 0 0 0 1px var(--lily-warm-brown);
 }
 
 .lily-sp-gallery__thumb:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
@@ -3910,7 +4176,7 @@ html body.lily-product-page main#primary.site-main {
 
 .lily-sp-short-desc {
 	margin-block-end: 24px;
-	color: var(--lily-text);
+	color: rgba(75, 46, 43, 0.92);
 	font-size: 0.96rem;
 	line-height: 1.65;
 }
@@ -3954,7 +4220,7 @@ html body.lily-product-page main#primary.site-main {
 	padding: 11px 14px;
 	border: 1px solid var(--lily-line);
 	border-radius: 10px;
-	background: rgba(239, 236, 221, 0.55);
+	background: rgba(254, 252, 221, 0.55);
 }
 
 .lily-sp-spec-row dt {
@@ -4018,8 +4284,8 @@ html body.lily-product-page main#primary.site-main {
 .lily-sp-cart-area .quantity {
 	display: inline-flex;
 	align-items: stretch;
-	border: 1px solid rgba(66, 28, 20, 0.25);
-	border-radius: 10px;
+	border: 1px solid rgba(136, 83, 55, 0.35);
+	border-radius: 12px;
 	background: var(--lily-surface);
 	overflow: hidden;
 }
@@ -4040,12 +4306,12 @@ html body.lily-product-page main#primary.site-main {
 }
 
 .lily-qty-btn:hover {
-	background: var(--lily-olive);
+	background: #4B2E2B;
 	color: var(--lily-cream);
 }
 
 .lily-qty-btn:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: -4px;
 }
 
@@ -4087,11 +4353,11 @@ html body.lily-product-page main#primary.site-main {
 .lily-sp-cart-area .lily-button {
 	flex: 1 1 auto;
 	min-height: 50px;
-	padding: 13px 32px;
+	padding: 13px 34px;
 	background: var(--lily-warm-brown) !important;
 	border: 0 !important;
 	color: var(--lily-cream) !important;
-	border-radius: 12px;
+	border-radius: var(--lily-pill);
 	font-family: var(--lily-font-body);
 	font-size: 0.92rem;
 	font-weight: 600;
@@ -4105,7 +4371,7 @@ html body.lily-product-page main#primary.site-main {
 
 .lily-sp-cart-area button.single_add_to_cart_button:hover,
 .lily-sp-cart-area .lily-button:hover {
-	background: var(--lily-olive) !important;
+	background: #723427 !important;
 	transform: translateY(-1px);
 	box-shadow: var(--lily-shadow-sm);
 }
@@ -4135,11 +4401,13 @@ html body.lily-product-page main#primary.site-main {
 }
 
 .lily-sp-cart-area .variations select {
-	padding: 10px 34px 10px 14px;
-	border: 1px solid rgba(66, 28, 20, 0.25);
-	border-radius: var(--lily-pill);
+	height: 48px;
+	padding-block: 0;
+	padding-inline: 16px 44px;
+	border: 1px solid rgba(136, 83, 55, 0.35);
+	border-radius: 12px;
 	background-color: var(--lily-surface);
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23421c14' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23331C16' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 14px center;
 	color: var(--lily-dark-brown);
@@ -4152,8 +4420,8 @@ html body.lily-product-page main#primary.site-main {
 
 .lily-sp-cart-area .variations select:focus {
 	outline: none;
-	border-color: var(--lily-olive);
-	box-shadow: 0 0 0 2px rgba(88, 96, 68, 0.18);
+	border-color: #723427;
+	box-shadow: 0 0 0 2px rgba(114, 52, 39, 0.18);
 }
 
 /* ── Prescription Power ─────────────────────────────────────────── */
@@ -4177,12 +4445,11 @@ html body.lily-product-page main#primary.site-main {
 .lily-rx__field {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 6px;
 	margin: 0;
-	padding: 10px 16px 8px;
-	border: 1px solid var(--lily-line);
-	border-radius: 10px;
-	background: rgba(239, 236, 221, 0.55);
+	padding: 0;
+	border: 0;
+	background: transparent;
 }
 
 .lily-rx__field label {
@@ -4191,15 +4458,22 @@ html body.lily-product-page main#primary.site-main {
 	font-weight: 600;
 }
 
-.lily-rx__select {
-	height: 32px;
-	padding: 0;
-	border: 0;
-	background-color: transparent;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23421c14' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+/* Lily select control: soft warm-brown hairline, 44px, 12px radius,
+   custom chevron — no browser-default styling, official focus ring.
+   `html body` scope (0,1,2) out-specifies Astra's WooCommerce compat
+   `.woocommerce select` (0,1,1), which otherwise forces its own radius,
+   padding and background on every select on the page. */
+html body .lily-rx__select {
+	height: 44px;
+	padding-block: 0;
+	padding-inline: 14px 38px;
+	border: 1px solid rgba(136, 83, 55, 0.35);
+	border-radius: 12px;
+	background-color: var(--lily-surface);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23331C16' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
-	background-position: right center;
-	color: var(--lily-muted);
+	background-position: right 12px center;
+	color: var(--lily-dark-brown);
 	font-family: inherit;
 	font-size: 0.9rem;
 	appearance: none;
@@ -4209,7 +4483,7 @@ html body.lily-product-page main#primary.site-main {
 
 .lily-rx__select:focus-visible,
 .lily-rx__select:focus {
-	outline: 2px solid rgba(88, 96, 68, 0.35) !important;
+	outline: 2px solid rgba(114, 52, 39, 0.35) !important;
 	outline-offset: 3px !important;
 	box-shadow: none !important;
 }
@@ -4219,6 +4493,27 @@ html body.lily-product-page main#primary.site-main {
 	margin-block-end: 0;
 	color: var(--lily-muted);
 	font-size: 0.82rem;
+}
+
+/* ── Prescription validation feedback (official Lily tones only) ── */
+/* Missing eye power: warm-brown border + soft blush tint (#FAD3CA alpha).
+   `html body` scope matches the base select rule so Astra can't override. */
+html body .lily-rx__select.is-invalid {
+	border-color: #885337;
+	background-color: rgba(250, 211, 202, 0.35);
+	box-shadow: inset 0 0 0 1px rgba(136, 83, 55, 0.45);
+}
+
+/* Restrained premium message — quiet deep-brown text, no harsh red. */
+.lily-rx__error {
+	margin-block: 10px 0;
+	color: #723427;
+	font-size: 0.84rem;
+	line-height: 1.55;
+}
+
+.lily-rx__error[hidden] {
+	display: none;
 }
 
 /* ── Color notice ───────────────────────────────────────────────── */
@@ -4327,7 +4622,7 @@ html body.lily-product-page main#primary.site-main {
 
 .lily-sp-details__content {
 	max-width: 640px;
-	color: var(--lily-text);
+	color: rgba(75, 46, 43, 0.92);
 	font-size: 0.94rem;
 	line-height: 1.75;
 }
@@ -4351,66 +4646,77 @@ html body.lily-product-page main#primary.site-main {
 
 /* ==========================================================================
    Single Product — WooCommerce Blue Override + Focus Reset
+   Everything below is scoped INSIDE main#primary.site-main so no product
+   rule can ever reach the global footer, navbar or announcement bar.
    ========================================================================== */
 
-html body.lily-product-page .single_add_to_cart_button,
-html body.lily-product-page .woocommerce-cart-form .button,
-html body.lily-product-page button.button.alt,
-html body.lily-product-page a.button.alt {
+html body.lily-product-page main#primary.site-main .single_add_to_cart_button,
+html body.lily-product-page main#primary.site-main .woocommerce-cart-form .button,
+html body.lily-product-page main#primary.site-main button.button.alt,
+html body.lily-product-page main#primary.site-main a.button.alt {
 	background: var(--lily-warm-brown) !important;
 	border-color: var(--lily-warm-brown) !important;
 	color: var(--lily-cream) !important;
 }
 
-html body.lily-product-page .single_add_to_cart_button:hover,
-html body.lily-product-page button.button.alt:hover,
-html body.lily-product-page a.button.alt:hover {
-	background: var(--lily-olive) !important;
-	border-color: var(--lily-olive) !important;
+html body.lily-product-page main#primary.site-main .single_add_to_cart_button:hover,
+html body.lily-product-page main#primary.site-main button.button.alt:hover,
+html body.lily-product-page main#primary.site-main a.button.alt:hover {
+	background: #723427 !important;
+	border-color: #723427 !important;
 	color: var(--lily-cream) !important;
 	transform: translateY(-1px);
 	box-shadow: var(--lily-shadow-sm);
 }
 
-html body.lily-product-page .single_add_to_cart_button:focus-visible,
-html body.lily-product-page button.button.alt:focus-visible,
-html body.lily-product-page a.button.alt:focus-visible,
-html body.lily-product-page input:focus-visible,
-html body.lily-product-page select:focus-visible,
-html body.lily-product-page .lily-sp-gallery__thumb:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35) !important;
+html body.lily-product-page main#primary.site-main .single_add_to_cart_button:focus-visible,
+html body.lily-product-page main#primary.site-main button.button.alt:focus-visible,
+html body.lily-product-page main#primary.site-main a.button.alt:focus-visible,
+html body.lily-product-page main#primary.site-main input:focus-visible,
+html body.lily-product-page main#primary.site-main select:focus-visible,
+html body.lily-product-page main#primary.site-main .lily-sp-gallery__thumb:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.35) !important;
 	outline-offset: 3px;
 	box-shadow: none;
 }
 
-html body.lily-product-page .single_add_to_cart_button:focus:not(:focus-visible),
-html body.lily-product-page button.button.alt:focus:not(:focus-visible),
-html body.lily-product-page input:focus:not(:focus-visible),
-html body.lily-product-page select:focus:not(:focus-visible) {
+html body.lily-product-page main#primary.site-main .single_add_to_cart_button:focus:not(:focus-visible),
+html body.lily-product-page main#primary.site-main button.button.alt:focus:not(:focus-visible),
+html body.lily-product-page main#primary.site-main input:focus:not(:focus-visible),
+html body.lily-product-page main#primary.site-main select:focus:not(:focus-visible) {
 	outline: none;
 	box-shadow: none;
 }
 
-html body.lily-product-page .variations select:focus {
+html body.lily-product-page main#primary.site-main .variations select:focus {
 	outline: none !important;
-	border-color: var(--lily-olive) !important;
-	box-shadow: 0 0 0 2px rgba(88, 96, 68, 0.18) !important;
+	border-color: #723427 !important;
+	box-shadow: 0 0 0 2px rgba(114, 52, 39, 0.18) !important;
 }
 
-html body.lily-product-page .woocommerce-ordering select:focus,
-html body.lily-product-page input[type="number"]:focus {
+html body.lily-product-page main#primary.site-main .woocommerce-ordering select:focus,
+html body.lily-product-page main#primary.site-main input[type="number"]:focus {
 	outline: none !important;
-	border-color: var(--lily-olive) !important;
-	box-shadow: 0 0 0 2px rgba(88, 96, 68, 0.18) !important;
+	border-color: #723427 !important;
+	box-shadow: 0 0 0 2px rgba(114, 52, 39, 0.18) !important;
 }
 
-/* Ensure no blue link underlines leak through */
-html body.lily-product-page a {
+/* Quiet warm-brown link treatment for EDITORIAL CONTENT only (anti-blue
+   guard). Surgical selectors — never page-wide — so product-card titles,
+   buttons and every other UI anchor keep their own component colors, and
+   the global footer (outside <main>) can never be reached. */
+html body.lily-product-page main.site-main .lily-sp-short-desc a,
+html body.lily-product-page main.site-main .lily-sp-details__content a,
+html body.lily-product-page main.site-main .lily-reviews__text a,
+html body.lily-product-page main.site-main .lily-review-form__note a {
 	color: var(--lily-warm-brown);
 }
 
-html body.lily-product-page a:hover {
-	color: var(--lily-olive);
+html body.lily-product-page main.site-main .lily-sp-short-desc a:hover,
+html body.lily-product-page main.site-main .lily-sp-details__content a:hover,
+html body.lily-product-page main.site-main .lily-reviews__text a:hover,
+html body.lily-product-page main.site-main .lily-review-form__note a:hover {
+	color: #723427;
 }
 
 /* ==========================================================================
@@ -4454,12 +4760,13 @@ html body.woocommerce-checkout .woocommerce-message,
 html body.woocommerce-checkout .woocommerce-info,
 html body.woocommerce-checkout .woocommerce-error {
 	border: 1px solid var(--lily-line);
-	border-inline-start: 3px solid var(--lily-olive);
+	border-inline-start: 3px solid #723427;
 	border-radius: 10px;
-	background: rgba(239, 236, 221, 0.7);
+	background: rgba(254, 252, 221, 0.7);
 	color: var(--lily-dark-brown);
 	font-size: 0.9rem;
 	list-style: none;
+	margin-block: 0 clamp(16px, 2.5vw, 24px);
 }
 
 html body.woocommerce-cart .woocommerce-error,
@@ -4479,6 +4786,25 @@ html body.woocommerce-checkout .woocommerce-error::before {
 html body.woocommerce-cart .woocommerce-error a,
 html body.woocommerce-checkout .woocommerce-error a {
 	color: var(--lily-warm-brown);
+}
+
+/* Server-side validation notices on the single product page — printed
+   inside the cart area (scoped to main#primary, footer can never match). */
+html body.lily-product-page main#primary.site-main .woocommerce-error {
+	list-style: none;
+	margin: 0 0 14px;
+	padding: 12px 16px;
+	border: 1px solid var(--lily-line);
+	border-inline-start: 3px solid #723427;
+	border-radius: 10px;
+	background: rgba(250, 211, 202, 0.35);
+	color: var(--lily-dark-brown);
+	font-size: 0.86rem;
+	line-height: 1.5;
+}
+
+html body.lily-product-page main#primary.site-main .woocommerce-error li {
+	list-style: none;
 }
 
 /* ── Cart layout ────────────────────────────────────────────────── */
@@ -4608,7 +4934,7 @@ html body.woocommerce-checkout .woocommerce-error a {
 .lily-cart-item__qty .quantity {
 	display: inline-flex;
 	align-items: stretch;
-	border: 1px solid rgba(66, 28, 20, 0.25);
+	border: 1px solid rgba(51, 28, 22, 0.25);
 	border-radius: 10px;
 	background: var(--lily-surface);
 	overflow: hidden;
@@ -4660,7 +4986,7 @@ html body.woocommerce-checkout .woocommerce-error a {
 }
 
 .lily-cart-item__remove:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
@@ -4669,7 +4995,7 @@ html body.woocommerce-checkout .woocommerce-error a {
 	padding: clamp(20px, 3vw, 30px);
 	border: 1px solid var(--lily-line);
 	border-radius: var(--lily-radius);
-	background: rgba(239, 236, 221, 0.6);
+	background: rgba(254, 252, 221, 0.6);
 }
 
 .lily-cart-summary__title {
@@ -4745,15 +5071,15 @@ html body.woocommerce-checkout .woocommerce-error a {
 }
 
 .lily-cart-checkout-btn--update {
-	border: 1px solid rgba(66, 28, 20, 0.25);
+	border: 1px solid rgba(51, 28, 22, 0.25);
 	color: var(--lily-dark-brown);
 	font-size: 0.8rem;
 }
 
 .lily-cart-checkout-btn--update:hover {
-	border-color: var(--lily-olive);
-	color: var(--lily-olive);
-	background: rgba(88, 96, 68, 0.06);
+	border-color: #723427;
+	color: #723427;
+	background: rgba(114, 52, 39, 0.06);
 	transform: none;
 	box-shadow: none;
 }
@@ -4765,14 +5091,14 @@ html body.woocommerce-checkout .woocommerce-error a {
 }
 
 .lily-cart-checkout-btn--primary:hover {
-	background: var(--lily-olive);
+	background: #4B2E2B;
 	color: var(--lily-cream);
 	transform: translateY(-1px);
 	box-shadow: var(--lily-shadow-sm);
 }
 
 .lily-cart-checkout-btn:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
@@ -4797,7 +5123,7 @@ html body.woocommerce-checkout .woocommerce-error a {
 }
 
 .lily-cart-continue:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
@@ -4821,7 +5147,7 @@ html body.woocommerce-checkout .woocommerce-info .wc-forward {
 
 html body.woocommerce-cart .woocommerce-message .wc-forward:hover,
 html body.woocommerce-checkout .woocommerce-message .wc-forward:hover {
-	color: var(--lily-olive);
+	color: #723427;
 	background: transparent;
 }
 
@@ -4867,13 +5193,13 @@ html body.woocommerce-checkout .woocommerce-message .wc-forward:hover {
 }
 
 .lily-cart-empty__cta:hover {
-	background: var(--lily-olive);
+	background: #4B2E2B;
 	color: var(--lily-cream);
 	transform: translateY(-1px);
 }
 
 .lily-cart-empty__cta:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
@@ -4960,7 +5286,7 @@ html body.woocommerce-checkout .lily-checkout__section-title::after {
 	padding-block-end: clamp(22px, 3vw, 30px);
 	border: 1px solid rgba(136, 83, 55, 0.3);
 	border-radius: var(--lily-radius);
-	background: rgba(255, 255, 255, 0.55);
+	background: rgba(254, 252, 221, 0.55);
 	overflow: hidden;
 	box-shadow: none;
 }
@@ -5079,7 +5405,7 @@ html body.woocommerce-checkout .form-row {
 html body.woocommerce-checkout .form-row label {
 	display: block;
 	margin-block-end: 9px;
-	color: rgba(66, 28, 20, 0.68);
+	color: rgba(51, 28, 22, 0.68);
 	font-size: 0.72rem;
 	font-weight: 700;
 	letter-spacing: 0.15em;
@@ -5101,7 +5427,7 @@ html body.woocommerce-checkout .select2-container--default .select2-selection--s
 	padding: 0 16px;
 	border: 1px solid rgba(136, 83, 55, 0.38);
 	border-radius: 10px;
-	background: rgba(255, 255, 255, 0.62);
+	background: rgba(254, 252, 221, 0.62);
 	color: var(--lily-dark-brown);
 	font-family: inherit;
 	font-size: 0.98rem;
@@ -5137,10 +5463,10 @@ html body.woocommerce-checkout .form-row textarea.input-text {
 }
 
 html body.woocommerce-checkout .form-row .input-text::placeholder {
-	color: rgba(66, 28, 20, 0.42);
+	color: rgba(51, 28, 22, 0.42);
 }
 
-/* Interaction: olive carries focus everywhere */
+/* Interaction: warm brown carries hover, deep brown carries focus everywhere */
 html body.woocommerce-checkout .form-row .input-text:hover,
 html body.woocommerce-checkout .form-row select:hover {
 	border-color: rgba(136, 83, 55, 0.6);
@@ -5151,14 +5477,14 @@ html body.woocommerce-checkout .form-row select:focus,
 html body.woocommerce-checkout .select2-container--default.select2-container--focus .select2-selection--single,
 html body.woocommerce-checkout .select2-container--default .select2-selection--single:focus {
 	outline: none !important;
-	border-color: var(--lily-olive) !important;
-	background: rgba(255, 255, 255, 0.85);
-	box-shadow: inset 0 0 0 1px var(--lily-olive), 0 0 0 3px rgba(88, 96, 68, 0.16) !important;
+	border-color: #723427 !important;
+	background: rgba(254, 252, 221, 0.85);
+	box-shadow: inset 0 0 0 1px #723427, 0 0 0 3px rgba(114, 52, 39, 0.16) !important;
 }
 
 html body.woocommerce-checkout .form-row .input-text:-webkit-autofill,
 html body.woocommerce-checkout .form-row select:-webkit-autofill {
-	-webkit-box-shadow: 0 0 0 40px #f8f6ee inset;
+	-webkit-box-shadow: 0 0 0 40px #FEFCDD inset;
 	-webkit-text-fill-color: var(--lily-dark-brown);
 	caret-color: var(--lily-dark-brown);
 }
@@ -5205,7 +5531,7 @@ html body.woocommerce-checkout .woocommerce-additional-fields {
 
 .select2-container--default .select2-results__option--highlighted[aria-selected],
 .select2-container--default .select2-results__option[aria-selected=true] {
-	background-color: rgba(88, 96, 68, 0.18) !important;
+	background-color: rgba(114, 52, 39, 0.18) !important;
 	color: var(--lily-dark-brown) !important;
 }
 
@@ -5325,7 +5651,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table .wc-item
 	float: inline-start;
 	clear: inline-start;
 	margin-inline-end: 6px;
-	color: rgba(66, 28, 20, 0.55);
+	color: rgba(51, 28, 22, 0.55);
 	font-style: normal;
 	font-weight: 400;
 	width: auto;
@@ -5359,7 +5685,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr
 }
 
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot th {
-	color: rgba(66, 28, 20, 0.66);
+	color: rgba(51, 28, 22, 0.66);
 	font-size: 0.86rem;
 	font-weight: 400;
 	letter-spacing: 0.02em;
@@ -5382,7 +5708,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.shipping th,
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.shipping td,
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.shipping td .amount {
-	color: rgba(66, 28, 20, 0.62);
+	color: rgba(51, 28, 22, 0.62);
 	font-size: 0.86rem;
 	white-space: normal;
 }
@@ -5395,11 +5721,11 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr
 }
 
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.shipping input[type="radio"] {
-	accent-color: var(--lily-olive);
+	accent-color: var(--lily-warm-brown);
 }
 
 html body.woocommerce-checkout .woocommerce-shipping-totals td .amount {
-	color: rgba(66, 28, 20, 0.78);
+	color: rgba(51, 28, 22, 0.78);
 }
 
 /* Total — the strongest monetary value on the page */
@@ -5433,7 +5759,7 @@ html body.woocommerce-checkout #payment {
 	padding: clamp(18px, 2.4vw, 24px);
 	border: 1px solid rgba(136, 83, 55, 0.22);
 	border-radius: 14px;
-	background: rgba(239, 236, 221, 0.72);
+	background: rgba(254, 252, 221, 0.72);
 }
 
 html body.woocommerce-checkout #payment .form-row.place-order {
@@ -5461,15 +5787,15 @@ html body.woocommerce-checkout #payment ul.payment_methods li {
 	padding: 16px 18px;
 	border: 1px solid rgba(136, 83, 55, 0.28);
 	border-radius: 10px;
-	background: rgba(255, 255, 255, 0.55);
+	background: rgba(254, 252, 221, 0.55);
 	transition: border-color 180ms var(--lily-ease);
 }
 
 html body.woocommerce-checkout #payment ul.payment_methods li:has(input[type="radio"]:checked),
 html body.woocommerce-checkout #payment ul.payment_methods li.checked,
 html body.woocommerce-checkout #payment ul.payment_methods li.payment_method_bacs {
-	border-color: var(--lily-olive);
-	background: rgba(255, 255, 255, 0.85);
+	border-color: #723427;
+	background: rgba(254, 252, 221, 0.85);
 }
 
 html body.woocommerce-checkout #payment ul.payment_methods li img {
@@ -5501,12 +5827,12 @@ html body.woocommerce-checkout #payment input[type="radio"] {
 }
 
 html body.woocommerce-checkout #payment input[type="radio"]:checked {
-	border-color: var(--lily-olive);
-	box-shadow: inset 0 0 0 4px rgba(239, 236, 221, 0.95), inset 0 0 0 12px var(--lily-olive);
+	border-color: #723427;
+	box-shadow: inset 0 0 0 4px rgba(254, 252, 221, 0.95), inset 0 0 0 12px #885337;
 }
 
 html body.woocommerce-checkout #payment input[type="radio"]:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.35);
+	outline: 2px solid rgba(114, 52, 39, 0.35);
 	outline-offset: 3px;
 }
 
@@ -5514,7 +5840,7 @@ html body.woocommerce-checkout #payment div.payment_box {
 	margin: 12px 0 0;
 	padding: 0;
 	background: transparent;
-	color: rgba(66, 28, 20, 0.66);
+	color: rgba(51, 28, 22, 0.66);
 	font-size: 0.84rem;
 	line-height: 1.55;
 }
@@ -5558,14 +5884,14 @@ html body.woocommerce-checkout #place_order {
 
 html body.woocommerce-checkout #place_order:hover,
 html body.woocommerce-checkout #place_order:focus {
-	background: var(--lily-olive) !important;
+	background: #4B2E2B !important;
 	color: var(--lily-cream) !important;
 	transform: translateY(-1px);
 	box-shadow: var(--lily-shadow-sm);
 }
 
 html body.woocommerce-checkout #place_order:focus-visible {
-	outline: 2px solid rgba(239, 236, 221, 0.8) !important;
+	outline: 2px solid rgba(254, 252, 221, 0.8) !important;
 	outline-offset: 3px;
 }
 
@@ -5592,7 +5918,7 @@ html body.woocommerce-checkout .woocommerce-form-coupon .input-text {
 	padding: 0 14px;
 	border: 1px solid rgba(136, 83, 55, 0.38);
 	border-radius: 10px;
-	background: rgba(255, 255, 255, 0.62);
+	background: rgba(254, 252, 221, 0.62);
 	color: var(--lily-dark-brown);
 	font-family: inherit;
 	text-transform: uppercase;
@@ -5615,13 +5941,13 @@ html body.woocommerce-checkout .woocommerce-form-coupon button {
 }
 
 html body.woocommerce-checkout .woocommerce-form-coupon button:hover {
-	border-color: var(--lily-olive);
-	color: var(--lily-olive);
+	border-color: #723427;
+	color: #723427;
 }
 
 .lily-checkout__login-note {
 	margin: 0 0 clamp(18px, 2.4vw, 24px);
-	color: rgba(66, 28, 20, 0.66);
+	color: rgba(51, 28, 22, 0.66);
 	font-size: 0.87rem;
 	line-height: 1.55;
 }
@@ -5637,7 +5963,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table a {
 html body.woocommerce-checkout a.showcoupon:hover,
 html body.woocommerce-checkout .woocommerce-privacy-policy-link:hover,
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table a:hover {
-	color: var(--lily-olive) !important;
+	color: #723427 !important;
 	background: transparent;
 }
 
@@ -5665,7 +5991,7 @@ html body.woocommerce-checkout .woocommerce-message {
 }
 
 .lily-order-area {
-	color: rgba(66, 28, 20, 0.66);
+	color: rgba(51, 28, 22, 0.66);
 	font-size: 0.9rem;
 }
 
@@ -5843,7 +6169,7 @@ html body.woocommerce-checkout .woocommerce-message {
 	position: fixed;
 	inset: 0;
 	z-index: 99998;
-	background: rgba(66, 28, 20, 0.45);
+	background: rgba(51, 28, 22, 0.45);
 	opacity: 0;
 	transition: opacity 240ms var(--lily-ease);
 }
@@ -5886,7 +6212,7 @@ html[dir="rtl"] .lily-cart-drawer {
 	padding: 17px clamp(18px, 2.4vw, 24px);
 	background: var(--lily-espresso);
 	color: var(--lily-cream);
-	border-block-end: 1px solid rgba(239, 236, 221, 0.15);
+	border-block-end: 1px solid rgba(254, 252, 221, 0.15);
 }
 
 .lily-drawer__title {
@@ -5925,7 +6251,7 @@ html[dir="rtl"] .lily-cart-drawer {
 	height: 34px;
 	margin-inline-end: auto; /* pin controls toward the outer edge */
 	padding: 0;
-	border: 1px solid rgba(239, 236, 221, 0.35);
+	border: 1px solid rgba(254, 252, 221, 0.35);
 	border-radius: 50%;
 	background: transparent;
 	color: var(--lily-cream);
@@ -5941,7 +6267,7 @@ html[dir="rtl"] .lily-drawer__close {
 .lily-drawer__close:hover,
 .lily-drawer__close:focus-visible {
 	border-color: var(--lily-cream);
-	background: rgba(239, 236, 221, 0.12);
+	background: rgba(254, 252, 221, 0.12);
 	outline: none;
 }
 
@@ -5957,7 +6283,7 @@ html[dir="rtl"] .lily-drawer__close {
 	border: 1px solid var(--lily-line);
 	border-inline-start: 3px solid var(--lily-warm-brown);
 	border-radius: 10px;
-	background: rgba(239, 236, 221, 0.7);
+	background: rgba(254, 252, 221, 0.7);
 	color: var(--lily-dark-brown);
 	list-style: none;
 	margin: 0 0 8px;
@@ -6072,7 +6398,7 @@ html[dir="rtl"] .lily-drawer__close {
 }
 
 .lily-drawer__checkout:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.4);
+	outline: 2px solid rgba(114, 52, 39, 0.4);
 	outline-offset: 3px;
 }
 
@@ -6112,13 +6438,13 @@ html[dir="rtl"] .lily-drawer__close {
 }
 
 .lily-drawer__empty-cta:hover {
-	background: var(--lily-olive);
+	background: #4B2E2B;
 	color: var(--lily-cream);
 	transform: translateY(-1px);
 }
 
 .lily-drawer__empty-cta:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.4);
+	outline: 2px solid rgba(114, 52, 39, 0.4);
 	outline-offset: 3px;
 }
 
@@ -6154,7 +6480,7 @@ html body.lily-drawer-open {
 
 .lily-page-intro {
 	font-size: 1.05rem;
-	color: rgba(66, 28, 20, 0.8);
+	color: rgba(51, 28, 22, 0.8);
 }
 
 .lily-page-content h2 {
@@ -6163,14 +6489,14 @@ html body.lily-drawer-open {
 }
 
 .lily-page-content em {
-	color: rgba(66, 28, 20, 0.55);
+	color: rgba(51, 28, 22, 0.55);
 }
 
 /* FAQ accordion (native details/summary) */
 .lily-faq__item {
 	border: 1px solid var(--lily-line);
 	border-radius: 10px;
-	background: rgba(255, 255, 255, 0.55);
+	background: rgba(254, 252, 221, 0.55);
 	padding: 0;
 	margin-block-end: 12px;
 }
@@ -6206,13 +6532,13 @@ html body.lily-drawer-open {
 }
 
 .lily-faq__item summary:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.4);
+	outline: 2px solid rgba(114, 52, 39, 0.4);
 	outline-offset: 2px;
 }
 
 .lily-faq__answer {
 	padding: 0 18px 16px;
-	color: rgba(66, 28, 20, 0.85);
+	color: rgba(51, 28, 22, 0.85);
 	line-height: 1.7;
 }
 
@@ -6221,7 +6547,7 @@ html body.lily-drawer-open {
 }
 
 .lily-faq__more {
-	color: rgba(66, 28, 20, 0.66);
+	color: rgba(51, 28, 22, 0.66);
 	font-size: 0.92rem;
 }
 
@@ -6239,7 +6565,7 @@ html body.lily-drawer-open {
 }
 
 .lily-contact-list a:hover {
-	color: var(--lily-olive);
+	color: #723427;
 }
 
 .lily-contact-form .lily-form-row {
@@ -6249,7 +6575,7 @@ html body.lily-drawer-open {
 .lily-contact-form label {
 	display: block;
 	margin-block-end: 6px;
-	color: rgba(66, 28, 20, 0.68);
+	color: rgba(51, 28, 22, 0.68);
 	font-size: 0.75rem;
 	font-weight: 700;
 	letter-spacing: 0.12em;
@@ -6262,7 +6588,7 @@ html body.lily-drawer-open {
 	padding: 12px 14px;
 	border: 1px solid rgba(136, 83, 55, 0.38);
 	border-radius: 10px;
-	background: rgba(255, 255, 255, 0.62);
+	background: rgba(254, 252, 221, 0.62);
 	color: var(--lily-dark-brown);
 	font-family: inherit;
 	font-size: 0.96rem;
@@ -6270,8 +6596,8 @@ html body.lily-drawer-open {
 
 .lily-contact-form .lily-input:focus {
 	outline: none;
-	border-color: var(--lily-olive);
-	box-shadow: 0 0 0 3px rgba(88, 96, 68, 0.14);
+	border-color: #723427;
+	box-shadow: 0 0 0 3px rgba(114, 52, 39, 0.14);
 }
 
 .lily-contact-form textarea.lily-input {
@@ -6297,11 +6623,11 @@ html body.lily-drawer-open {
 }
 
 .lily-contact-form .lily-btn:hover {
-	background: var(--lily-olive);
+	background: #4B2E2B;
 }
 
 .lily-contact-form .lily-btn:focus-visible {
-	outline: 2px solid rgba(88, 96, 68, 0.4);
+	outline: 2px solid rgba(114, 52, 39, 0.4);
 	outline-offset: 3px;
 }
 
@@ -6314,30 +6640,3830 @@ html body.lily-drawer-open {
 }
 
 .lily-form-note {
-	color: rgba(66, 28, 20, 0.66);
+	color: rgba(51, 28, 22, 0.66);
 	font-size: 0.9rem;
 }
 
-body.lily-contact-status-sent .entry-content::before {
-	content: "Thank you! Your message has been sent.";
-	display: block;
-	margin-block-end: 18px;
-	padding: 12px 16px;
-	border: 1px solid var(--lily-line);
-	border-inline-start: 3px solid var(--lily-olive);
-	border-radius: 10px;
-	background: rgba(88, 96, 68, 0.08);
-	color: var(--lily-dark-brown);
+/* Contact status notices render server-side in page-contact.php through
+   translation functions; no CSS-injected copy here so Arabic pages never
+   show hardcoded English. */
+body.lily-contact-status-sent .entry-content::before,
+body.lily-contact-status-error .entry-content::before {
+	content: none;
+	display: none;
 }
 
-body.lily-contact-status-error .entry-content::before {
-	content: "Something went wrong — please check your details and try again.";
+/* ==========================================================================
+   LILY — About Us page only (scoped to body.lily-about-page / .lily-about)
+   Editorial rhythm: masthead, story, mission, vision, approach, closing CTA.
+   Global header, footer, shop and homepage styles are untouched.
+   ========================================================================== */
+
+body.lily-about-page main#primary.site-main.lily-about {
 	display: block;
-	margin-block-end: 18px;
-	padding: 12px 16px;
-	border: 1px solid var(--lily-line);
-	border-inline-start: 3px solid var(--lily-warm-brown);
+	margin-block-start: 0;
+	margin-block-end: 0;
+	overflow-x: clip;
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+/* Full-bleed editorial bands; every band reuses the global lily-container. */
+.lily-about-band {
+	padding-block: clamp(64px, 8vw, 112px);
+}
+
+/* Shared eyebrow label with a subtle 1px rule. */
+.lily-about .lily-about-eyebrow {
+	margin: 0 0 20px;
+	color: #331C16;
+	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+.lily-about .lily-about-eyebrow::after {
+	content: "";
+	display: block;
+	width: 40px;
+	height: 1px;
+	margin-block-start: 12px;
+	background: #AC7D61;
+}
+
+.lily-about .lily-about-eyebrow--center {
+	text-align: center;
+}
+
+.lily-about .lily-about-eyebrow--center::after {
+	margin-inline: auto;
+}
+
+/* 1. Masthead — centered editorial intro + one wide image on cream. */
+.lily-about-masthead {
+	background: #FEFCDD;
+	padding-block: clamp(40px, 5vw, 64px) clamp(64px, 8vw, 112px);
+	text-align: center;
+}
+
+.lily-about-masthead__title {
+	margin: 0 0 24px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(56px, 7vw, 92px);
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: 0;
+	color: #331C16;
+}
+
+.lily-about-masthead__sub {
+	max-width: 560px;
+	margin: 0 auto;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.72);
+}
+
+.lily-about-masthead__media {
+	margin: clamp(40px, 5vw, 64px) 0 0;
+}
+
+.lily-about-masthead__media img {
+	display: block;
+	width: 100%;
+	height: clamp(360px, 38vw, 460px);
+	object-fit: cover;
 	border-radius: 10px;
-	background: rgba(136, 83, 55, 0.06);
+	background: rgba(51, 28, 22, 0.06);
+}
+
+/* 2. Our Story — 45% text / 55% image on the calm cream base. */
+.lily-about-story {
+	background: #FEFCDD;
+}
+
+.lily-about-story__inner {
+	display: grid;
+	grid-template-columns: 45fr 55fr;
+	gap: clamp(32px, 5vw, 72px);
+	align-items: center;
+}
+
+.lily-about-story__text {
+	text-align: start;
+}
+
+.lily-about-story__lead {
+	margin: 0 0 24px;
+	font-size: clamp(20px, 2.4vw, 27px);
+	line-height: 1.45;
+	color: #331C16;
+}
+
+.lily-about-story__text p {
+	margin: 0 0 16px;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.78);
+}
+
+.lily-about-story__text p:last-child {
+	margin-block-end: 0;
+}
+
+.lily-about-story__media {
+	margin: 0;
+}
+
+.lily-about-story__media img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	max-height: 600px;
+	object-fit: cover;
+	border-radius: 10px;
+	background: rgba(51, 28, 22, 0.08);
+}
+
+/* 3. Our Mission — centered statement on cream. */
+.lily-about-mission {
+	background: #FEFCDD;
+}
+
+.lily-about-mission__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.lily-about-mission__statement {
+	max-width: 820px;
+	margin: 0;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(28px, 3.6vw, 46px);
+	line-height: 1.2;
+	color: #331C16;
+}
+
+.lily-about-mission__text {
+	max-width: 560px;
+	margin: 24px 0 0;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.72);
+}
+
+/* 4. Our Vision — the ONE full-width color break, statement left,
+   supporting text right on Soft Peach. */
+.lily-about-vision {
+	background: #FAD3CA;
+}
+
+.lily-about-vision__inner {
+	display: grid;
+	grid-template-columns: 1.1fr 0.9fr;
+	gap: clamp(32px, 5vw, 72px);
+	align-items: start;
+}
+
+.lily-about-vision .lily-about-eyebrow {
+	color: #331C16;
+}
+
+.lily-about-vision .lily-about-eyebrow::after {
+	background: #723427;
+}
+
+.lily-about-vision__lead {
+	margin: 0;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(26px, 3.2vw, 40px);
+	line-height: 1.25;
+	color: #331C16;
+}
+
+.lily-about-vision__text p {
+	margin: 0;
+	padding-block-start: 44px;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.82);
+}
+
+/* 5. Our Approach — three hairline rows on cream, no cards. */
+.lily-about-approach {
+	background: #FEFCDD;
+}
+
+.lily-about-approach .lily-about-eyebrow {
+	color: #331C16;
+}
+
+.lily-about-approach .lily-about-eyebrow::after {
+	background: #AC7D61;
+}
+
+.lily-about-approach__list {
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+}
+
+.lily-about-approach__row {
+	display: flex;
+	align-items: baseline;
+	gap: clamp(20px, 3vw, 40px);
+	padding-block: 28px;
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-about-approach__row:last-child {
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-about-approach__num {
+	flex-shrink: 0;
+	min-inline-size: 48px;
+	color: #885337;
+	font-size: 14px;
+	letter-spacing: 0.08em;
+}
+
+.lily-about-approach__body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.lily-about-approach__name {
+	color: #331C16;
+	font-size: 13px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.lily-about-approach__desc {
+	color: rgba(51, 28, 22, 0.78);
+	font-size: 15px;
+	line-height: 1.7;
+}
+
+/* 6. Closing CTA — final section back on cream, centered. */
+.lily-about-cta {
+	background: #FEFCDD;
+}
+
+.lily-about-cta__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.lily-about-cta__title {
+	margin: 0 0 16px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(36px, 5vw, 60px);
+	font-weight: 400;
+	line-height: 1.05;
+	color: #331C16;
+}
+
+.lily-about-cta__sub {
+	margin: 0 0 32px;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.72);
+}
+
+.lily-about-cta__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 54px;
+	padding: 16px 28px;
+	border: 0;
+	border-radius: 8px;
+	background: #885337;
+	color: #FEFCDD;
+	font-size: 14px;
+	letter-spacing: 0.06em;
+	text-decoration: none;
+	text-transform: uppercase;
+	box-shadow: none;
+	transition: background-color 200ms ease, color 200ms ease;
+}
+
+.lily-about-cta__btn:hover {
+	background: #4B2E2B;
+	color: #FEFCDD;
+}
+
+.lily-about a:not(.lily-about-cta__btn) {
+	transition: color 200ms ease;
+}
+
+@media (max-width: 900px) {
+	.lily-about-story__inner,
+	.lily-about-vision__inner {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lily-about-story__media img {
+		aspect-ratio: 4 / 3;
+		max-height: none;
+	}
+
+	.lily-about-vision__text p {
+		padding-block-start: 0;
+	}
+
+	.lily-about-masthead__media img {
+		height: 300px;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-about-masthead__title {
+		font-size: clamp(48px, 15vw, 68px);
+	}
+
+	.lily-about-masthead__sub,
+	.lily-about-story__text p,
+	.lily-about-mission__text,
+	.lily-about-vision__text p,
+	.lily-about-approach__desc,
+	.lily-about-cta__sub {
+		font-size: 14px;
+	}
+
+	.lily-about-masthead__media img {
+		height: 240px;
+		border-radius: 8px;
+	}
+
+	.lily-about-story__media img {
+		border-radius: 8px;
+	}
+
+	.lily-about-approach__row {
+		gap: 16px;
+		padding-block: 22px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-about-cta__btn,
+	.lily-about a:not(.lily-about-cta__btn) {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — FAQ page only (scoped to body.lily-faq-page / .lily-faqs)
+   Quiet editorial accordion: cream base, hairline rows, plus/minus only.
+   Global header, footer, shop and homepage styles are untouched.
+   ========================================================================== */
+
+body.lily-faq-page main#primary.site-main.lily-faqs {
+	display: block;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	overflow-x: clip;
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+/* Centered editorial masthead — no hero image, no decoration. */
+.lily-faqs-masthead {
+	text-align: center;
+	padding-block: clamp(64px, 8vw, 96px) 0;
+}
+
+.lily-faqs-masthead__title {
+	margin: 0 0 24px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(56px, 7vw, 92px);
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: 0;
+	color: #331C16;
+}
+
+.lily-faqs-masthead__sub {
+	max-width: 620px;
+	margin: 0 auto;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.72);
+}
+
+/* FAQ list — narrow, centered, no cards. */
+.lily-faqs__list {
+	max-width: 900px;
+	margin: clamp(48px, 6vw, 64px) auto 0;
+	padding-block-end: clamp(80px, 10vw, 120px);
+}
+
+.lily-faqs__item {
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-faqs__item:last-child {
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-faqs__qwrap {
+	margin: 0;
+	font-size: inherit;
+	font-weight: 400;
+}
+
+.lily-faqs__q {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	width: 100%;
+	padding: 22px 0;
+	border: 0;
+	background: transparent;
+	color: #331C16;
+	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 17px;
+	line-height: 1.4;
+	text-align: start;
+	cursor: pointer;
+	transition: color 200ms ease;
+}
+
+/* FAQ hover/focus/active must stay calm cream — never blue, never tinted,
+   never lifted. High page scope neutralizes any inherited theme/browser
+   button styling (including the sticky :focus fill left after mouse click).
+   Keyboard users still get the deep-brown :focus-visible ring below. */
+html body.lily-faq-page .lily-faqs__q:hover,
+html body.lily-faq-page .lily-faqs__q:focus,
+html body.lily-faq-page .lily-faqs__q:active {
+	background: #FEFCDD;
+	background-image: none;
+	border-color: transparent;
+	box-shadow: none;
+	color: #331C16;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Mouse-click focus looks identical to the normal row; the
+   :focus-visible deep-brown ring still applies for keyboard navigation. */
+html body.lily-faq-page .lily-faqs__q:focus:not(:focus-visible) {
+	outline: none;
+}
+
+html body.lily-faq-page .lily-faqs__q:hover .lily-faqs__icon::before,
+html body.lily-faq-page .lily-faqs__q:hover .lily-faqs__icon::after,
+html body.lily-faq-page .lily-faqs__q:focus .lily-faqs__icon::before,
+html body.lily-faq-page .lily-faqs__q:focus .lily-faqs__icon::after,
+html body.lily-faq-page .lily-faqs__q:active .lily-faqs__icon::before,
+html body.lily-faq-page .lily-faqs__q:active .lily-faqs__icon::after {
+	background: #885337;
+}
+
+.lily-faqs__q:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.35);
+	outline-offset: 3px;
+}
+
+.lily-faqs__qtext {
+	min-width: 0;
+}
+
+/* Minimal plus/minus control — no circle, no box. */
+.lily-faqs__icon {
+	position: relative;
+	flex-shrink: 0;
+	inline-size: 14px;
+	block-size: 14px;
+}
+
+.lily-faqs__icon::before,
+.lily-faqs__icon::after {
+	content: "";
+	position: absolute;
+	inset-inline: 0;
+	inset-block-start: 50%;
+	height: 1.5px;
+	background: #885337;
+	translate: 0 -50%;
+	transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.lily-faqs__icon::after {
+	rotate: 90deg;
+}
+
+.lily-faqs__item.is-open .lily-faqs__icon::after {
+	opacity: 0;
+	transform: scaleY(0);
+}
+
+/* Smooth expand/collapse — height and opacity only. */
+.lily-faqs__acollapse {
+	display: grid;
+	grid-template-rows: 0fr;
+	opacity: 0;
+	visibility: hidden;
+	transition: grid-template-rows 200ms ease, opacity 200ms ease, visibility 200ms ease;
+}
+
+.lily-faqs__item.is-open .lily-faqs__acollapse {
+	grid-template-rows: 1fr;
+	opacity: 1;
+	visibility: visible;
+}
+
+.lily-faqs__ainner {
+	overflow: hidden;
+	min-block-size: 0;
+}
+
+.lily-faqs__ainner p {
+	max-width: 760px;
+	margin: 0;
+	padding-block-end: 24px;
+	font-size: 15px;
+	line-height: 1.8;
+	color: #331C16;
+}
+
+@media (max-width: 900px) {
+	.lily-faqs-masthead__title {
+		font-size: clamp(48px, 15vw, 68px);
+	}
+
+	.lily-faqs-masthead__sub {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-faqs__q {
+		padding: 19px 0;
+		font-size: 15px;
+	}
+
+	.lily-faqs__ainner p {
+		font-size: 14px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-faqs__q,
+	.lily-faqs__icon::before,
+	.lily-faqs__icon::after,
+	.lily-faqs__acollapse {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — Contact page only (scoped to body.lily-contact-page / .lily-contact)
+   Quiet editorial hero, two-column contact + form, soft CTA band.
+   Global header, footer, buttons, shop and homepage styles are untouched.
+   ========================================================================== */
+
+body.lily-contact-page main#primary.site-main.lily-contact {
+	display: block;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	overflow-x: clip;
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+/* Shared small eyebrow. */
+.lily-contact-eyebrow {
+	margin: 0;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #885337;
+}
+
+.lily-contact-eyebrow--center {
+	text-align: center;
+}
+
+/* 1. Hero — centered and spacious. */
+.lily-contact-hero {
+	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
+	text-align: center;
+}
+
+.lily-contact-hero__title {
+	margin: 16px 0 0;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(56px, 7vw, 96px);
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: 0;
+	color: #331C16;
+}
+
+.lily-contact-hero__rule {
+	display: block;
+	width: 40px;
+	height: 1px;
+	margin: 22px auto 0;
+	background: #AC7D61;
+}
+
+.lily-contact-hero__sub {
+	max-width: 560px;
+	margin: 20px auto 0;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.72);
+}
+
+/* 2. Main contact section — two columns with a subtle divider. */
+.lily-contact-main {
+	padding-block: 0 clamp(64px, 8vw, 96px);
+}
+
+.lily-contact-notice {
+	margin: 0 0 32px;
+	padding: 14px 18px;
+	border: 1px solid rgba(51, 28, 22, 0.14);
+	border-inline-start: 3px solid #AC7D61;
+	border-radius: 10px;
+	background: rgba(254, 252, 221, 0.4);
+	color: #331C16;
+	font-size: 15px;
+	line-height: 1.6;
+}
+
+.lily-contact-notice--error {
+	border-inline-start-color: #885337;
+}
+
+.lily-contact-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: clamp(40px, 6vw, 80px);
+	align-items: start;
+}
+
+.lily-contact-info__title,
+.lily-contact-formwrap__title {
+	margin: 0 0 28px;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #331C16;
+}
+
+.lily-contact-info__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.lily-contact-info__list li {
+	margin: 0 0 26px;
+}
+
+.lily-contact-info__list li:last-child {
+	margin-block-end: 0;
+}
+
+.lily-contact-info__label {
+	display: block;
+	margin-block-end: 6px;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #885337;
+}
+
+.lily-contact-info__value {
+	font-size: 18px;
+	line-height: 1.4;
+	color: #331C16;
+	text-decoration: none;
+	transition: color 200ms ease;
+}
+
+a.lily-contact-info__value:hover {
+	color: #885337;
+}
+
+.lily-contact-info__eyebrow {
+	margin: 40px 0 12px;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #885337;
+}
+
+.lily-contact-info__copy {
+	margin: 0;
+	max-width: 44ch;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.75);
+}
+
+.lily-contact-formwrap {
+	border-inline-start: 1px solid rgba(51, 28, 22, 0.14);
+	padding-inline-start: clamp(32px, 4vw, 56px);
+}
+
+.lily-contact-form__hp {
+	position: absolute;
+	inline-size: 1px;
+	block-size: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	margin: 0;
+}
+
+.lily-contact-form__row {
+	margin: 0 0 18px;
+}
+
+.lily-contact-form__row label {
+	display: block;
+	margin-block-end: 8px;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: rgba(51, 28, 22, 0.7);
+}
+
+.lily-contact-form__input {
+	width: 100%;
+	min-height: 52px;
+	padding: 12px 16px;
+	border: 1px solid rgba(136, 83, 55, 0.4);
+	border-radius: 10px;
+	background: rgba(254, 252, 221, 0.45);
+	color: #331C16;
+	font-family: inherit;
+	font-size: 15px;
+	line-height: 1.5;
+	box-shadow: none;
+}
+
+.lily-contact-form__input::placeholder {
+	color: rgba(51, 28, 22, 0.45);
+}
+
+.lily-contact-form__input:focus,
+.lily-contact-form__input:focus-visible {
+	outline: none;
+	border-color: #723427;
+	box-shadow: 0 0 0 3px rgba(114, 52, 39, 0.16);
+}
+
+.lily-contact-form__textarea {
+	min-height: 130px;
+	padding: 14px 16px;
+	resize: vertical;
+}
+
+.lily-contact-form__row--submit {
+	margin: 26px 0 0;
+}
+
+/* 3. Lens Finder CTA — Soft Peach band, centered. */
+.lily-contact-cta {
+	background: #FAD3CA;
+	padding-block: clamp(64px, 8vw, 96px);
+}
+
+.lily-contact-cta__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.lily-contact-cta__lead {
+	max-width: 640px;
+	margin: 16px 0 32px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(28px, 3.6vw, 44px);
+	line-height: 1.2;
+	color: #331C16;
+}
+
+@media (max-width: 900px) {
+	.lily-contact-hero__title {
+		font-size: clamp(48px, 15vw, 68px);
+	}
+
+	.lily-contact-hero__sub {
+		font-size: 14px;
+	}
+
+	.lily-contact-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lily-contact-formwrap {
+		border-inline-start: 0;
+		padding-inline-start: 0;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-contact-info__copy,
+	.lily-contact-form__input,
+	.lily-contact-notice {
+		font-size: 15px;
+	}
+
+	.lily-contact-info__value {
+		font-size: 16px;
+	}
+
+	.lily-contact-main {
+		padding-block-end: clamp(48px, 10vw, 64px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-contact-info__value,
+	.lily-contact-form__input {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — Shipping Policy page only (scoped to body.lily-shipping-page)
+   Editorial hero, numbered policy rows, soft help CTA band.
+   Global header, footer, buttons, shop and homepage styles are untouched.
+   ========================================================================== */
+
+body.lily-shipping-page main#primary.site-main.lily-shipping {
+	display: block;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	overflow-x: clip;
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+/* 1. Hero — centered and spacious. */
+.lily-shipping-hero {
+	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
+	text-align: center;
+}
+
+.lily-shipping-hero__title {
+	margin: 0;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(56px, 7vw, 96px);
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: 0;
+	color: #331C16;
+}
+
+.lily-shipping-hero__rule {
+	display: block;
+	width: 40px;
+	height: 1px;
+	margin: 22px auto 0;
+	background: #AC7D61;
+}
+
+.lily-shipping-hero__sub {
+	margin: 20px 0 0;
+	font-size: 17px;
+	line-height: 1.5;
+	color: #331C16;
+}
+
+.lily-shipping-hero__intro {
+	max-width: 640px;
+	margin: 16px auto 0;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.72);
+}
+
+/* 2. Policy content — centered, numbered editorial rows. */
+.lily-shipping-policy {
+	padding-block: 0 clamp(64px, 8vw, 96px);
+}
+
+.lily-shipping-policy__inner {
+	max-width: 960px;
+}
+
+.lily-shipping-list {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.lily-shipping-row {
+	display: grid;
+	grid-template-columns: auto 1px minmax(0, 1fr);
+	gap: clamp(20px, 3vw, 36px);
+	align-items: start;
+	padding-block: clamp(28px, 4vw, 44px);
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-shipping-row:last-child {
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-shipping-row__num {
+	font-size: 15px;
+	letter-spacing: 0.08em;
+	color: #885337;
+	padding-block-start: 4px;
+}
+
+.lily-shipping-row__divider {
+	display: block;
+	width: 1px;
+	align-self: stretch;
+	background: rgba(51, 28, 22, 0.14);
+}
+
+.lily-shipping-row__body {
+	display: block;
+	min-width: 0;
+}
+
+.lily-shipping-row__title {
+	margin: 0 0 12px;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #331C16;
+}
+
+.lily-shipping-row__text {
+	margin: 0;
+	max-width: 70ch;
+	font-size: 15px;
+	line-height: 1.8;
+	color: rgba(51, 28, 22, 0.8);
+}
+
+/* 3. Help CTA — Soft Peach band, centered. */
+.lily-shipping-cta {
+	background: #FAD3CA;
+	padding-block: clamp(64px, 8vw, 96px);
+}
+
+.lily-shipping-cta__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.lily-shipping-eyebrow {
+	margin: 0;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #885337;
+}
+
+.lily-shipping-eyebrow--center {
+	text-align: center;
+}
+
+.lily-shipping-cta__lead {
+	max-width: 640px;
+	margin: 16px 0 32px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(28px, 3.6vw, 44px);
+	line-height: 1.2;
+	color: #331C16;
+}
+
+@media (max-width: 900px) {
+	.lily-shipping-hero__title {
+		font-size: clamp(48px, 15vw, 68px);
+	}
+
+	.lily-shipping-hero__sub {
+		font-size: 15px;
+	}
+
+	.lily-shipping-row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 10px;
+	}
+
+	.lily-shipping-row__divider {
+		display: none;
+	}
+
+	.lily-shipping-row__num {
+		font-size: 13px;
+		padding-block-start: 0;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-shipping-hero__intro,
+	.lily-shipping-row__text {
+		font-size: 14px;
+	}
+
+	.lily-shipping-row {
+		padding-block: 24px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-shipping-cta__btn {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — Returns & Exchange page only (scoped to body.lily-returns-page)
+   Editorial hero, numbered policy rows, soft help CTA band.
+   Global header, footer, buttons, shop and homepage styles are untouched.
+   ========================================================================== */
+
+body.lily-returns-page main#primary.site-main.lily-returns {
+	display: block;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	overflow-x: clip;
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+/* 1. Hero — centered and spacious. */
+.lily-returns-hero {
+	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
+	text-align: center;
+}
+
+.lily-returns-hero__title {
+	margin: 0;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(56px, 7vw, 96px);
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: 0;
+	color: #331C16;
+}
+
+.lily-returns-hero__rule {
+	display: block;
+	width: 40px;
+	height: 1px;
+	margin: 22px auto 0;
+	background: #AC7D61;
+}
+
+.lily-returns-hero__sub {
+	max-width: 640px;
+	margin: 20px auto 0;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.75);
+}
+
+/* 2. Policy content — centered, numbered editorial rows. */
+.lily-returns-policy {
+	padding-block: 0 clamp(64px, 8vw, 96px);
+}
+
+.lily-returns-policy__inner {
+	max-width: 960px;
+}
+
+.lily-returns-list {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.lily-returns-row {
+	display: grid;
+	grid-template-columns: auto 1px minmax(0, 1fr);
+	gap: clamp(20px, 3vw, 36px);
+	align-items: start;
+	padding-block: clamp(28px, 4vw, 44px);
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-returns-row:last-child {
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-returns-row__num {
+	font-size: 15px;
+	letter-spacing: 0.08em;
+	color: #885337;
+	padding-block-start: 4px;
+}
+
+.lily-returns-row__divider {
+	display: block;
+	width: 1px;
+	align-self: stretch;
+	background: rgba(51, 28, 22, 0.14);
+}
+
+.lily-returns-row__body {
+	display: block;
+	min-width: 0;
+}
+
+.lily-returns-row__title {
+	margin: 0 0 12px;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #331C16;
+}
+
+.lily-returns-row__text {
+	margin: 0;
+	max-width: 70ch;
+	font-size: 15px;
+	line-height: 1.8;
+	color: rgba(51, 28, 22, 0.8);
+}
+
+/* 3. Help CTA — Soft Peach band, centered. */
+.lily-returns-cta {
+	background: #FAD3CA;
+	padding-block: clamp(64px, 8vw, 96px);
+}
+
+.lily-returns-cta__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.lily-returns-eyebrow {
+	margin: 0;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #885337;
+}
+
+.lily-returns-eyebrow--center {
+	text-align: center;
+}
+
+.lily-returns-cta__lead {
+	max-width: 640px;
+	margin: 16px 0 32px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(28px, 3.6vw, 44px);
+	line-height: 1.2;
+	color: #331C16;
+}
+
+@media (max-width: 900px) {
+	.lily-returns-hero__title {
+		font-size: clamp(48px, 15vw, 68px);
+	}
+
+	.lily-returns-row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 10px;
+	}
+
+	.lily-returns-row__divider {
+		display: none;
+	}
+
+	.lily-returns-row__num {
+		font-size: 13px;
+		padding-block-start: 0;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-returns-hero__sub,
+	.lily-returns-row__text {
+		font-size: 14px;
+	}
+
+	.lily-returns-row {
+		padding-block: 24px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-returns-cta__btn {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — Terms & Conditions page only (scoped to body.lily-terms-page)
+   Editorial hero, numbered terms rows, soft help CTA band.
+   Global header, footer, buttons, shop and homepage styles are untouched.
+   ========================================================================== */
+
+body.lily-terms-page main#primary.site-main.lily-terms {
+	display: block;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	overflow-x: clip;
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+/* 1. Hero — breadcrumb, eyebrow, dominant start-aligned title, intro. */
+.lily-terms-hero {
+	padding-block: clamp(48px, 6vw, 80px) clamp(40px, 5vw, 64px);
+	text-align: center;
+}
+
+.lily-terms-crumbs {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: baseline;
+	gap: 4px;
+	margin: 0 0 26px;
+	font-size: 12px;
+	text-transform: uppercase;
+	color: rgba(51, 28, 22, 0.55);
+}
+
+.lily-terms-crumbs a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.lily-terms-crumbs__sep {
+	margin-inline: 10px;
+	opacity: 0.5;
+}
+
+.lily-terms-hero__eyebrow {
+	display: none;
+}
+
+.lily-terms-hero__title {
+	margin: 0 auto;
+	max-width: 16ch;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(54px, 8vw, 104px);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: 0;
+	color: #331C16;
+}
+
+.lily-terms-hero__rule {
+	display: block;
+	width: 40px;
+	height: 1px;
+	margin: 26px auto 0;
+	background: #AC7D61;
+}
+
+.lily-terms-hero__sub {
+	max-width: 72ch;
+	margin: 22px auto 0;
+	font-size: 16.5px;
+	line-height: 1.8;
+	color: rgba(51, 28, 22, 0.75);
+}
+
+.lily-terms-hero__sub + .lily-terms-hero__sub {
+	margin-block-start: 16px;
+}
+
+/* 2. Terms content — wide horizontal section units: number marker,
+   strong title block, readable body, hairline dividers. */
+.lily-terms-policy {
+	padding-block: 0 clamp(64px, 8vw, 96px);
+}
+
+.lily-terms-list {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.lily-terms-row {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	column-gap: clamp(24px, 4vw, 60px);
+	align-items: start;
+	padding-block: clamp(44px, 5.5vw, 72px);
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-terms-row:last-child {
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-terms-row__num {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: clamp(60px, 6vw, 76px);
+	height: clamp(60px, 6vw, 76px);
+	border-radius: 50%;
+	background: #FAD3CA;
+	font-family: "Sellendra", "Amiri", "Georgia", serif;
+	font-size: clamp(18px, 1.8vw, 21px);
+	white-space: nowrap;
+	color: #885337;
+}
+
+.lily-terms-row__content {
+	min-width: 0;
+}
+
+.lily-terms-row__title {
+	margin: 0;
+	font-size: clamp(24px, 3vw, 34px);
+	font-weight: 550;
+	line-height: 1.25;
+	color: #331C16;
+}
+
+.lily-terms-row__body {
+	margin-block-start: clamp(16px, 2vw, 24px);
+	max-width: 76ch;
+}
+
+.lily-terms-row__text {
+	margin: 0;
+	font-size: 17px;
+	line-height: 1.85;
+	color: rgba(51, 28, 22, 0.82);
+}
+
+.lily-terms-row__text + .lily-terms-row__text {
+	margin-block-start: 15px;
+}
+
+.lily-terms-row__list {
+	margin: 15px 0 0;
+	padding-inline-start: 1.35em;
+}
+
+.lily-terms-row__text + .lily-terms-row__list {
+	margin-block-start: 15px;
+}
+
+.lily-terms-row__list + .lily-terms-row__text {
+	margin-block-start: 15px;
+}
+
+.lily-terms-row__list li {
+	margin-block: 9px;
+	padding-inline-start: 0.15em;
+	font-size: 17px;
+	line-height: 1.85;
+	color: rgba(51, 28, 22, 0.82);
+}
+
+.lily-terms-row__list li::marker {
+	color: #885337;
+}
+
+/* Shipping & Delivery fee table — same legal-page visual language:
+   hairline borders, bronze header labels, readable body text. Scoped to
+   the shipping page only; every other page is untouched. */
+.lily-ship-table__wrap {
+	margin-block-start: clamp(18px, 2.5vw, 26px);
+	border: 1px solid rgba(51, 28, 22, 0.14);
+	border-radius: 16px;
+	overflow-x: clip;
+}
+
+table.lily-ship-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 16.5px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.82);
+}
+
+.lily-ship-table thead th {
+	padding: 14px 18px;
+	text-align: start;
+	font-size: 12.5px;
+	text-transform: uppercase;
+	color: #885337;
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+	white-space: nowrap;
+}
+
+.lily-ship-table tbody td {
+	padding: 14px 18px;
+	vertical-align: top;
+}
+
+.lily-ship-table tbody tr + tr td {
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-ship-table tbody td:last-child {
+	white-space: nowrap;
+	font-weight: 550;
+	color: #331C16;
+}
+
+.lily-ship-table__m-label {
+	display: none;
+}
+
+/* 3. Help CTA — Soft Peach band, centered. */
+.lily-terms-cta {
+	background: #FAD3CA;
+	padding-block: clamp(64px, 8vw, 96px);
+}
+
+.lily-terms-cta__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.lily-terms-eyebrow {
+	margin: 0;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #885337;
+}
+
+.lily-terms-eyebrow--center {
+	text-align: center;
+}
+
+.lily-terms-cta__lead {
+	max-width: 640px;
+	margin: 16px 0 32px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(28px, 3.6vw, 44px);
+	line-height: 1.2;
+	color: #331C16;
+}
+
+@media (max-width: 900px) {
+	.lily-terms-hero__title {
+		font-size: clamp(42px, 10.5vw, 60px);
+		max-width: none;
+	}
+
+	.lily-terms-row {
+		column-gap: 18px;
+		padding-block: clamp(34px, 7vw, 44px);
+	}
+
+	.lily-terms-row__num {
+		width: 52px;
+		height: 52px;
+		font-size: 17px;
+	}
+
+	.lily-terms-row__title {
+		font-size: clamp(21px, 5.4vw, 27px);
+	}
+
+	.lily-terms-row__text,
+	.lily-terms-row__list li {
+		font-size: 16px;
+		line-height: 1.8;
+	}
+
+	body.lily-shipping-delivery-page table.lily-ship-table {
+		font-size: 16px;
+	}
+
+	body.lily-shipping-delivery-page .lily-ship-table thead {
+		display: none;
+	}
+
+	body.lily-shipping-delivery-page .lily-ship-table tbody tr {
+		display: block;
+		padding-block: 8px;
+	}
+
+	body.lily-shipping-delivery-page .lily-ship-table tbody tr + tr {
+		border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+	}
+
+	body.lily-shipping-delivery-page .lily-ship-table tbody td {
+		display: block;
+		border: 0;
+		padding: 5px 18px;
+	}
+
+	body.lily-shipping-delivery-page .lily-ship-table tbody td:last-child {
+		white-space: normal;
+	}
+
+	body.lily-shipping-delivery-page .lily-ship-table tbody tr td:first-child {
+		padding-block-start: 12px;
+	}
+
+	body.lily-shipping-delivery-page .lily-ship-table tbody tr td:last-child {
+		padding-block-end: 12px;
+	}
+
+	body.lily-shipping-delivery-page .lily-ship-table__m-label {
+		display: block;
+		margin-block-end: 2px;
+		font-size: 12px;
+		text-transform: uppercase;
+		color: #885337;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-terms-crumbs {
+		font-size: 11.5px;
+	}
+
+	.lily-terms-hero__title {
+		font-size: clamp(40px, 12.5vw, 54px);
+	}
+
+	.lily-terms-hero__sub {
+		font-size: 15.5px;
+	}
+
+	.lily-terms-row {
+		column-gap: 16px;
+	}
+
+	.lily-terms-row__num {
+		width: 46px;
+		height: 46px;
+		font-size: 16px;
+	}
+
+	.lily-terms-row__title {
+		font-size: clamp(20px, 6vw, 25px);
+	}
+
+	.lily-terms-row__text,
+	.lily-terms-row__list li {
+		font-size: 15.5px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-terms-cta__btn {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — Refund Policy page only (scoped to body.lily-refund-page)
+   Editorial hero, numbered refund rows, soft help CTA band.
+   Global header, footer, buttons, shop and homepage styles are untouched.
+   ========================================================================== */
+
+body.lily-refund-page main#primary.site-main.lily-refund {
+	display: block;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	overflow-x: clip;
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+/* 1. Hero — centered and spacious. */
+.lily-refund-hero {
+	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
+	text-align: center;
+}
+
+.lily-refund-hero__title {
+	margin: 0;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(56px, 7vw, 96px);
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: 0;
+	color: #331C16;
+}
+
+.lily-refund-hero__rule {
+	display: block;
+	width: 40px;
+	height: 1px;
+	margin: 22px auto 0;
+	background: #AC7D61;
+}
+
+.lily-refund-hero__sub {
+	max-width: 640px;
+	margin: 20px auto 0;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.75);
+}
+
+/* 2. Refund content — centered, numbered editorial rows. */
+.lily-refund-policy {
+	padding-block: 0 clamp(64px, 8vw, 96px);
+}
+
+.lily-refund-policy__inner {
+	max-width: 960px;
+}
+
+.lily-refund-list {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.lily-refund-row {
+	display: grid;
+	grid-template-columns: auto 1px minmax(0, 1fr);
+	gap: clamp(20px, 3vw, 36px);
+	align-items: start;
+	padding-block: clamp(28px, 4vw, 44px);
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-refund-row:last-child {
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-refund-row__num {
+	font-size: 15px;
+	letter-spacing: 0.08em;
+	color: #885337;
+	padding-block-start: 4px;
+}
+
+.lily-refund-row__divider {
+	display: block;
+	width: 1px;
+	align-self: stretch;
+	background: rgba(51, 28, 22, 0.14);
+}
+
+.lily-refund-row__body {
+	display: block;
+	min-width: 0;
+}
+
+.lily-refund-row__title {
+	margin: 0 0 12px;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #331C16;
+}
+
+.lily-refund-row__text {
+	margin: 0;
+	max-width: 70ch;
+	font-size: 15px;
+	line-height: 1.8;
+	color: rgba(51, 28, 22, 0.8);
+}
+
+/* 3. Help CTA — Soft Peach band, centered. */
+.lily-refund-cta {
+	background: #FAD3CA;
+	padding-block: clamp(64px, 8vw, 96px);
+}
+
+.lily-refund-cta__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.lily-refund-eyebrow {
+	margin: 0;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #885337;
+}
+
+.lily-refund-eyebrow--center {
+	text-align: center;
+}
+
+.lily-refund-cta__lead {
+	max-width: 640px;
+	margin: 16px 0 32px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(28px, 3.6vw, 44px);
+	line-height: 1.2;
+	color: #331C16;
+}
+
+@media (max-width: 900px) {
+	.lily-refund-hero__title {
+		font-size: clamp(48px, 15vw, 68px);
+	}
+
+	.lily-refund-row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 10px;
+	}
+
+	.lily-refund-row__divider {
+		display: none;
+	}
+
+	.lily-refund-row__num {
+		font-size: 13px;
+		padding-block-start: 0;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-refund-hero__sub,
+	.lily-refund-row__text {
+		font-size: 14px;
+	}
+
+	.lily-refund-row {
+		padding-block: 24px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-refund-cta__btn {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — Cookie Policy page only (scoped to body.lily-cookie-page)
+   Editorial hero, numbered cookie rows, soft help CTA band.
+   Global header, footer, buttons, shop and homepage styles are untouched.
+   ========================================================================== */
+
+body.lily-cookie-page main#primary.site-main.lily-cookie {
+	display: block;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	overflow-x: clip;
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+/* 1. Hero — centered and spacious. */
+.lily-cookie-hero {
+	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
+	text-align: center;
+}
+
+.lily-cookie-hero__title {
+	margin: 0;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(56px, 7vw, 96px);
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: 0;
+	color: #331C16;
+}
+
+.lily-cookie-hero__rule {
+	display: block;
+	width: 40px;
+	height: 1px;
+	margin: 22px auto 0;
+	background: #AC7D61;
+}
+
+.lily-cookie-hero__sub {
+	max-width: 640px;
+	margin: 20px auto 0;
+	font-size: 15px;
+	line-height: 1.7;
+	color: rgba(51, 28, 22, 0.75);
+}
+
+/* 2. Cookie content — centered, numbered editorial rows. */
+.lily-cookie-policy {
+	padding-block: 0 clamp(64px, 8vw, 96px);
+}
+
+.lily-cookie-policy__inner {
+	max-width: 960px;
+}
+
+.lily-cookie-list {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.lily-cookie-row {
+	display: grid;
+	grid-template-columns: auto 1px minmax(0, 1fr);
+	gap: clamp(20px, 3vw, 36px);
+	align-items: start;
+	padding-block: clamp(28px, 4vw, 44px);
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-cookie-row:last-child {
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-cookie-row__num {
+	font-size: 15px;
+	letter-spacing: 0.08em;
+	color: #885337;
+	padding-block-start: 4px;
+}
+
+.lily-cookie-row__divider {
+	display: block;
+	width: 1px;
+	align-self: stretch;
+	background: rgba(51, 28, 22, 0.14);
+}
+
+.lily-cookie-row__body {
+	display: block;
+	min-width: 0;
+}
+
+.lily-cookie-row__title {
+	margin: 0 0 12px;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #331C16;
+}
+
+.lily-cookie-row__text {
+	margin: 0;
+	max-width: 70ch;
+	font-size: 15px;
+	line-height: 1.8;
+	color: rgba(51, 28, 22, 0.8);
+}
+
+/* 3. Help CTA — Soft Peach band, centered. */
+.lily-cookie-cta {
+	background: #FAD3CA;
+	padding-block: clamp(64px, 8vw, 96px);
+}
+
+.lily-cookie-cta__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.lily-cookie-eyebrow {
+	margin: 0;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #885337;
+}
+
+.lily-cookie-eyebrow--center {
+	text-align: center;
+}
+
+.lily-cookie-cta__lead {
+	max-width: 640px;
+	margin: 16px 0 32px;
+	font-family: "Sellendra", "Georgia", serif;
+	font-size: clamp(28px, 3.6vw, 44px);
+	line-height: 1.2;
+	color: #331C16;
+}
+
+@media (max-width: 900px) {
+	.lily-cookie-hero__title {
+		font-size: clamp(48px, 15vw, 68px);
+	}
+
+	.lily-cookie-row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 10px;
+	}
+
+	.lily-cookie-row__divider {
+		display: none;
+	}
+
+	.lily-cookie-row__num {
+		font-size: 13px;
+		padding-block-start: 0;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-cookie-hero__sub,
+	.lily-cookie-row__text {
+		font-size: 14px;
+	}
+
+	.lily-cookie-row {
+		padding-block: 24px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-cookie-cta__btn {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY Wishlist — scoped only. The heart is a quiet detail over the product
+   image; the Wishlist page reuses the Shop grid/cards untouched.
+   ========================================================================== */
+
+/* Heart button on product cards (logical position mirrors in RTL).
+   Hover: ONLY the heart icon changes color — the button background,
+   border, size and position never react (one behavior everywhere).
+   bg/border are re-declared on hover because Astra's global `button:hover`
+   would otherwise paint its customizer color over this control. */
+.lily-wishlist-btn {
+	position: absolute;
+	inset-block-start: 12px;
+	inset-inline-end: 12px;
+	z-index: 3;
+	display: inline-grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border: 1px solid rgba(51, 28, 22, 0.14);
+	border-radius: 50%;
+	background: rgba(254, 252, 221, 0.92);
+	color: #331C16;
+	cursor: pointer;
+	transition: color 180ms ease;
+}
+
+.lily-wishlist-btn svg {
+	display: block;
+	width: 22px;
+	height: 22px;
+	fill: none;
+	transition:
+		fill 180ms ease,
+		stroke 180ms ease;
+}
+
+button.lily-wishlist-btn:hover {
+	color: #723427;
+	background: rgba(254, 252, 221, 0.92);
+	border-color: rgba(51, 28, 22, 0.14);
+}
+
+.lily-wishlist-btn.is-saved {
+	color: #723427;
+}
+
+.lily-wishlist-btn.is-saved svg {
+	fill: #723427;
+}
+
+.lily-wishlist-btn:focus {
+	outline: none;
+}
+
+.lily-wishlist-btn:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.35);
+	outline-offset: 3px;
+}
+
+/* Wishlist page — quiet editorial continuation of the Shop. */
+.lily-wishlist {
+	background: #FEFCDD;
+	color: #331C16;
+}
+
+.lily-wishlist__masthead {
+	padding-block: clamp(64px, 8vw, 110px) clamp(8px, 2vw, 20px);
+	text-align: center;
+}
+
+.lily-wishlist__masthead-inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.lily-wishlist__title {
+	margin: 0;
+	color: #331C16;
+	font-family: var(--lily-font-accent);
+	font-size: clamp(56px, 7vw, 92px);
+	font-weight: 400;
+	line-height: 0.95;
+	letter-spacing: 0.01em;
+	text-transform: uppercase;
+}
+
+.lily-wishlist__subtitle {
+	margin: 22px 0 0;
+	max-width: 520px;
+	color: #331C16;
+	font-family: var(--lily-font-body);
+	font-size: 15px;
+	line-height: 1.7;
+}
+
+.lily-wishlist__collection {
+	padding-block: clamp(36px, 5vw, 64px) clamp(72px, 9vw, 120px);
+}
+
+.lily-wishlist__count {
+	margin: 0 0 26px;
+	color: #885337;
+	font-family: var(--lily-font-body);
+	font-size: 13px;
+	letter-spacing: 0.06em;
+	line-height: 1.5;
+}
+
+/* Grid reuses .lily-shop-grid columns/gaps/breakpoints — no new spacing. */
+.lily-wishlist__grid {
+	margin: 0;
+}
+
+/* Breadcrumb — quiet, visible only while the empty state is showing so the
+   filled wishlist keeps its original masthead + grid composition untouched. */
+.lily-wishlist__crumbs {
+	display: none;
+	margin: 0;
+	padding-block: clamp(26px, 4vw, 44px) 0;
+	text-align: center;
+	color: #885337;
+	font-family: var(--lily-font-body);
+	font-size: 12.5px;
+	letter-spacing: 0.08em;
+	line-height: 1.5;
+	text-transform: uppercase;
+}
+
+.lily-wishlist__crumbs a {
+	color: inherit;
+	text-decoration: none;
+	transition: color 180ms ease;
+}
+
+.lily-wishlist__crumbs a:hover {
+	color: #723427;
+}
+
+.lily-wishlist__crumbs-sep {
+	margin-inline: 10px;
+	opacity: 0.6;
+}
+
+.lily-wishlist__crumbs [aria-current] {
+	color: #331C16;
+}
+
+.lily-wishlist:has([data-lily-wishlist-empty]:not([hidden])) .lily-wishlist__crumbs {
+	display: block;
+}
+
+.lily-wishlist:has([data-lily-wishlist-empty]:not([hidden])) .lily-wishlist__masthead {
+	display: none;
+}
+
+/* Empty state — full editorial hero. The whitespace IS the design. */
+.lily-wishlist__empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	max-width: 760px;
+	margin-inline: auto;
+	min-height: 62vh;
+	padding-block: clamp(40px, 6vw, 72px);
+	text-align: center;
+}
+
+.lily-wishlist__empty[hidden] {
+	display: none;
+}
+
+.lily-wishlist__eyebrow {
+	margin: 0 0 26px;
+	padding-inline-start: 0.22em;
+	color: #723427;
+	font-family: var(--lily-font-body);
+	font-size: 12.5px;
+	letter-spacing: 0.22em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+.lily-wishlist__empty-title {
+	margin: 0;
+	color: #331C16;
+	font-family: var(--lily-font-accent);
+	font-size: clamp(56px, 6vw, 88px);
+	font-weight: 400;
+	line-height: 0.98;
+	letter-spacing: 0;
+}
+
+.lily-wishlist__empty-text {
+	margin: 24px 0 0;
+	max-width: 640px;
+	color: #331C16;
+	font-family: var(--lily-font-body);
+	font-size: 16px;
+	letter-spacing: 0.01em;
+	line-height: 1.6;
+}
+
+.lily-wishlist__cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 54px;
+	margin-block-start: 40px;
+	padding-inline: 28px;
+	border: 0;
+	border-radius: 8px;
+	background: #885337;
+	color: #FEFCDD;
+	font-family: var(--lily-font-body);
+	font-size: 14px;
+	letter-spacing: 0.06em;
+	line-height: 1;
+	text-decoration: none;
+	text-transform: uppercase;
+	transition: background-color 180ms ease;
+}
+
+.lily-wishlist__cta:hover {
+	background: #4B2E2B;
+	color: #FEFCDD;
+}
+
+.lily-wishlist__cta:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.35);
+	outline-offset: 3px;
+}
+
+.lily-wishlist__cta-arrow {
+	display: inline-block;
+	margin-inline-start: 10px;
+	line-height: 1;
+}
+
+html[dir="rtl"] .lily-wishlist__cta-arrow {
+	transform: scaleX(-1);
+}
+
+@media (max-width: 600px) {
+	.lily-wishlist-btn svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.lily-wishlist__count {
+		margin-block-end: 20px;
+	}
+
+	.lily-wishlist__empty {
+		min-height: 54vh;
+	}
+
+	.lily-wishlist__eyebrow {
+		margin-block-end: 20px;
+	}
+
+	.lily-wishlist__empty-title {
+		font-size: clamp(44px, 13vw, 64px);
+	}
+
+	.lily-wishlist__empty-text {
+		font-size: 15px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-wishlist-btn,
+	.lily-wishlist-btn svg,
+	.lily-wishlist__cta {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   Lily navbar Wishlist shortcut — reuses .lily-cart-link geometry so the
+   action row keeps its exact spacing. Quiet count badge, hidden when empty.
+   ========================================================================== */
+
+.lily-wishlist-link {
+	transition:
+		background-color 180ms ease,
+		color 180ms ease;
+}
+
+.lily-wishlist-link:hover {
+	color: #885337;
+}
+
+.lily-wishlist-link:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.35);
+	outline-offset: 3px;
+}
+
+/* Author display would otherwise override the hidden attribute. */
+.lily-wishlist-count[hidden] {
+	display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-wishlist-link {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   Lily product badges — ONE warm-brown badge system for both states.
+   BEST SELLER comes from the product's dashboard flag (Lily Product Flags
+   metabox); SALE from WooCommerce's native sale state. Identical design for
+   both (same background, text, font, size, radius, padding) — only the
+   label differs. Stacked top-left in that exact order; the wishlist heart
+   stays top-right.
+   ========================================================================== */
+
+.lily-product-card__badges {
+	position: absolute;
+	inset-block-start: 14px;
+	inset-inline-start: 14px;
+	/* Above the image link (z-index 2); the wishlist heart stays on top. */
+	z-index: 3;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+	pointer-events: none;
+}
+
+.lily-sale-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 6px 12px;
+	border-radius: var(--lily-pill);
+	background: #885337;
+	color: #FEFCDD;
+	font-family: var(--lily-font-body);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+	.lily-product-card__badges {
+		inset-block-start: 10px;
+		inset-inline-start: 10px;
+		gap: 5px;
+	}
+
+	.lily-sale-badge {
+		padding: 5px 10px;
+		font-size: 10px;
+	}
+}
+
+/* ==========================================================================
+   Lily cart coupon — native WooCommerce apply/remove flow, quiet styling.
+   Only ever shows one state: the entry field OR the single active coupon.
+   ========================================================================== */
+
+.lily-cart-coupon {
+	margin-block-start: 20px;
+}
+
+.lily-cart-coupon__label {
+	display: block;
+	margin: 0 0 10px;
+	color: #885337;
+	font-family: var(--lily-font-body);
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+.lily-cart-coupon__row {
+	display: flex;
+	gap: 10px;
+	margin: 0;
+}
+
+.lily-cart-coupon__input {
+	flex: 1 1 auto;
+	min-width: 0;
+	min-height: 50px;
+	padding: 0 14px;
+	border: 1px solid rgba(136, 83, 55, 0.38);
+	border-radius: 10px;
+	background: rgba(254, 252, 221, 0.62);
 	color: var(--lily-dark-brown);
+	font-family: inherit;
+	font-size: 0.95rem;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.lily-cart-coupon__input:focus {
+	outline: none;
+	border-color: #885337;
+	box-shadow: 0 0 0 3px rgba(136, 83, 55, 0.14);
+}
+
+.lily-cart-coupon__apply {
+	flex-shrink: 0;
+	min-height: 50px;
+	padding: 0 22px;
+	border: 1px solid rgba(136, 83, 55, 0.55);
+	border-radius: 10px;
+	background: transparent;
+	color: var(--lily-dark-brown);
+	font-family: inherit;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition:
+		border-color 180ms ease,
+		color 180ms ease;
+}
+
+.lily-cart-coupon__apply:hover {
+	border-color: #723427;
+	color: #723427;
+}
+
+.lily-cart-coupon__apply:focus-visible,
+.lily-cart-coupon__remove:focus-visible {
+	outline: 2px solid rgba(114, 52, 39, 0.35);
+	outline-offset: 3px;
+}
+
+.lily-cart-coupon__applied {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px 12px;
+	margin: 0;
+	padding: 14px 16px;
+	border: 1px solid rgba(136, 83, 55, 0.25);
+	border-radius: 10px;
+}
+
+.lily-cart-coupon__code {
+	color: #331C16;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.lily-cart-coupon__ok {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	color: #723427;
+	font-size: 13px;
+}
+
+.lily-cart-coupon__remove {
+	margin-inline-start: auto;
+	color: #331C16;
+	font-size: 13px;
+	text-decoration: underline;
+	text-decoration-color: rgba(51, 28, 22, 0.4);
+	text-underline-offset: 3px;
+}
+
+.lily-cart-coupon__remove:hover {
+	color: #885337;
+}
+
+@media (max-width: 600px) {
+	.lily-cart-coupon__apply {
+		padding-inline: 16px;
+	}
+}
+
+/* ==========================================================================
+   LILY — Single Product accordions + Product Reviews
+   Scoped to .lily-sp-accordions / .lily-reviews only.
+   Editorial: cream base, hairlines, whitespace. No cards, no shadows,
+   no gradients, no blue anywhere. Logical properties throughout (RTL-safe).
+   Global header, footer, gallery, cart, shop and homepage styles untouched.
+   ========================================================================== */
+
+.lily-sp-accordions {
+	min-inline-size: 0;
+	max-inline-size: 100%;
+}
+
+.lily-sp-acc__item {
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+	min-inline-size: 0;
+}
+
+.lily-sp-acc__item:last-child {
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-sp-acc__h {
+	margin: 0;
+	font-size: inherit;
+	font-weight: 400;
+}
+
+.lily-sp-acc__q {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	inline-size: 100%;
+	padding-block: 22px;
+	padding-inline: 0;
+	border: 0;
+	background: transparent;
+	background-image: none;
+	color: #331C16;
+	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 0.92rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-align: start;
+	text-transform: uppercase;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	transition: color 200ms ease;
+}
+
+/* Calm cream interaction states — never blue, never tinted, never lifted.
+   High scope neutralises inherited theme/browser button styling, including
+   the sticky :focus fill left behind after a mouse click. Keyboard users
+   keep the deep-brown :focus-visible ring defined below. */
+html body .lily-sp-acc__q:hover,
+html body .lily-sp-acc__q:focus,
+html body .lily-sp-acc__q:active {
+	background: #FEFCDD;
+	background-image: none;
+	border-color: transparent;
+	box-shadow: none;
+	color: #331C16;
+	-webkit-tap-highlight-color: transparent;
+}
+
+html body .lily-sp-acc__q:focus:not(:focus-visible) {
+	outline: none;
+}
+
+.lily-sp-acc__q:focus-visible {
+	outline: 2px solid #723427;
+	outline-offset: 3px;
+}
+
+.lily-sp-acc__label {
+	min-inline-size: 0;
+}
+
+/* Minimal plus/minus control — no circle, no box. */
+.lily-sp-acc__icon {
+	position: relative;
+	flex-shrink: 0;
+	inline-size: 14px;
+	block-size: 14px;
+}
+
+.lily-sp-acc__icon::before,
+.lily-sp-acc__icon::after {
+	content: "";
+	position: absolute;
+	inset-inline: 0;
+	inset-block-start: 50%;
+	block-size: 1.5px;
+	background: #885337;
+	translate: 0 -50%;
+	transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.lily-sp-acc__icon::after {
+	rotate: 90deg;
+}
+
+.lily-sp-acc__item.is-open .lily-sp-acc__icon::after {
+	opacity: 0;
+	transform: scaleY(0);
+}
+
+html body .lily-sp-acc__q:hover .lily-sp-acc__icon::before,
+html body .lily-sp-acc__q:hover .lily-sp-acc__icon::after,
+html body .lily-sp-acc__q:focus .lily-sp-acc__icon::before,
+html body .lily-sp-acc__q:focus .lily-sp-acc__icon::after,
+html body .lily-sp-acc__q:active .lily-sp-acc__icon::before,
+html body .lily-sp-acc__q:active .lily-sp-acc__icon::after {
+	background: #885337;
+}
+
+/* Smooth expand/collapse — height and opacity only (180–220ms ease). */
+.lily-sp-acc__collapse {
+	display: grid;
+	grid-template-rows: 0fr;
+	opacity: 0;
+	visibility: hidden;
+	transition: grid-template-rows 200ms ease, opacity 200ms ease, visibility 200ms ease;
+}
+
+.lily-sp-acc__item.is-open .lily-sp-acc__collapse {
+	grid-template-rows: 1fr;
+	opacity: 1;
+	visibility: visible;
+}
+
+.lily-sp-acc__inner {
+	overflow: hidden;
+	min-block-size: 0;
+	min-inline-size: 0;
+}
+
+.lily-sp-acc__inner .lily-sp-details__content {
+	padding-block-end: 26px;
+}
+
+/* ── Reviews editorial layout ─────────────────────────────────────── */
+
+.lily-reviews {
+	padding-block: 30px 8px;
+	color: #331C16;
+	min-inline-size: 0;
+	max-inline-size: 100%;
+	overflow-x: clip;
+}
+
+.lily-reviews__head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.lily-reviews__titles {
+	min-inline-size: 0;
+}
+
+.lily-reviews__title {
+	margin: 0;
+	color: #331C16;
+	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-size: 0.92rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+.lily-reviews__sub {
+	margin: 8px 0 0;
+	color: rgba(51, 28, 22, 0.66);
+	font-size: 0.94rem;
+	line-height: 1.6;
+}
+
+/* Lily button system: warm brown base, espresso hover, no shadow. */
+.lily-reviews__write,
+.lily-reviews__submit {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-block-size: 54px;
+	padding-block: 14px;
+	padding-inline: 28px;
+	border: 0;
+	border-radius: 8px;
+	background: #885337;
+	color: #FEFCDD;
+	font-family: inherit;
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	line-height: 1.4;
+	text-transform: uppercase;
+	text-decoration: none;
+	box-shadow: none;
+	cursor: pointer;
+	transition: background-color 200ms ease, color 200ms ease;
+}
+
+html body .lily-reviews__write:hover,
+html body .lily-reviews__submit:hover {
+	background: #4B2E2B;
+	background-image: none;
+	border-color: transparent;
+	box-shadow: none;
+	color: #FEFCDD;
+}
+
+html body .lily-reviews__write:focus:not(:focus-visible),
+html body .lily-reviews__submit:focus:not(:focus-visible) {
+	outline: none;
+}
+
+.lily-reviews__write:focus-visible,
+.lily-reviews__submit:focus-visible {
+	outline: 2px solid #723427;
+	outline-offset: 3px;
+}
+
+.lily-reviews__notice {
+	margin: 22px 0 0;
+	padding-block: 12px;
+	padding-inline: 16px;
+	border: 1px solid rgba(51, 28, 22, 0.14);
+	border-inline-start: 3px solid #AC7D61;
+	border-radius: 8px;
+	background: rgba(254, 252, 221, 0.35);
+	color: #331C16;
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+/* Rating summary — editorial, never inside a card. */
+.lily-reviews__summary {
+	display: flex;
+	align-items: center;
+	gap: 18px;
+	margin-block-start: 26px;
+	padding-block-end: 26px;
+	border-block-end: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-reviews__avg {
+	color: #331C16;
+	font-size: clamp(2.6rem, 4vw, 3.2rem);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: -0.01em;
+}
+
+.lily-reviews__summary-stars {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-inline-size: 0;
+}
+
+.lily-reviews__stars {
+	color: #885337;
+	font-size: 1.05rem;
+	letter-spacing: 0.14em;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.lily-reviews__count {
+	color: rgba(51, 28, 22, 0.66);
+	font-size: 0.86rem;
+	line-height: 1.5;
+}
+
+/* Individual reviews — hairline separators only. */
+.lily-reviews__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.lily-reviews__item {
+	padding-block: 24px;
+	min-inline-size: 0;
+}
+
+.lily-reviews__item + .lily-reviews__item {
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-reviews__meta {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 12px 20px;
+	flex-wrap: wrap;
+}
+
+.lily-reviews__author {
+	color: #331C16;
+	font-size: 0.95rem;
+	font-weight: 600;
+	line-height: 1.5;
+	overflow-wrap: break-word;
+}
+
+.lily-reviews__date {
+	flex-shrink: 0;
+	color: rgba(51, 28, 22, 0.6);
+	font-size: 0.84rem;
+	line-height: 1.5;
+}
+
+.lily-reviews__verified {
+	margin: 6px 0 0;
+	color: #723427;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	line-height: 1.5;
+}
+
+.lily-reviews__rating {
+	margin-block-start: 8px;
+}
+
+.lily-reviews__rating .lily-reviews__stars {
+	font-size: 0.95rem;
+}
+
+.lily-reviews__text {
+	margin-block-start: 10px;
+	max-inline-size: 68ch;
+	color: #331C16;
+	font-size: 0.95rem;
+	line-height: 1.75;
+	overflow-wrap: break-word;
+}
+
+.lily-reviews__text p {
+	margin: 0 0 0.8em;
+}
+
+.lily-reviews__text p:last-child {
+	margin-block-end: 0;
+}
+
+/* Review photos — small editorial thumbnails, no shadow. */
+.lily-reviews__photos {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	list-style: none;
+	margin: 14px 0 0;
+	padding: 0;
+}
+
+.lily-reviews__photo {
+	display: block;
+	inline-size: 80px;
+	block-size: 80px;
+	padding: 0;
+	border: 1px solid rgba(51, 28, 22, 0.12);
+	border-radius: 8px;
+	background: rgba(254, 252, 221, 0.3);
+	overflow: hidden;
+	cursor: pointer;
+	transition: border-color 200ms ease;
+}
+
+html body .lily-reviews__photo:hover,
+html body .lily-reviews__photo:focus,
+html body .lily-reviews__photo:active {
+	background: rgba(254, 252, 221, 0.3);
+	background-image: none;
+	border-color: #885337;
+	box-shadow: none;
+}
+
+html body .lily-reviews__photo:focus:not(:focus-visible) {
+	outline: none;
+}
+
+.lily-reviews__photo:focus-visible {
+	outline: 2px solid #723427;
+	outline-offset: 3px;
+}
+
+.lily-reviews__photo img {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+	object-fit: cover;
+}
+
+/* Empty state — calm and compact. */
+.lily-reviews__empty {
+	margin-block-start: 24px;
+	padding-block: 26px;
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+}
+
+.lily-reviews__empty-title {
+	margin: 0;
+	color: #331C16;
+	font-size: 1.05rem;
+	font-weight: 600;
+}
+
+.lily-reviews__empty-sub {
+	margin: 8px 0 20px;
+	color: rgba(51, 28, 22, 0.66);
+	font-size: 0.94rem;
+	line-height: 1.6;
+}
+
+/* ── Review form ──────────────────────────────────────────────────── */
+
+.lily-review-formwrap {
+	margin-block-start: 28px;
+	padding-block-start: 28px;
+	border-block-start: 1px solid rgba(51, 28, 22, 0.14);
+	min-inline-size: 0;
+}
+
+.lily-review-formwrap[hidden] {
+	display: none;
+}
+
+.lily-review-form__title {
+	margin: 0 0 20px;
+	color: #331C16;
+	font-size: 0.92rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.lily-review-form__row {
+	margin: 0 0 18px;
+	min-inline-size: 0;
+}
+
+.lily-review-form__row label,
+.lily-review-form__rating legend {
+	display: block;
+	margin-block-end: 8px;
+	color: rgba(51, 28, 22, 0.7);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.lily-review-form__rating {
+	border: 0;
+	padding: 0;
+}
+
+.lily-review-form__stars {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.lily-review-form__stars label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding-block: 10px;
+	padding-inline: 14px;
+	border: 1px solid rgba(136, 83, 55, 0.35);
+	border-radius: 8px;
+	background: rgba(254, 252, 221, 0.35);
+	color: rgba(51, 28, 22, 0.72);
+	font-size: 0.9rem;
+	font-weight: 400;
+	letter-spacing: 0.1em;
+	text-transform: none;
+	cursor: pointer;
+	transition: border-color 200ms ease;
+}
+
+.lily-review-form__stars label:hover {
+	border-color: #885337;
+}
+
+.lily-review-form__stars input {
+	position: absolute;
+	opacity: 0;
+	inline-size: 1px;
+	block-size: 1px;
+}
+
+.lily-review-form__stars input:checked + span {
+	color: #885337;
+}
+
+.lily-review-form__stars label:has(input:checked) {
+	border-color: #723427;
+}
+
+.lily-review-form__stars input:focus-visible + span {
+	outline: 2px solid #723427;
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
+.lily-review-form textarea,
+.lily-review-form input[type="text"],
+.lily-review-form input[type="email"] {
+	inline-size: 100%;
+	max-inline-size: 100%;
+	min-block-size: 52px;
+	padding-block: 12px;
+	padding-inline: 16px;
+	border: 1px solid rgba(136, 83, 55, 0.4);
+	border-radius: 10px;
+	background: rgba(254, 252, 221, 0.45);
+	color: #331C16;
+	font-family: inherit;
+	font-size: 0.95rem;
+	line-height: 1.5;
+	box-shadow: none;
+}
+
+.lily-review-form textarea {
+	min-block-size: 130px;
+	resize: vertical;
+}
+
+.lily-review-form input[type="file"] {
+	inline-size: 100%;
+	max-inline-size: 100%;
+	color: #331C16;
+	font-family: inherit;
+	font-size: 0.9rem;
+}
+
+html body .lily-review-form textarea:hover,
+html body .lily-review-form input[type="text"]:hover,
+html body .lily-review-form input[type="email"]:hover {
+	border-color: rgba(136, 83, 55, 0.6);
+}
+
+.lily-review-form textarea:focus,
+.lily-review-form input[type="text"]:focus,
+.lily-review-form input[type="email"]:focus,
+.lily-review-form textarea:focus-visible,
+.lily-review-form input[type="text"]:focus-visible,
+.lily-review-form input[type="email"]:focus-visible {
+	outline: none;
+	border-color: #723427;
+	box-shadow: 0 0 0 3px rgba(114, 52, 39, 0.16);
+}
+
+.lily-review-form input[type="file"]:focus-visible {
+	outline: 2px solid #723427;
+	outline-offset: 3px;
+}
+
+.lily-review-form__hint {
+	display: block;
+	margin-block-start: 8px;
+	color: rgba(51, 28, 22, 0.6);
+	font-size: 0.82rem;
+	line-height: 1.5;
+	text-transform: none;
+	letter-spacing: 0;
+	font-weight: 400;
+}
+
+.lily-review-form__row--submit {
+	margin-block: 24px 0;
+}
+
+.lily-review-form__note {
+	margin: 12px 0 0;
+	color: rgba(51, 28, 22, 0.6);
+	font-size: 0.84rem;
+	line-height: 1.6;
+}
+
+/* ── Lightweight photo lightbox (no dependency) ───────────────────── */
+
+.lily-review-lightbox[hidden] {
+	display: none;
+}
+
+.lily-review-lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 99990;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+}
+
+.lily-review-lightbox__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(51, 28, 22, 0.72);
+}
+
+.lily-review-lightbox__figure {
+	position: relative;
+	margin: 0;
+	max-inline-size: min(880px, 100%);
+}
+
+.lily-review-lightbox__figure img {
+	display: block;
+	inline-size: auto;
+	max-inline-size: min(880px, calc(100vw - 48px));
+	max-block-size: calc(100vh - 120px);
+	border-radius: 10px;
+	background: #FEFCDD;
+	object-fit: contain;
+}
+
+.lily-review-lightbox__close {
+	position: absolute;
+	inset-block-start: -14px;
+	inset-inline-end: -14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	inline-size: 40px;
+	block-size: 40px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: #FEFCDD;
+	color: #331C16;
+	font-size: 1.4rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.lily-review-lightbox__close:hover {
+	background: #4B2E2B;
+	color: #FEFCDD;
+}
+
+.lily-review-lightbox__close:focus-visible {
+	outline: 2px solid #FEFCDD;
+	outline-offset: 3px;
+}
+
+/* ── Reviews responsive ───────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+	.lily-reviews__head {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.lily-reviews__write {
+		align-self: flex-start;
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-sp-acc__q {
+		padding-block: 19px;
+		font-size: 0.85rem;
+	}
+
+	.lily-reviews {
+		padding-block-start: 24px;
+	}
+
+	.lily-reviews__write,
+	.lily-reviews__submit {
+		inline-size: 100%;
+	}
+
+	.lily-reviews__summary {
+		gap: 14px;
+	}
+
+	.lily-reviews__avg {
+		font-size: 2.4rem;
+	}
+
+	.lily-reviews__photo {
+		inline-size: 68px;
+		block-size: 68px;
+	}
+
+	.lily-reviews__meta {
+		flex-direction: column;
+		gap: 2px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-sp-acc__q,
+	.lily-sp-acc__icon::before,
+	.lily-sp-acc__icon::after,
+	.lily-sp-acc__collapse,
+	.lily-reviews__write,
+	.lily-reviews__submit,
+	.lily-reviews__photo,
+	.lily-review-form__stars label {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — Single Product reference composition
+   Scoped to .lily-single-product only. One calm continuous page on #FEFCDD:
+   global container alignment, 56/44 hero, rail gallery, hairline lens
+   information, full-width accordions, independent You May Also Like.
+   No new backgrounds, no shadows, no gradients, no blue. Logical
+   properties throughout (RTL mirrors naturally).
+   ========================================================================== */
+
+/* ── Hero composition: gallery 56 / information 44 ─────────────────── */
+.lily-single-product .lily-sp-main {
+	grid-template-columns: 56fr 44fr;
+	gap: clamp(24px, 4vw, 56px);
+	align-items: start;
+}
+
+/* ── Gallery: vertical thumbnail rail + dominant main image ────────── */
+.lily-single-product .lily-sp-gallery {
+	display: grid;
+	grid-template-columns: 76px minmax(0, 1fr);
+	gap: 14px;
+	align-items: start;
+}
+
+/* Gallery main image area: calm rounded editorial card on the Lily cream
+   field — 22px radius matches the card system, object-fit contain never
+   crops, soft official-color shadow only (no borders, no harsh contrast). */
+.lily-single-product .lily-sp-gallery__main {
+	border-radius: var(--lily-radius-lg);
+	background: var(--lily-surface);
+	box-shadow: var(--lily-shadow-sm);
+}
+
+.lily-single-product .lily-sp-gallery__thumbs {
+	flex-direction: column;
+	margin-block-start: 0;
+	max-block-size: 640px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+/* ── Lens information: hairline rows, no boxes ─────────────────────── */
+.lily-single-product .lily-sp-specs-grid {
+	gap: 0 clamp(20px, 3vw, 40px);
+}
+
+.lily-single-product .lily-sp-spec-row {
+	border: 0;
+	border-block-start: 1px solid rgba(51, 28, 22, 0.12);
+	border-radius: 0;
+	background: transparent;
+	padding-block: 12px;
+	padding-inline: 0;
+}
+
+/* ── Quantity + large Add to Cart share one row ────────────────────── */
+.lily-single-product .lily-sp-cart-area button.single_add_to_cart_button {
+	min-block-size: 50px;
+}
+
+/* ── Add to Wishlist: quiet secondary row reusing the shared heart ─── */
+.lily-sp-wishlist {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-block: 16px 4px;
+	color: #331C16;
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.lily-sp-wishlist .lily-wishlist-btn {
+	position: static;
+	inset: auto;
+	inline-size: 34px;
+	block-size: 34px;
+	color: #885337;
+	opacity: 1;
+}
+
+.lily-sp-wishlist .lily-wishlist-btn:hover {
+	color: #723427;
+	opacity: 1;
+}
+
+.lily-sp-wishlist__text--saved {
+	display: none;
+}
+
+.lily-sp-wishlist .lily-wishlist-btn.is-saved ~ .lily-sp-wishlist__text--default {
+	display: none;
+}
+
+.lily-sp-wishlist .lily-wishlist-btn.is-saved ~ .lily-sp-wishlist__text--saved {
+	display: inline;
+}
+
+/* ── Accordions: full container width below the hero ───────────────── */
+.lily-single-product .lily-sp-accordions {
+	margin-block-start: clamp(48px, 6vw, 80px);
+}
+
+/* ── Reviews: full content width (never beside related) ────────────── */
+.lily-single-product .lily-reviews__head {
+	align-items: center;
+}
+
+.lily-single-product .lily-reviews__write {
+	margin-inline-start: auto;
+}
+
+/* ── You May Also Like: independent section on cream ───────────────── */
+.lily-sp-related {
+	margin-block-start: clamp(100px, 10vw, 140px);
+	padding-block-end: clamp(64px, 8vw, 110px);
+	min-inline-size: 0;
+}
+
+.lily-sp-related__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	margin-block-end: clamp(24px, 3vw, 36px);
+}
+
+.lily-sp-related__title {
+	margin: 0;
+}
+
+html body .lily-sp-related__all {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+	color: #885337;
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: color 200ms ease;
+}
+
+html body .lily-sp-related__all:hover,
+html body .lily-sp-related__all:focus,
+html body .lily-sp-related__all:active {
+	background: transparent;
+	background-image: none;
+	border-color: transparent;
+	box-shadow: none;
+	color: #723427;
+	-webkit-tap-highlight-color: transparent;
+}
+
+html body .lily-sp-related__all:focus:not(:focus-visible) {
+	outline: none;
+}
+
+.lily-sp-related__all:focus-visible {
+	outline: 2px solid #723427;
+	outline-offset: 3px;
+}
+
+.lily-sp-related__all-arrow {
+	display: inline-block;
+	line-height: 1;
+}
+
+.lily-single-product .lily-sp-related__grid {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* ── Single product responsive ─────────────────────────────────────── */
+@media (max-width: 1023px) {
+	.lily-single-product .lily-sp-related__grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 900px) {
+	.lily-single-product .lily-sp-main {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lily-single-product .lily-sp-gallery {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lily-single-product .lily-sp-gallery__main {
+		order: -1;
+	}
+
+	.lily-single-product .lily-sp-gallery__thumbs {
+		flex-direction: row;
+		max-block-size: none;
+		overflow-x: auto;
+		overflow-y: hidden;
+	}
+
+	.lily-sp-related {
+		margin-block-start: clamp(72px, 12vw, 100px);
+	}
+}
+
+@media (max-width: 600px) {
+	.lily-single-product .lily-sp-related__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.lily-sp-related__head {
+		gap: 14px;
+	}
+
+	/* Service benefits wrap into a calm single column on small screens. */
+	.lily-sp-services {
+		grid-template-columns: 1fr;
+		gap: 14px;
+	}
+
+	.lily-rx__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-sp-related__all,
+	.lily-sp-wishlist .lily-wishlist-btn {
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   LILY — Typography hierarchy normalization (CSS only)
+   Measured imbalances only: on product cards the price rendered heavier
+   than the product name at the same size. Names now lead; prices stay
+   clearly readable one step below. Nothing else changes — same families,
+   sizes, colors, spacing and layout; weights stay within the file's
+   existing 400/500/600 vocabulary. No letter-spacing or casing changes,
+   so Arabic/RTL rendering is unaffected.
+   ========================================================================== */
+
+/* Product-card hierarchy (name 600 > price 500 > metadata 500) now lives
+   in the master card component block — no page-specific overrides here. */
+
+/* ==========================================================================
+   LILY — Typography hierarchy rebalance, pass 2 (CSS only)
+   The previous pass (3 rules) was visually indistinguishable. This pass
+   rebalances every hierarchy level so eyebrow → heading → description and
+   name → price → metadata read clearly at normal viewing distance.
+   Levers used, per level: declared font weights only (400/500/600 —
+   the file's existing vocabulary, within the @font-face 100–900 range;
+   no new 700+ synthetic bolds, no new faces), modest small-text sizes,
+   line-height, and alpha-opacity lifts on already-translucent text.
+   Untouched: layout, spacing, sizes of sections/containers, palette hues,
+   backgrounds, borders, buttons, families, letter-spacing, casing and
+   text-transform (Arabic/RTL rendering unaffected).
+   ========================================================================== */
+
+/* — Headings lead everywhere (display-accent faces keep their explicit
+   400; everything on the body/display grotesque steps 550 → 600). — */
+html h1,
+html h2,
+html h3,
+html h4 {
+	font-weight: 600;
+}
+
+/* — Homepage section descriptions: comfortably readable (500) yet still
+   secondary to the 600 headings above them (size + muted tone unchanged). — */
+.lily-section-heading p {
+	font-weight: 500;
+}
+
+.lily-collections .lily-section-heading p,
+.lily-colors .lily-section-heading p,
+.lily-best-sellers .lily-section-heading p {
+	font-weight: 500;
+}
+
+/* — Hero: eyebrow and title untouched (subtle / strongest by design);
+   the description steps 400 → 500 with a breath of line-height. — */
+.lily-hero__description {
+	font-weight: 500;
+	line-height: 1.65;
+}
+
+/* — Section eyebrows stay tiny and quiet, but no longer disappear. — */
+.lily-collections__eyebrow,
+.lily-colors__eyebrow,
+.lily-best-sellers__eyebrow,
+.lily-lens-finder__intro p.lily-lens-finder__eyebrow {
+	font-weight: 500;
+}
+
+/* — Collection / color index labels and text CTA links. — */
+.lily-collection-card h3,
+.lily-color-card .lily-color-card__label {
+	font-weight: 500;
+}
+
+.lily-collections__cta,
+.lily-best-sellers__cta {
+	font-weight: 500;
+}
+
+/* — Navbar: one step up at the same size (desktop + mobile inherit). — */
+html .lily-primary-nav .lily-nav-link {
+	font-weight: 500;
+}
+
+.lily-mega__cat,
+.lily-mega__links a {
+	font-weight: 500;
+}
+
+/* — Lens Finder on espresso: description + titles lead, quiet text lifts. — */
+.lily-lens-finder__intro p.lily-lens-finder__description {
+	font-weight: 500;
+}
+
+.lily-lens-finder__benefit-title,
+.lily-lens-finder__step-title {
+	font-weight: 600;
+}
+
+.lily-lens-finder__benefit-text,
+.lily-lens-finder__step-text,
+.lily-lens-finder__intro p.lily-lens-finder__support {
+	color: rgba(254, 252, 221, 0.9);
+}
+
+.lily-lens-finder__panel > p {
+	font-weight: 500;
+}
+
+/* — Product cards: name (600) > price (500) > metadata (500) live in the
+   master card component block. — */
+
+/* — Single product: title leads; price steps 700 → 600, still dominant. — */
+.lily-sp-price {
+	font-weight: 600;
+}
+
+.lily-sp-spec-row dd {
+	font-weight: 500;
+}
+
+/* — Shop chrome: labels, links, counts and hints. — */
+.lily-shop__description {
+	color: rgba(51, 28, 22, 0.84);
+	font-weight: 500;
+}
+
+.lily-shop__cat,
+.lily-filter-row {
+	font-weight: 500;
+}
+
+.lily-filter-row.is-checked {
+	font-weight: 500;
+}
+
+.lily-filter-panel__title,
+.lily-shop-acc__summary {
+	font-weight: 600;
+}
+
+.lily-shop-toolbar__filter-label,
+.lily-sort-form__label {
+	font-weight: 500;
+}
+
+.lily-shop-count {
+	color: rgba(51, 28, 22, 0.78);
+}
+
+.lily-shop-clear-one {
+	color: rgba(51, 28, 22, 0.8);
+}
+
+.lily-price-hint {
+	color: rgba(136, 83, 55, 0.85);
+}
+
+.lily-lens-review dt {
+	font-weight: 500;
+}
+
+/* — Footer on espresso: same hues, lifted translucency; links also 500.
+   Brand (display face) stays strongest; headings clear; links readable;
+   supporting text quieter but legible. — */
+.lily-footer-since {
+	color: rgba(254, 252, 221, 0.72);
+}
+
+.lily-footer-brand p {
+	color: rgba(254, 252, 221, 0.82);
+}
+
+.lily-footer-menu h2 {
+	color: rgba(254, 252, 221, 0.78);
+}
+
+.lily-footer-menu a {
+	color: rgba(254, 252, 221, 0.93);
+	font-weight: 500;
+}
+
+.lily-footer-placeholder {
+	color: rgba(254, 252, 221, 0.68);
+}
+
+.lily-copyright,
+.lily-footer-note {
+	color: rgba(254, 252, 221, 0.75);
+}
+
+.lily-footer-number {
+	color: rgba(254, 252, 221, 0.9);
+}
+
+.lily-footer-brand .lily-footer-cta {
+	font-weight: 500;
+}
+
+.lily-site-footer .lily-language-switcher {
+	color: rgba(254, 252, 221, 0.92);
+}
+
+/* — Forms, helpers and quiet metadata: same hues, lifted for legibility. — */
+html body.woocommerce-checkout .form-row label {
+	color: rgba(51, 28, 22, 0.8);
+}
+
+html body.woocommerce-checkout .form-row .input-text::placeholder {
+	color: rgba(51, 28, 22, 0.55);
+}
+
+.lily-checkout__login-note,
+.lily-order-area {
+	color: rgba(51, 28, 22, 0.8);
+}
+
+html body.woocommerce-checkout #payment div.payment_box {
+	color: rgba(51, 28, 22, 0.78);
+}
+
+.lily-contact-form label {
+	color: rgba(51, 28, 22, 0.8);
+}
+
+.lily-form-note,
+.lily-faq__more {
+	color: rgba(51, 28, 22, 0.8);
+}
+
+.lily-faq__answer {
+	color: rgba(51, 28, 22, 0.92);
+}
+
+.lily-page-intro {
+	color: rgba(51, 28, 22, 0.9);
+}
+
+.lily-page-content em {
+	color: rgba(51, 28, 22, 0.7);
+}
+
+.lily-review-form__row label,
+.lily-review-form__rating legend {
+	color: rgba(51, 28, 22, 0.82);
+}
+
+.lily-review-form__stars label {
+	color: rgba(51, 28, 22, 0.82);
+}
+
+.lily-review-form__hint {
+	color: rgba(51, 28, 22, 0.75);
+}
+
+.lily-reviews__count {
+	color: rgba(51, 28, 22, 0.8);
+}
+
+.lily-reviews__date {
+	color: rgba(51, 28, 22, 0.75);
+}
+
+/* — Mobile: 11px color labels step to 12px (weight inherits 500). — */
+@media (max-width: 600px) {
+	.lily-color-card .lily-color-card__label {
+		font-size: 12px;
+	}
+}
+
+/* ==========================================================================
+   Out of Stock product state (canonical is_in_stock).
+   The card button becomes a non-interactive unavailable state in the same
+   Lily button design; the details page shows the shared badge next to the
+   price. No other behavior or styling changes anywhere.
+   ========================================================================== */
+
+.lily-product-card__cart--outofstock {
+	opacity: 0.55;
+	pointer-events: none;
+	cursor: default;
+	user-select: none;
+}
+
+.lily-sp-stock-badge {
+	margin-inline-start: 10px;
+	vertical-align: middle;
+}
+
+/* ==========================================================================
+   Product page — Lens Details (3-column grid) + Perfect Match section +
+   step-based HOW TO USE list. Pure layout refinements in the existing
+   design system; logical properties keep RTL mirroring automatic.
+   ========================================================================== */
+
+.lily-sp-specs-grid--3 {
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px 22px;
+}
+
+.lily-sp-perfect {
+	margin-block-end: 20px;
+	padding-block-start: 22px;
+	border-block-start: 1px solid var(--lily-line);
+}
+
+.lily-sp-perfect__rows {
+	display: grid;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+}
+
+.lily-sp-perfect__row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 11px 14px;
+	background: rgba(168, 145, 111, 0.07);
+	border-radius: 10px;
+}
+
+.lily-sp-perfect__row dt {
+	margin: 0;
+	color: var(--lily-dark-brown);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.lily-sp-perfect__row dd {
+	margin: 0;
+	color: var(--lily-muted);
+	font-size: 0.88rem;
+	text-align: end;
+}
+
+.lily-sp-howto-steps {
+	margin: 0;
+	padding-inline-start: 22px;
+	display: grid;
+	gap: 10px;
+}
+
+.lily-sp-howto-steps li {
+	padding-inline-start: 4px;
+	color: var(--lily-muted);
+	font-size: 0.92rem;
+	line-height: 1.6;
+}
+
+.lily-sp-howto-steps li::marker {
+	color: var(--lily-dark-brown);
+	font-weight: 700;
+}
+
+@media (max-width: 720px) {
+	.lily-sp-specs-grid--3 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.lily-sp-perfect__row {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+	}
+
+	.lily-sp-perfect__row dd {
+		text-align: start;
+	}
+}
+
+/* ==========================================================================
+   Footer "Follow Us" — icon-only social row. Inherits footer typography and
+   palette; logical properties keep RTL mirroring automatic.
+   ========================================================================== */
+
+.lily-footer-social ul {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lily-footer-social li {
+	margin: 0;
+}
+
+.lily-footer-social a {
+	display: inline-grid;
+	place-items: center;
+	width: 38px;
+	height: 38px;
+	border: 1px solid rgba(254, 252, 221, 0.25);
+	border-radius: 50%;
+	color: rgba(254, 252, 221, 0.75);
+	background: transparent;
+	transition:
+		color 180ms ease,
+		border-color 180ms ease,
+		background-color 180ms ease;
+}
+
+.lily-footer-social a:hover {
+	color: #FEFCDD;
+	border-color: rgba(254, 252, 221, 0.6);
+	background: rgba(254, 252, 221, 0.08);
+}
+
+.lily-footer-social a:focus {
+	outline: none;
+}
+
+.lily-footer-social a:focus-visible {
+	outline: 2px solid rgba(254, 252, 221, 0.6);
+	outline-offset: 3px;
+}
+
+.lily-footer-social svg {
+	display: block;
+	width: 18px;
+	height: 18px;
+	fill: currentColor;
+}
+
+/* Icon links never inherit the footer text-link slide/padding. */
+.lily-footer-social a,
+.lily-footer-social a:hover {
+	padding: 0;
+	padding-inline-start: 0;
 }

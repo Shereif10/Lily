@@ -43,7 +43,12 @@ html[dir="rtl"] .lily-footer-menu h2 {
 
 /* Prescription power selects: mirror the chevron arrow */
 html[dir="rtl"] .lily-rx__select {
-	background-position: left center;
+	background-position: left 12px center;
+}
+
+/* Variation selects: chevron follows the reading direction (end side) */
+html[dir="rtl"] .lily-sp-cart-area .variations select {
+	background-position: left 14px center;
 }
 
 html[dir="rtl"] .lily-dropdown__title,
@@ -97,4 +102,224 @@ html[dir="rtl"] .lily-shop-pill {
 html[dir="rtl"] .lily-sort-form select {
 	background-position: left 14px center;
 	padding: 8px 14px 8px 34px;
+}
+
+/* Wishlist: Arabic script must not be letter-spaced or uppercased */
+html[dir="rtl"] .lily-wishlist__title,
+html[dir="rtl"] .lily-wishlist__empty-title,
+html[dir="rtl"] .lily-wishlist__count,
+html[dir="rtl"] .lily-wishlist__cta,
+html[dir="rtl"] .lily-wishlist__eyebrow,
+html[dir="rtl"] .lily-wishlist__crumbs {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+html[dir="rtl"] .lily-wishlist__title,
+html[dir="rtl"] .lily-wishlist__empty-title {
+	font-size: clamp(40px, 8vw, 64px);
+	line-height: 1.3;
+}
+
+/* Single product: View All arrow follows reading direction. */
+html[dir="rtl"] .lily-sp-related__all-arrow {
+	transform: scaleX(-1);
+}
+
+html[dir="rtl"] .lily-sp-related__title,
+html[dir="rtl"] .lily-sp-related__all {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* ==========================================================================
+   LILY — RTL functional + Arabic typography corrections
+   Scoped to html[dir="rtl"] only: English rendering is untouched.
+   - Display headings use tight Latin line-heights (0.95–1.08) that clip
+     Arabic diacritics once the font swaps to Amiri: open them up.
+   - Arabic script must not be letter-spaced, uppercased or faux-italicised.
+   - Directional arrows (inline SVG + button glyphs) mirror with direction.
+   No layout, spacing, color or structural changes here.
+   ========================================================================== */
+
+/* Arabic body rhythm: Amiri needs more vertical room than the Latin base. */
+html[dir="rtl"] body {
+	line-height: 1.8;
+}
+
+/* Display headings: prevent Arabic glyph clipping, keep hierarchy. */
+html[dir="rtl"] .lily-hero__title,
+html[dir="rtl"] .lily-shop__title,
+html[dir="rtl"] .lily-about-masthead__title,
+html[dir="rtl"] .lily-faqs-masthead__title,
+html[dir="rtl"] .lily-contact-hero__title,
+html[dir="rtl"] .lily-shipping-hero__title,
+html[dir="rtl"] .lily-returns-hero__title,
+html[dir="rtl"] .lily-terms-hero__title,
+html[dir="rtl"] .lily-refund-hero__title,
+html[dir="rtl"] .lily-cookie-hero__title,
+html[dir="rtl"] .lily-wishlist__title {
+	line-height: 1.25;
+}
+
+html[dir="rtl"] .lily-section-heading h2,
+html[dir="rtl"] .lily-lens-finder__intro h2,
+html[dir="rtl"] .lily-sp-title {
+	line-height: 1.35;
+	letter-spacing: 0;
+}
+
+html[dir="rtl"] .lily-hero__title-accent,
+html[dir="rtl"] .lily-sp-color-notice {
+	font-style: normal;
+}
+
+/* Eyebrows stay quiet but legible in Arabic (Amiri runs small). */
+html[dir="rtl"] .lily-hero__eyebrow,
+html[dir="rtl"] .lily-collections__eyebrow,
+html[dir="rtl"] .lily-colors__eyebrow,
+html[dir="rtl"] .lily-best-sellers__eyebrow,
+html[dir="rtl"] .lily-lens-finder__intro p.lily-lens-finder__eyebrow,
+html[dir="rtl"] .lily-about .lily-about-eyebrow,
+html[dir="rtl"] .lily-contact-eyebrow,
+html[dir="rtl"] .lily-contact-info__eyebrow,
+html[dir="rtl"] .lily-shipping-eyebrow,
+html[dir="rtl"] .lily-returns-eyebrow,
+html[dir="rtl"] .lily-terms-eyebrow,
+html[dir="rtl"] .lily-refund-eyebrow,
+html[dir="rtl"] .lily-cookie-eyebrow {
+	font-size: 13px;
+}
+
+/* Arabic script: no Latin letter-spacing / uppercase. Homepage. */
+html[dir="rtl"] .lily-hero__eyebrow,
+html[dir="rtl"] .lily-hero__cta,
+html[dir="rtl"] .lily-collections__eyebrow,
+html[dir="rtl"] .lily-collections__cta,
+html[dir="rtl"] .lily-colors__eyebrow,
+html[dir="rtl"] .lily-colors__cta,
+html[dir="rtl"] .lily-color-card .lily-color-card__label,
+html[dir="rtl"] .lily-collection-card h3,
+html[dir="rtl"] .lily-product-card h3,
+html[dir="rtl"] .lily-best-sellers__eyebrow,
+html[dir="rtl"] .lily-best-sellers__cta,
+html[dir="rtl"] .lily-sale-badge,
+html[dir="rtl"] .lily-product-card__color-name,
+html[dir="rtl"] .lily-lens-finder__intro p.lily-lens-finder__eyebrow,
+html[dir="rtl"] .lily-lens-finder__cta,
+html[dir="rtl"] .lily-mega__panel-title,
+html[dir="rtl"] .lily-nav-badge {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Arabic script: no Latin letter-spacing / uppercase. Footer. */
+html[dir="rtl"] .lily-footer-brand .lily-footer-cta,
+html[dir="rtl"] .lily-footer-number {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Arabic script: no Latin letter-spacing / uppercase. Shop. */
+html[dir="rtl"] .lily-shop__sidebar-title,
+html[dir="rtl"] .lily-shop-acc__summary,
+html[dir="rtl"] .lily-shop-toolbar__filter-label,
+html[dir="rtl"] .lily-sort-form__label,
+html[dir="rtl"] .lily-shop-filter-toggle,
+html[dir="rtl"] .lily-product-card__brand {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Arabic script: no Latin letter-spacing / uppercase. Product page. */
+html[dir="rtl"] .lily-sp-brand,
+html[dir="rtl"] .lily-sp-section-title,
+html[dir="rtl"] .lily-sp-label,
+html[dir="rtl"] .lily-sp-qty-label,
+html[dir="rtl"] .lily-sp-cart-area button.single_add_to_cart_button,
+html[dir="rtl"] .lily-sp-cart-area .lily-button,
+html[dir="rtl"] .lily-sp-cart-area .variations label,
+html[dir="rtl"] .lily-sp-section-heading,
+html[dir="rtl"] .lily-sp-acc__q {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Arabic script: no Latin letter-spacing / uppercase. Cart + drawer. */
+html[dir="rtl"] .lily-cart-item__brand,
+html[dir="rtl"] .lily-cart-summary__title,
+html[dir="rtl"] .lily-cart-checkout-btn,
+html[dir="rtl"] .lily-cart-continue,
+html[dir="rtl"] .lily-cart-empty__cta,
+html[dir="rtl"] .lily-cart-coupon__label,
+html[dir="rtl"] .lily-cart-coupon__input,
+html[dir="rtl"] .lily-cart-coupon__apply,
+html[dir="rtl"] .lily-cart-coupon__code,
+html[dir="rtl"] .lily-drawer__title,
+html[dir="rtl"] .lily-drawer__count-badge,
+html[dir="rtl"] .lily-drawer__checkout,
+html[dir="rtl"] .lily-drawer__empty-cta {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Arabic script: no Latin letter-spacing / uppercase. Checkout. */
+html[dir="rtl"] body.woocommerce-checkout .entry-title,
+html[dir="rtl"] body.woocommerce-cart .entry-title,
+html[dir="rtl"] body.woocommerce-checkout .woocommerce-billing-fields > h3,
+html[dir="rtl"] body.woocommerce-checkout .woocommerce-shipping-fields > h3,
+html[dir="rtl"] body.woocommerce-checkout .lily-checkout__summary-title,
+html[dir="rtl"] body.woocommerce-checkout #order_review_heading,
+html[dir="rtl"] body.woocommerce-checkout .form-row label,
+html[dir="rtl"] body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot th,
+html[dir="rtl"] body.woocommerce-checkout .lily-checkout__section-title--payment,
+html[dir="rtl"] body.woocommerce-checkout #payment ul.payment_methods li label,
+html[dir="rtl"] body.woocommerce-checkout #place_order,
+html[dir="rtl"] body.woocommerce-checkout .woocommerce-form-coupon .input-text,
+html[dir="rtl"] body.woocommerce-checkout .woocommerce-form-coupon button {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Arabic script: no Latin letter-spacing / uppercase. Content pages. */
+html[dir="rtl"] .lily-about-approach__name,
+html[dir="rtl"] .lily-about-cta__btn,
+html[dir="rtl"] .lily-contact-info__title,
+html[dir="rtl"] .lily-contact-formwrap__title,
+html[dir="rtl"] .lily-contact-info__label,
+html[dir="rtl"] .lily-contact-form__row label,
+html[dir="rtl"] .lily-contact-form label,
+html[dir="rtl"] .lily-contact-form .lily-btn,
+html[dir="rtl"] .lily-shipping-row__title,
+html[dir="rtl"] .lily-returns-row__title,
+html[dir="rtl"] .lily-terms-row__title,
+html[dir="rtl"] .lily-refund-row__title,
+html[dir="rtl"] .lily-cookie-row__title,
+html[dir="rtl"] .lily-wishlist__subtitle,
+html[dir="rtl"] .lily-wishlist__empty-text {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Arabic script: no Latin letter-spacing / uppercase. Reviews. */
+html[dir="rtl"] .lily-reviews__title,
+html[dir="rtl"] .lily-reviews__write,
+html[dir="rtl"] .lily-reviews__submit,
+html[dir="rtl"] .lily-reviews__verified,
+html[dir="rtl"] .lily-review-form__title,
+html[dir="rtl"] .lily-review-form__row label,
+html[dir="rtl"] .lily-review-form__rating legend {
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Directional CTA arrows mirror with reading direction. */
+html[dir="rtl"] .lily-colors__cta svg,
+html[dir="rtl"] .lily-collections__cta svg,
+html[dir="rtl"] .lily-best-sellers__cta svg,
+html[dir="rtl"] .lily-lens-finder__cta svg,
+html[dir="rtl"] .lily-best-sellers__arrow svg,
+html[dir="rtl"] .lily-button > span[aria-hidden="true"] {
+	display: inline-block;
+	transform: scaleX(-1);
 }

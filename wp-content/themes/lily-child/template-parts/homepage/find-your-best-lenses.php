@@ -91,8 +91,8 @@ $lily_benefits = array(
 			<?php foreach ( array_slice( (array) $steps, 0, 4 ) as $lily_step ) : ?>
 				<?php
 				$lily_number      = trim( (string) ( $lily_step['number'] ?? '' ) );
-				$lily_step_title  = trim( (string) ( $lily_step['title'] ?? '' ) );
-				$lily_step_desc   = trim( (string) ( $lily_step['description'] ?? '' ) );
+				$lily_step_title  = function_exists( 'lily_ml_value' ) ? trim( (string) lily_ml_value( $lily_step['title'] ?? '', $lily_step['title_ar'] ?? '' ) ) : trim( (string) ( $lily_step['title'] ?? '' ) );
+				$lily_step_desc   = function_exists( 'lily_ml_value' ) ? trim( (string) lily_ml_value( $lily_step['description'] ?? '', $lily_step['description_ar'] ?? '' ) ) : trim( (string) ( $lily_step['description'] ?? '' ) );
 
 				if ( '' === $lily_number && '' === $lily_step_title && '' === $lily_step_desc ) {
 					continue;

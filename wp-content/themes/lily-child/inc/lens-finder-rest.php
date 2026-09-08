@@ -115,26 +115,31 @@ function lily_get_lens_finder_products( array $selections ) {
 			continue;
 		}
 
+		/*
+		 * Colors: a Parent Color selection must match every product assigned
+		 * to that color OR any of its Child Shades. Products normally carry
+		 * the Parent Color assignment automatically (see
+		 * lily_sync_color_parent_assignment()); expanding the slug list here
+		 * also covers products whose shade was assigned directly.
+		 */
+		$term_slugs = array( $selections[ $selection_key ] );
+
+		if ( 'pa_color' === $taxonomy && function_exists( 'lily_color_descendant_slugs' ) ) {
+			$term_slugs = array_values( array_unique( array_merge( $term_slugs, lily_color_descendant_slugs( $selections[ $selection_key ] ) ) ) );
+		}
+
 		$tax_query[] = array(
 			'taxonomy' => $taxonomy,
 			'field'    => 'slug',
-			'terms'    => array( $selections[ $selection_key ] ),
+			'terms'    => $term_slugs,
 		);
 	}
 
-	$meta_query = array(
-		'relation' => 'OR',
-		array(
-			'key'     => 'exclude_from_lens_finder',
-			'compare' => 'NOT EXISTS',
-		),
-		array(
-			'key'     => 'exclude_from_lens_finder',
-			'value'   => '1',
-			'compare' => '!=',
-		),
-	);
-
+	/*
+	 * All products with valid Lens Finder data participate automatically —
+	 * no exclusion flag or manual priority ranking. Products arrive in
+	 * date-desc order, so a stable score sort keeps ties deterministic.
+	 */
 	$query = new WP_Query(
 		array(
 			'post_type'              => 'product',
@@ -143,7 +148,6 @@ function lily_get_lens_finder_products( array $selections ) {
 			'ignore_sticky_posts'    => true,
 			'no_found_rows'          => true,
 			'tax_query'              => count( $tax_query ) > 1 ? $tax_query : array(),
-			'meta_query'             => $meta_query,
 			'update_post_meta_cache' => true,
 			'update_post_term_cache' => true,
 		)
@@ -166,10 +170,6 @@ function lily_get_lens_finder_products( array $selections ) {
 	usort(
 		$matches,
 		static function ( $a, $b ) {
-			if ( $a['score'] === $b['score'] ) {
-				return $b['priority'] <=> $a['priority'];
-			}
-
 			return $b['score'] <=> $a['score'];
 		}
 	);
@@ -180,6 +180,10 @@ function lily_get_lens_finder_products( array $selections ) {
 /**
  * Format a matched product for the frontend.
  *
+ * The result ships the RENDERED shared product card (same markup, badges,
+ * metadata and add-to-cart behavior as the Shop), so the Lens Finder can
+ * never drift from the one card system.
+ *
  * @param WC_Product $product    Product object.
  * @param array      $selections Lens Finder selections.
  * @return array
@@ -187,7 +191,6 @@ function lily_get_lens_finder_products( array $selections ) {
 function lily_format_lens_finder_product( WC_Product $product, array $selections ) {
 	$product_id = $product->get_id();
 	$score      = 0;
-	$priority   = (int) get_post_meta( $product_id, 'lens_finder_priority', true );
 
 	$skin_tones = (array) get_post_meta( $product_id, 'best_skin_tones', true );
 	$eye_colors = (array) get_post_meta( $product_id, 'best_eye_colors', true );
@@ -202,6 +205,22 @@ function lily_format_lens_finder_product( WC_Product $product, array $selections
 
 	$image_id = $product->get_image_id();
 
+	/*
+	 * Render through the shared product card (drawer add-to-cart flow, like
+	 * the homepage Best Sellers carousel — full validation chain preserved).
+	 */
+	$html = '';
+	ob_start();
+	get_template_part(
+		'template-parts/components/product-card',
+		null,
+		array(
+			'product'     => $product,
+			'drawer_ajax' => true,
+		)
+	);
+	$html = trim( (string) ob_get_clean() );
+
 	return array(
 		'id'          => $product_id,
 		'title'       => $product->get_name(),
@@ -209,7 +228,7 @@ function lily_format_lens_finder_product( WC_Product $product, array $selections
 		'image'       => $image_id ? wp_get_attachment_image_url( $image_id, 'woocommerce_thumbnail' ) : '',
 		'price'       => wp_kses_post( $product->get_price_html() ),
 		'buttonText'  => esc_html__( 'View Product', 'lily' ),
+		'html'        => $html,
 		'score'       => $score,
-		'priority'    => $priority,
 	);
 }

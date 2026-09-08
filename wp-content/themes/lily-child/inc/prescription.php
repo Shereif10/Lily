@@ -38,28 +38,9 @@ function lily_rx_is_enabled( $product ) {
 	return 'yes' === get_post_meta( $product_id, '_lily_prescription_power', true );
 }
 
-/* ── Admin: Yes/No setting on Edit Product ──────────────────────────── */
-
-add_action( 'woocommerce_product_options_general_product_data', 'lily_rx_admin_field' );
-
-/**
- * Render the admin Prescription Power select.
- */
-function lily_rx_admin_field() {
-	woocommerce_wp_select(
-		array(
-			'id'      => '_lily_prescription_power',
-			'label'   => __( 'Prescription Power', 'lily' ),
-			'value'   => get_post_meta( get_the_ID(), '_lily_prescription_power', true ) ?: 'no',
-			'options' => array(
-				'no'  => __( 'No', 'lily' ),
-				'yes' => __( 'Yes', 'lily' ),
-			),
-			'description' => __( 'Show Right/Left eye power selectors on the product page.', 'lily' ),
-			'desc_tip'    => true,
-		)
-	);
-}
+/* ── Admin: managed in the Lily Product Editor (Section 6) ──────────── */
+/* The With/Without Power field renders in the Lily Product Editor; the save
+ * below still processes the same canonical POST key. */
 
 add_action( 'woocommerce_admin_process_product_object', 'lily_rx_admin_save' );
 
@@ -84,6 +65,12 @@ function lily_rx_render_selectors() {
 	global $product;
 
 	if ( ! $product instanceof WC_Product || ! lily_rx_is_enabled( $product ) ) {
+		return;
+	}
+
+	// Out of Stock products never present the selectors — nothing can be
+	// added to the cart, so there is nothing to select powers for.
+	if ( ! $product->is_in_stock() ) {
 		return;
 	}
 
@@ -220,11 +207,64 @@ function lily_rx_cart_display( $item_data, $cart_item ) {
 	$item_data[] = array(
 		'key'     => __( 'Prescription Power', 'lily' ),
 		/* translators: 1: right eye power, 2: left eye power */
-		'value'   => sprintf( __( 'Right Eye (OD): %1$s · Left Eye (OS): %2$s', 'lily' ), $cart_item['lily_rx']['od'], $cart_item['lily_rx']['os'] ),
+		'value'   => sprintf( __( 'Right Eye: %1$s · Left Eye: %2$s', 'lily' ), $cart_item['lily_rx']['od'], $cart_item['lily_rx']['os'] ),
 		'display' => '',
 	);
 
 	return $item_data;
+}
+
+add_action( 'woocommerce_check_cart_items', 'lily_rx_check_cart_items' );
+
+/**
+ * Cart + checkout validation layer.
+ *
+ * Fires when the cart page renders, when the checkout page renders and —
+ * critically — inside WC_Checkout::validate_checkout() during order
+ * processing, so an incomplete prescription item can never reach the
+ * "order created" step. Non-prescription products are untouched.
+ */
+function lily_rx_check_cart_items() {
+	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+		return;
+	}
+
+	$valid = lily_rx_power_options();
+
+	foreach ( WC()->cart->get_cart() as $cart_item ) {
+		$product_id   = ! empty( $cart_item['product_id'] ) ? absint( $cart_item['product_id'] ) : 0;
+		$variation_id = ! empty( $cart_item['variation_id'] ) ? absint( $cart_item['variation_id'] ) : 0;
+
+		// The setting lives on the parent product; check both IDs for variations.
+		if ( ! lily_rx_is_enabled( $product_id ) && ! lily_rx_is_enabled( $variation_id ) ) {
+			continue;
+		}
+
+		$od = isset( $cart_item['lily_rx']['od'] ) ? (string) $cart_item['lily_rx']['od'] : '';
+		$os = isset( $cart_item['lily_rx']['os'] ) ? (string) $cart_item['lily_rx']['os'] : '';
+
+		if ( '' === $od || '' === $os || ! in_array( $od, $valid, true ) || ! in_array( $os, $valid, true ) ) {
+			$_product = wc_get_product( $product_id );
+			$name     = ( $_product && ! $_product->is_type( 'variation' ) ) ? $_product->get_name() : '';
+
+			if ( '' === $name && $variation_id ) {
+				$variation = wc_get_product( $variation_id );
+				if ( $variation && function_exists( 'wc_get_product' ) ) {
+					$parent = wc_get_product( $variation->get_parent_id() );
+					$name   = $parent ? $parent->get_name() : '';
+				}
+			}
+
+			if ( $name ) {
+				wc_add_notice(
+					sprintf( __( '%1$s requires prescription power selection for both eyes.', 'lily' ), $name ),
+					'error'
+				);
+			} else {
+				wc_add_notice( __( 'Please select the prescription power for both eyes.', 'lily' ), 'error' );
+			}
+		}
+	}
 }
 
 add_action( 'woocommerce_checkout_create_order_line_item', 'lily_rx_order_item_meta', 10, 4 );

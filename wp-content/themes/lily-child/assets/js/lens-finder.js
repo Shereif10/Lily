@@ -96,6 +96,11 @@
 
 	function renderResults(products) {
 		var productHtml = products.length ? products.map(function (product) {
+			/* The shared product card, rendered server-side (same markup,
+			   badges, metadata and add-to-cart behavior as the Shop). */
+			if (product.html) {
+				return product.html;
+			}
 			return [
 				'<article class="lily-product-card">',
 				'<a class="lily-product-card__image" href="' + escapeAttribute(product.url) + '">',

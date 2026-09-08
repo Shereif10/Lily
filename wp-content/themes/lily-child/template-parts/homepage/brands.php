@@ -51,7 +51,7 @@ function lily_resolve_brand_item( $term, $custom_url = '' ) {
 	return array(
 		'logo'   => $logo_id,
 		'url'    => $url,
-		'name'   => $term->name,
+		'name'   => function_exists( 'lily_term_name' ) ? lily_term_name( $term ) : $term->name,
 	);
 }
 

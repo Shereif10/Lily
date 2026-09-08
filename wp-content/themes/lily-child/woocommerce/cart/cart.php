@@ -11,7 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-do_action( 'woocommerce_before_cart' ); ?>
+do_action( 'woocommerce_before_cart' );
+
+// Prescription/cart validation errors (Lily-styled via the cart notice CSS).
+wc_print_notices();
+?>
 <form class="lily-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 
 	<div class="lily-cart-items">
@@ -36,15 +40,8 @@ do_action( 'woocommerce_before_cart' ); ?>
 			$subtotal      = apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
 			$remove_url    = wc_get_cart_remove_url( $cart_item_key );
 
-			/* Brand for this product */
-			$brand_taxonomy = function_exists( 'lily_get_brand_taxonomy' ) ? lily_get_brand_taxonomy() : '';
-			$brand_name     = '';
-			if ( $brand_taxonomy ) {
-				$brand_terms = wp_get_post_terms( $_product->get_id(), $brand_taxonomy, array( 'fields' => 'names' ) );
-				if ( ! is_wp_error( $brand_terms ) && ! empty( $brand_terms ) ) {
-					$brand_name = $brand_terms[0];
-				}
-			}
+			/* Brand for this product (localized canonical name) */
+			$brand_name = function_exists( 'lily_product_brand_name' ) ? lily_product_brand_name( $_product->get_id() ) : '';
 			?>
 			<div class="lily-cart-item">
 
@@ -119,6 +116,16 @@ do_action( 'woocommerce_before_cart' ); ?>
 				<dt><?php esc_html_e( 'Subtotal', 'lily' ); ?></dt>
 				<dd><?php echo wp_kses_post( WC()->cart->get_cart_subtotal() ); ?></dd>
 			</div>
+			<?php if ( WC()->cart->has_discount() ) : ?>
+				<?php $lily_discount_codes = WC()->cart->get_applied_coupons(); ?>
+				<div class="lily-cart-totals__row lily-cart-totals__row--discount">
+					<dt>
+						<?php esc_html_e( 'Discount', 'lily' ); ?>
+						(<span class="lily-cart-coupon__code"><?php echo esc_html( wc_format_coupon_code( reset( $lily_discount_codes ) ) ); ?></span>)
+					</dt>
+					<dd>&minus;<?php echo wp_kses_post( wc_price( WC()->cart->get_discount_total() + WC()->cart->get_discount_tax() ) ); ?></dd>
+				</div>
+			<?php endif; ?>
 			<div class="lily-cart-totals__row">
 				<dt><?php esc_html_e( 'Shipping', 'lily' ); ?></dt>
 				<dd><?php echo esc_html( apply_filters( 'lily_cart_shipping_note', __( 'Calculated at checkout', 'lily' ) ) ); ?></dd>
@@ -128,6 +135,30 @@ do_action( 'woocommerce_before_cart' ); ?>
 				<dd><?php echo wp_kses_post( WC()->cart->get_cart_total() ); ?></dd>
 			</div>
 		</dl>
+
+		<?php if ( function_exists( 'wc_coupons_enabled' ) && wc_coupons_enabled() ) : ?>
+			<?php
+			$lily_applied = ( WC()->cart ) ? WC()->cart->get_applied_coupons() : array();
+			$lily_coupon  = $lily_applied ? reset( $lily_applied ) : '';
+			?>
+			<div class="lily-cart-coupon">
+				<?php if ( '' !== $lily_coupon ) : ?>
+					<p class="lily-cart-coupon__applied">
+						<span class="lily-cart-coupon__code"><?php echo esc_html( wc_format_coupon_code( $lily_coupon ) ); ?></span>
+						<span class="lily-cart-coupon__ok">
+							<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"></polyline></svg>
+							<?php esc_html_e( 'Discount applied', 'lily' ); ?>
+						</span>
+						<a class="lily-cart-coupon__remove" href="<?php echo esc_url( add_query_arg( 'remove_coupon', rawurlencode( wc_format_coupon_code( $lily_coupon ) ), wc_get_cart_url() ) ); ?>"><?php esc_html_e( 'Remove', 'lily' ); ?></a>
+					</p>
+				<?php endif; ?>
+				<label class="lily-cart-coupon__label" for="lily_coupon_code"><?php esc_html_e( 'Discount code', 'lily' ); ?></label>
+				<p class="lily-cart-coupon__row">
+					<input type="text" name="coupon_code" class="lily-cart-coupon__input" id="lily_coupon_code" value="" placeholder="<?php esc_attr_e( 'Enter your code', 'lily' ); ?>" autocomplete="off" />
+					<button type="submit" class="lily-cart-coupon__apply" name="apply_coupon" value="<?php esc_attr_e( 'Apply', 'lily' ); ?>"><?php esc_html_e( 'Apply', 'lily' ); ?></button>
+				</p>
+			</div>
+		<?php endif; ?>
 
 		<button type="submit" class="lily-cart-checkout-btn lily-cart-checkout-btn--update" name="update_cart" value="<?php esc_attr_e( 'Update cart', 'lily' ); ?>">
 			<?php esc_html_e( 'Update cart', 'lily' ); ?>

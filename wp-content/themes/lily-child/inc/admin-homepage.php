@@ -11,6 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Register Lily admin pages.
+ *
+ * The top-level "Lily" menu is the simplified Pages hub; the original
+ * full-section editor remains available as "Homepage Settings (Advanced)".
  */
 function lily_register_homepage_settings_page() {
 	add_menu_page(
@@ -18,17 +21,26 @@ function lily_register_homepage_settings_page() {
 		esc_html__( 'Lily', 'lily' ),
 		'manage_options',
 		'lily',
-		'lily_render_homepage_settings_page',
+		'lily_render_lily_page',
 		'dashicons-admin-home',
 		58
 	);
 
 	add_submenu_page(
 		'lily',
-		esc_html__( 'Homepage Settings', 'lily' ),
-		esc_html__( 'Homepage Settings', 'lily' ),
+		esc_html__( 'Pages', 'lily' ),
+		esc_html__( 'Pages', 'lily' ),
 		'manage_options',
+		'lily-pages',
+		'lily_render_lily_page'
+	);
+
+	add_submenu_page(
 		'lily',
+		esc_html__( 'Homepage Settings (Advanced)', 'lily' ),
+		esc_html__( 'Homepage Settings (Advanced)', 'lily' ),
+		'manage_options',
+		'lily-homepage',
 		'lily_render_homepage_settings_page'
 	);
 }
@@ -40,13 +52,26 @@ add_action( 'admin_menu', 'lily_register_homepage_settings_page' );
  * @param string $hook Current admin page hook.
  */
 function lily_admin_assets( $hook ) {
-	if ( 'toplevel_page_lily' !== $hook && false === strpos( $hook, 'edit-tags.php' ) && false === strpos( $hook, 'term.php' ) ) {
+	$lily_allowed = 'toplevel_page_lily' === $hook || 0 === strpos( $hook, 'lily_page_' );
+	$is_product_edit = in_array( $hook, array( 'post.php', 'post-new.php' ), true )
+		&& ( ( isset( $_GET['post'] ) && 'product' === get_post_type( absint( $_GET['post'] ) ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display routing only.
+			|| ( isset( $_GET['post_type'] ) && 'product' === sanitize_key( wp_unslash( $_GET['post_type'] ) ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( ! $lily_allowed && ! $is_product_edit && false === strpos( $hook, 'edit-tags.php' ) && false === strpos( $hook, 'term.php' ) ) {
 		return;
 	}
 
 	wp_enqueue_media();
 	wp_enqueue_script( 'jquery-ui-sortable' );
 	wp_enqueue_script( 'lily-admin', LILY_THEME_URI . '/assets/js/admin.js', array( 'jquery', 'jquery-ui-sortable' ), LILY_THEME_VERSION, true );
+	wp_localize_script(
+		'lily-admin',
+		'lilyAdminI18n',
+		array(
+			'chooseImage' => esc_html__( 'Choose Image', 'lily' ),
+			'useImage'    => esc_html__( 'Use Image', 'lily' ),
+			'productImageGuidance' => esc_html__( 'Recommended size: 1000 × 1000 px (square — same source for the main image and every gallery image)', 'lily' ),
+		)
+	);
 	wp_enqueue_style( 'lily-admin', LILY_THEME_URI . '/assets/css/admin.css', array(), LILY_THEME_VERSION );
 }
 add_action( 'admin_enqueue_scripts', 'lily_admin_assets' );
@@ -57,80 +82,105 @@ add_action( 'admin_enqueue_scripts', 'lily_admin_assets' );
  * @return array
  */
 function lily_homepage_settings_defaults() {
-	return array(
+	return array_merge(
+		array(
 		'show_announcement_bar'              => 1,
 		'announcement_items'                 => array(
 			array(
-				'text' => 'Fast Delivery',
-				'link' => array( 'title' => '', 'url' => '', 'target' => '_self' ),
+				'text'    => 'Fast Delivery',
+				'text_ar' => 'توصيل سريع',
+				'link'    => array( 'title' => '', 'url' => '', 'target' => '_self' ),
 			),
 			array(
-				'text' => 'Cash on Delivery',
-				'link' => array( 'title' => '', 'url' => '', 'target' => '_self' ),
+				'text'    => 'Cash on Delivery',
+				'text_ar' => 'الدفع عند الاستلام',
+				'link'    => array( 'title' => '', 'url' => '', 'target' => '_self' ),
 			),
 			array(
-				'text' => 'Premium Quality',
-				'link' => array( 'title' => '', 'url' => '', 'target' => '_self' ),
+				'text'    => 'Premium Quality',
+				'text_ar' => 'جودة فاخرة',
+				'link'    => array( 'title' => '', 'url' => '', 'target' => '_self' ),
 			),
 		),
 		'show_hero'                          => 1,
 		'hero_slides'                        => array(
 			array(
-				'enabled'     => 1,
-				'image'       => 0,
-				'mobile_image' => 0,
-				'title'       => 'Colored Lenses',
-				'description' => '',
-				'cta_text'    => '',
-				'cta_url'     => '',
+				'enabled'        => 1,
+				'image'          => 0,
+				'mobile_image'   => 0,
+				'title'          => 'Colored Lenses',
+				'title_ar'       => 'عدسات ملونة',
+				'description'    => '',
+				'description_ar' => '',
+				'cta_text'       => 'Shop Now',
+				'cta_text_ar'    => 'تسوقي الآن',
+				'cta_url'        => '',
 			),
 			array(
-				'enabled'     => 1,
-				'image'       => 0,
-				'mobile_image' => 0,
-				'title'       => 'Clear Lenses',
-				'description' => '',
-				'cta_text'    => '',
-				'cta_url'     => '',
+				'enabled'        => 1,
+				'image'          => 0,
+				'mobile_image'   => 0,
+				'title'          => 'Clear Lenses',
+				'title_ar'       => 'عدسات شفافة',
+				'description'    => '',
+				'description_ar' => '',
+				'cta_text'       => 'Shop Now',
+				'cta_text_ar'    => 'تسوقي الآن',
+				'cta_url'        => '',
 			),
 			array(
-				'enabled'     => 1,
-				'image'       => 0,
-				'mobile_image' => 0,
-				'title'       => 'Accessories & Lens Care',
-				'description' => '',
-				'cta_text'    => '',
-				'cta_url'     => '',
+				'enabled'        => 1,
+				'image'          => 0,
+				'mobile_image'   => 0,
+				'title'          => 'Accessories & Lens Care',
+				'title_ar'       => 'إكسسوارات والعناية بالعدسات',
+				'description'    => '',
+				'description_ar' => '',
+				'cta_text'       => 'Shop Now',
+				'cta_text_ar'    => 'تسوقي الآن',
+				'cta_url'        => '',
 			),
 		),
 		'show_brands'                        => 1,
 		'brands_heading'                     => '',
+		'brands_heading_ar'                  => '',
 		'brands'                             => array(),
 		'show_shop_by_collections'           => 1,
 		'collections_heading'                => '',
+		'collections_heading_ar'             => 'اعثري على العدسة المناسبة لكِ',
 		'collections_description'            => '',
+		'collections_description_ar'         => 'اكتشفي مجموعاتنا واختاري الستايل اللي يعبر عنكِ.',
 		'collections_to_display'             => array(),
 		'show_shop_by_colors'                => 1,
 		'colors_heading'                     => '',
+		'colors_heading_ar'                  => 'اعثري على اللون اللي يعبر عنكِ',
 		'colors_description'                 => '',
+		'colors_description_ar'              => 'اكتشفي درجات مصممة لتناسب إطلالتك المميزة.',
 		'colors_to_display'                  => array(),
-		'view_all_colors_link'               => array( 'title' => '', 'url' => '', 'target' => '_self' ),
+		'view_all_colors_link'               => array( 'title' => 'View All Colors', 'title_ar' => 'عرض كل الألوان', 'url' => '', 'target' => '_self' ),
 		'show_best_sellers'                  => 1,
 		'best_sellers_heading'               => '',
+		'best_sellers_heading_ar'            => 'الدرجات اللي عميلاتنا حبوها أكتر',
 		'best_sellers_description'           => '',
+		'best_sellers_description_ar'        => 'اكتشفي الألوان الأكثر مبيعاً اللي تناسب كل إطلالة ومزاج.',
 		'best_sellers_products'              => array(),
 		'show_lens_finder'                   => 1,
 		'lens_finder_heading'                => '',
+		'lens_finder_heading_ar'             => 'اعثري على عدساتك المثالية',
 		'lens_finder_eyebrow'                => '',
+		'lens_finder_eyebrow_ar'             => 'دليل اختيار العدسات',
 		'lens_finder_description'            => '',
+		'lens_finder_description_ar'         => 'جاوبي على كام سؤال بسيط وهنرشح لكِ العدسات الأنسب لكِ.',
 		'lens_finder_start_text'             => esc_html__( 'Start Lens Finder', 'lily' ),
+		'lens_finder_start_text_ar'          => 'ابدئي دليل العدسات',
 		'lens_finder_image'                  => 0,
 		'lens_finder_image_alt'              => '',
+		'lens_finder_image_alt_ar'           => '',
 		'lens_finder_steps'                  => array(
-			array( 'number' => '01', 'title' => __( 'Tell us about you', 'lily' ), 'description' => __( 'Choose your preferences and lens needs.', 'lily' ) ),
-			array( 'number' => '02', 'title' => __( 'Find your match', 'lily' ), 'description' => __( 'We narrow down the options that fit you best.', 'lily' ) ),
-			array( 'number' => '03', 'title' => __( 'Explore your shades', 'lily' ), 'description' => __( 'See the colors and styles that suit you.', 'lily' ) ),
-			array( 'number' => '04', 'title' => __( 'Choose your lenses', 'lily' ), 'description' => __( 'Pick your favorite and shop with confidence.', 'lily' ) ),
+			array( 'number' => '01', 'title' => __( 'Tell us about you', 'lily' ), 'title_ar' => 'احكيلنا عنكِ', 'description' => __( 'Choose your preferences and lens needs.', 'lily' ), 'description_ar' => 'اختاري تفضيلاتك واحتياجاتك من العدسات.' ),
+			array( 'number' => '02', 'title' => __( 'Find your match', 'lily' ), 'title_ar' => 'اعثري على المناسب لكِ', 'description' => __( 'We narrow down the options that fit you best.', 'lily' ), 'description_ar' => 'بنختار لكِ الأنسب من بين الخيارات.' ),
+			array( 'number' => '03', 'title' => __( 'Explore your shades', 'lily' ), 'title_ar' => 'اكتشفي درجاتك', 'description' => __( 'See the colors and styles that suit you.', 'lily' ), 'description_ar' => 'شوفي الألوان والستايلات اللي تناسبك.' ),
+			array( 'number' => '04', 'title' => __( 'Choose your lenses', 'lily' ), 'title_ar' => 'اختاري عدساتك', 'description' => __( 'Pick your favorite and shop with confidence.', 'lily' ), 'description_ar' => 'اختاري المفضل لكِ وتسوقي بثقة.' ),
 		),
 		'lens_finder_questions'              => array(
 			'lens_type'    => '',
@@ -141,8 +191,27 @@ function lily_homepage_settings_defaults() {
 			'color'        => '',
 			'duration'     => '',
 		),
+		'lens_finder_questions_ar'           => array(
+			'lens_type'    => 'نوع العدسة',
+			'prescription' => 'المقاس',
+			'look'         => 'اللوك المفضل',
+			'eye_color'    => 'لون عينك الطبيعي',
+			'skin_tone'    => 'لون البشرة',
+			'color'        => 'اللون المفضل',
+			'duration'     => 'مدة الاستبدال',
+		),
 		'lens_finder_responsibility_text'    => '',
+		'lens_finder_responsibility_text_ar' => 'أتفهم أن هذه الاختيارات مسؤوليتي ولا تغني عن استشارة طبيب العيون.',
 		'lens_finder_no_results_message'     => '',
+		'lens_finder_no_results_message_ar'  => 'لم نجد عدسات مطابقة. جربي تغيير اختيار أو اختيارين.',
+		),
+		function_exists( 'lily_about_settings_defaults' ) ? lily_about_settings_defaults() : array(),
+		function_exists( 'lily_faq_settings_defaults' ) ? lily_faq_settings_defaults() : array(),
+		function_exists( 'lily_contact_settings_defaults' ) ? lily_contact_settings_defaults() : array(),
+		function_exists( 'lily_terms_settings_defaults' ) ? lily_terms_settings_defaults() : array(),
+		function_exists( 'lily_shipping_policy_settings_defaults' ) ? lily_shipping_policy_settings_defaults() : array(),
+		function_exists( 'lily_returns_settings_defaults' ) ? lily_returns_settings_defaults() : array(),
+		function_exists( 'lily_privacy_settings_defaults' ) ? lily_privacy_settings_defaults() : array()
 	);
 }
 
@@ -163,7 +232,7 @@ function lily_save_homepage_settings() {
 
 	update_option( 'lily_homepage_settings', $settings );
 
-	wp_safe_redirect( add_query_arg( 'updated', 'true', menu_page_url( 'lily', false ) ) );
+	wp_safe_redirect( add_query_arg( 'updated', 'true', admin_url( 'admin.php?page=lily-homepage' ) ) );
 	exit;
 }
 add_action( 'admin_post_lily_save_homepage_settings', 'lily_save_homepage_settings' );
@@ -185,13 +254,22 @@ function lily_sanitize_homepage_settings( array $raw ) {
 	}
 
 	$text_fields = array(
+		'brands_heading',
+		'brands_heading_ar',
 		'collections_heading',
+		'collections_heading_ar',
 		'colors_heading',
+		'colors_heading_ar',
 		'best_sellers_heading',
+		'best_sellers_heading_ar',
 		'lens_finder_heading',
+		'lens_finder_heading_ar',
 		'lens_finder_eyebrow',
+		'lens_finder_eyebrow_ar',
 		'lens_finder_start_text',
+		'lens_finder_start_text_ar',
 		'lens_finder_image_alt',
+		'lens_finder_image_alt_ar',
 	);
 
 	foreach ( $text_fields as $field ) {
@@ -200,11 +278,17 @@ function lily_sanitize_homepage_settings( array $raw ) {
 
 	$textarea_fields = array(
 		'collections_description',
+		'collections_description_ar',
 		'colors_description',
+		'colors_description_ar',
 		'best_sellers_description',
+		'best_sellers_description_ar',
 		'lens_finder_description',
+		'lens_finder_description_ar',
 		'lens_finder_responsibility_text',
+		'lens_finder_responsibility_text_ar',
 		'lens_finder_no_results_message',
+		'lens_finder_no_results_message_ar',
 	);
 
 	foreach ( $textarea_fields as $field ) {
@@ -228,21 +312,56 @@ function lily_sanitize_homepage_settings( array $raw ) {
 	$lily_steps = array();
 	foreach ( array_slice( (array) ( $raw['lens_finder_steps'] ?? array() ), 0, 4 ) as $lily_step ) {
 		$lily_steps[] = array(
-			'number'      => sanitize_text_field( (string) ( $lily_step['number'] ?? '' ) ),
-			'title'       => sanitize_text_field( (string) ( $lily_step['title'] ?? '' ) ),
-			'description' => sanitize_text_field( (string) ( $lily_step['description'] ?? '' ) ),
+			'number'         => sanitize_text_field( (string) ( $lily_step['number'] ?? '' ) ),
+			'title'          => sanitize_text_field( (string) ( $lily_step['title'] ?? '' ) ),
+			'title_ar'       => sanitize_text_field( (string) ( $lily_step['title_ar'] ?? '' ) ),
+			'description'    => sanitize_text_field( (string) ( $lily_step['description'] ?? '' ) ),
+			'description_ar' => sanitize_text_field( (string) ( $lily_step['description_ar'] ?? '' ) ),
 		);
 	}
 	$data['lens_finder_steps'] = $lily_steps;
 
 	$lily_question_defaults = wp_list_pluck( lily_lens_finder_question_defaults(), 'default', 'key' );
 	$lily_questions         = array();
+	$lily_questions_ar      = array();
 	foreach ( $lily_question_defaults as $lily_qkey => $lily_qdefault ) {
 		$lily_questions[ $lily_qkey ] = isset( $raw['lens_finder_questions'][ $lily_qkey ] )
 			? sanitize_text_field( wp_unslash( $raw['lens_finder_questions'][ $lily_qkey ] ) )
 			: '';
+		$lily_questions_ar[ $lily_qkey ] = isset( $raw['lens_finder_questions_ar'][ $lily_qkey ] )
+			? sanitize_text_field( wp_unslash( $raw['lens_finder_questions_ar'][ $lily_qkey ] ) )
+			: '';
 	}
-	$data['lens_finder_questions'] = $lily_questions;
+	$data['lens_finder_questions']    = $lily_questions;
+	$data['lens_finder_questions_ar'] = $lily_questions_ar;
+
+	if ( function_exists( 'lily_sanitize_about_settings' ) ) {
+		$data = array_merge( $data, lily_sanitize_about_settings( $raw ) );
+	}
+
+	if ( function_exists( 'lily_sanitize_faq_settings' ) ) {
+		$data = array_merge( $data, lily_sanitize_faq_settings( $raw ) );
+	}
+
+	if ( function_exists( 'lily_sanitize_contact_settings' ) ) {
+		$data = array_merge( $data, lily_sanitize_contact_settings( $raw ) );
+	}
+
+	if ( function_exists( 'lily_sanitize_terms_settings' ) ) {
+		$data = array_merge( $data, lily_sanitize_terms_settings( $raw ) );
+	}
+
+	if ( function_exists( 'lily_sanitize_shipping_policy_settings' ) ) {
+		$data = array_merge( $data, lily_sanitize_shipping_policy_settings( $raw ) );
+	}
+
+	if ( function_exists( 'lily_sanitize_returns_settings' ) ) {
+		$data = array_merge( $data, lily_sanitize_returns_settings( $raw ) );
+	}
+
+	if ( function_exists( 'lily_sanitize_privacy_settings' ) ) {
+		$data = array_merge( $data, lily_sanitize_privacy_settings( $raw ) );
+	}
 
 	return wp_parse_args( $data, $defaults );
 }
@@ -273,9 +392,10 @@ function lily_lens_finder_question_defaults() {
  */
 function lily_sanitize_link_field( array $raw ) {
 	return array(
-		'title'  => isset( $raw['title'] ) ? sanitize_text_field( $raw['title'] ) : '',
-		'url'    => isset( $raw['url'] ) ? esc_url_raw( $raw['url'] ) : '',
-		'target' => ! empty( $raw['target'] ) && '_blank' === $raw['target'] ? '_blank' : '_self',
+		'title'    => isset( $raw['title'] ) ? sanitize_text_field( $raw['title'] ) : '',
+		'title_ar' => isset( $raw['title_ar'] ) ? sanitize_text_field( $raw['title_ar'] ) : '',
+		'url'      => isset( $raw['url'] ) ? esc_url_raw( $raw['url'] ) : '',
+		'target'   => ! empty( $raw['target'] ) && '_blank' === $raw['target'] ? '_blank' : '_self',
 	);
 }
 
@@ -294,6 +414,7 @@ function lily_sanitize_announcement_items( array $raw ) {
 		}
 
 		$text = isset( $item['text'] ) ? sanitize_text_field( $item['text'] ) : '';
+		$text_ar = isset( $item['text_ar'] ) ? sanitize_text_field( $item['text_ar'] ) : '';
 		$link = lily_sanitize_link_field( isset( $item['link'] ) && is_array( $item['link'] ) ? $item['link'] : array() );
 
 		if ( '' === $text && empty( $link['url'] ) ) {
@@ -301,8 +422,9 @@ function lily_sanitize_announcement_items( array $raw ) {
 		}
 
 		$items[] = array(
-			'text' => $text,
-			'link' => $link,
+			'text'    => $text,
+			'text_ar' => $text_ar,
+			'link'    => $link,
 		);
 	}
 
@@ -327,8 +449,11 @@ function lily_sanitize_hero_slides( array $raw ) {
 		$image       = isset( $slide['image'] ) ? absint( $slide['image'] ) : 0;
 		$mobile      = isset( $slide['mobile_image'] ) ? absint( $slide['mobile_image'] ) : 0;
 		$title       = isset( $slide['title'] ) ? sanitize_text_field( $slide['title'] ) : '';
+		$title_ar    = isset( $slide['title_ar'] ) ? sanitize_text_field( $slide['title_ar'] ) : '';
 		$description = isset( $slide['description'] ) ? sanitize_textarea_field( $slide['description'] ) : '';
+		$description_ar = isset( $slide['description_ar'] ) ? sanitize_textarea_field( $slide['description_ar'] ) : '';
 		$cta_text    = isset( $slide['cta_text'] ) ? sanitize_text_field( $slide['cta_text'] ) : '';
+		$cta_text_ar = isset( $slide['cta_text_ar'] ) ? sanitize_text_field( $slide['cta_text_ar'] ) : '';
 		$cta_url     = isset( $slide['cta_url'] ) ? esc_url_raw( $slide['cta_url'] ) : '';
 
 		if ( ! $enabled && ! $image && ! $mobile && '' === $title && '' === $description && '' === $cta_url ) {
@@ -336,13 +461,16 @@ function lily_sanitize_hero_slides( array $raw ) {
 		}
 
 		$slides[] = array(
-			'enabled'     => $enabled ? 1 : 0,
-			'image'       => $image,
-			'mobile_image' => $mobile,
-			'title'       => $title,
-			'description' => $description,
-			'cta_text'    => $cta_text,
-			'cta_url'     => $cta_url,
+			'enabled'        => $enabled ? 1 : 0,
+			'image'          => $image,
+			'mobile_image'   => $mobile,
+			'title'          => $title,
+			'title_ar'       => $title_ar,
+			'description'    => $description,
+			'description_ar' => $description_ar,
+			'cta_text'       => $cta_text,
+			'cta_text_ar'    => $cta_text_ar,
+			'cta_url'        => $cta_url,
 		);
 	}
 
@@ -418,6 +546,13 @@ function lily_render_homepage_settings_page() {
 					'colors'       => esc_html__( 'Shop by Colors', 'lily' ),
 					'best'         => esc_html__( 'Best Sellers', 'lily' ),
 					'lens'         => esc_html__( 'Find Your Best Lenses', 'lily' ),
+					'about'        => esc_html__( 'About Page', 'lily' ),
+					'faq'          => esc_html__( 'FAQ Page', 'lily' ),
+					'contact'      => esc_html__( 'Contact Page', 'lily' ),
+					'terms'        => esc_html__( 'Terms Page', 'lily' ),
+					'shipping'     => esc_html__( 'Shipping Page', 'lily' ),
+					'returns'      => esc_html__( 'Returns Page', 'lily' ),
+					'privacy'      => esc_html__( 'Privacy Page', 'lily' ),
 				);
 				foreach ( $tabs as $id => $label ) :
 					?>
@@ -432,6 +567,29 @@ function lily_render_homepage_settings_page() {
 			<?php lily_render_color_fields( $settings ); ?>
 			<?php lily_render_best_seller_fields( $settings ); ?>
 			<?php lily_render_lens_finder_fields( $settings ); ?>
+			<?php
+			if ( function_exists( 'lily_render_about_fields' ) ) {
+				lily_render_about_fields( $settings );
+			}
+			if ( function_exists( 'lily_render_faq_fields' ) ) {
+				lily_render_faq_fields( $settings );
+			}
+			if ( function_exists( 'lily_render_contact_fields' ) ) {
+				lily_render_contact_fields( $settings );
+			}
+			if ( function_exists( 'lily_render_terms_fields' ) ) {
+				lily_render_terms_fields( $settings );
+			}
+			if ( function_exists( 'lily_render_shipping_policy_fields' ) ) {
+				lily_render_shipping_policy_fields( $settings );
+			}
+			if ( function_exists( 'lily_render_returns_fields' ) ) {
+				lily_render_returns_fields( $settings );
+			}
+			if ( function_exists( 'lily_render_privacy_fields' ) ) {
+				lily_render_privacy_fields( $settings );
+			}
+			?>
 
 			<?php submit_button( esc_html__( 'Save Homepage Settings', 'lily' ) ); ?>
 		</form>
@@ -455,12 +613,59 @@ function lily_admin_link_field( $settings, $name, $label ) {
 	$link = isset( $settings[ $name ] ) && is_array( $settings[ $name ] ) ? $settings[ $name ] : array();
 	echo '<fieldset class="lily-link-field"><legend>' . esc_html( $label ) . '</legend>';
 	printf( '<input type="text" name="lily_homepage[%1$s][title]" value="%2$s" placeholder="%3$s">', esc_attr( $name ), esc_attr( $link['title'] ?? '' ), esc_attr__( 'Button text', 'lily' ) );
+	printf( '<input type="text" name="lily_homepage[%1$s][title_ar]" value="%2$s" placeholder="%3$s">', esc_attr( $name ), esc_attr( $link['title_ar'] ?? '' ), esc_attr__( 'Button text (Arabic)', 'lily' ) );
 	printf( '<input type="url" name="lily_homepage[%1$s][url]" value="%2$s" placeholder="%3$s">', esc_attr( $name ), esc_url( $link['url'] ?? '' ), esc_attr__( 'URL', 'lily' ) );
 	printf( '<label class="lily-inline"><input type="checkbox" name="lily_homepage[%1$s][target]" value="_blank" %2$s> %3$s</label>', esc_attr( $name ), checked( '_blank', $link['target'] ?? '_self', false ), esc_html__( 'Open in new tab', 'lily' ) );
 	echo '</fieldset>';
 }
 
-function lily_admin_image_field( $settings, $name, $label ) {
+/**
+ * Render a grouped "Arabic Content" block for one dashboard section.
+ *
+ * Each entry maps an existing English option key to [ label, type ] where
+ * type is "text" or "textarea". The Arabic input is stored as "<key>_ar"
+ * in the same option array. Blanks reuse the English value on the site.
+ *
+ * @param array  $settings    Current settings.
+ * @param string $group_title Group heading (without the Arabic suffix).
+ * @param array  $fields      Option key => array( label, type ).
+ */
+function lily_render_ar_fields( $settings, $group_title, $fields ) {
+	echo '<h3>' . esc_html( $group_title ) . ' — ' . esc_html__( 'Arabic Content', 'lily' ) . '</h3>';
+	echo '<p class="description">' . esc_html__( 'Shown on Arabic pages only. Leave any field blank to reuse its English text.', 'lily' ) . '</p>';
+
+	foreach ( $fields as $name => $field ) {
+		$label = isset( $field[0] ) ? $field[0] : $name;
+		$type  = isset( $field[1] ) ? $field[1] : 'text';
+		$label = sprintf( __( '%s (Arabic)', 'lily' ), $label );
+
+		if ( 'textarea' === $type ) {
+			lily_admin_textarea_field( $settings, $name . '_ar', $label );
+		} else {
+			lily_admin_text_field( $settings, $name . '_ar', $label );
+		}
+	}
+}
+
+/**
+ * Print one consistent image-size guidance line for dashboard image fields.
+ *
+ * Every Lily image field shows this directly under the upload control so the
+ * store owner always knows the recommended pixel dimensions for that exact
+ * location. Dimensions are derived from the current frontend implementation
+ * (container size, aspect ratio, object-fit, responsive behavior).
+ *
+ * @param int $width  Recommended width in pixels.
+ * @param int $height Recommended height in pixels.
+ */
+function lily_image_guidance( $width, $height ) {
+	printf(
+		'<p class="lily-image-guidance">%s</p>',
+		esc_html( sprintf( __( 'Recommended size: %1$d × %2$d px', 'lily' ), (int) $width, (int) $height ) )
+	);
+}
+
+function lily_admin_image_field( $settings, $name, $label, $width = 0, $height = 0 ) {
 	$image_id = absint( $settings[ $name ] ?? 0 );
 	echo '<div class="lily-image-field">';
 	echo '<span>' . esc_html( $label ) . '</span>';
@@ -472,6 +677,9 @@ function lily_admin_image_field( $settings, $name, $label ) {
 	echo '</div>';
 	echo '<button type="button" class="button" data-lily-image-select>' . esc_html__( 'Choose Image', 'lily' ) . '</button> ';
 	echo '<button type="button" class="button" data-lily-image-remove>' . esc_html__( 'Remove', 'lily' ) . '</button>';
+	if ( $width && $height ) {
+		lily_image_guidance( $width, $height );
+	}
 	echo '</div>';
 }
 
@@ -492,12 +700,14 @@ function lily_render_announcement_fields( $settings ) {
 }
 
 function lily_render_announcement_row( $item, $index ) {
-	$text = isset( $item['text'] ) ? $item['text'] : '';
+	$text    = isset( $item['text'] ) ? $item['text'] : '';
+	$text_ar = isset( $item['text_ar'] ) ? $item['text_ar'] : '';
 	$link = isset( $item['link'] ) && is_array( $item['link'] ) ? $item['link'] : array();
 
 	echo '<div class="lily-announcement-row">';
 	echo '<span class="dashicons dashicons-move"></span>';
 	printf( '<input type="text" name="lily_homepage[announcement_items][%1$s][text]" value="%2$s" placeholder="%3$s">', esc_attr( $index ), esc_attr( $text ), esc_attr__( 'Announcement message', 'lily' ) );
+	printf( '<input type="text" name="lily_homepage[announcement_items][%1$s][text_ar]" value="%2$s" placeholder="%3$s">', esc_attr( $index ), esc_attr( $text_ar ), esc_attr__( 'Announcement message (Arabic)', 'lily' ) );
 	printf( '<input type="url" name="lily_homepage[announcement_items][%1$s][link][url]" value="%2$s" placeholder="%3$s">', esc_attr( $index ), esc_url( $link['url'] ?? '' ), esc_attr__( 'Optional URL', 'lily' ) );
 	printf( '<label><input type="checkbox" name="lily_homepage[announcement_items][%1$s][link][target]" value="_blank" %2$s> %3$s</label>', esc_attr( $index ), checked( '_blank', $link['target'] ?? '_self', false ), esc_html__( 'New tab', 'lily' ) );
 	echo '<button type="button" class="button-link-delete" data-lily-remove-announcement>' . esc_html__( 'Remove', 'lily' ) . '</button>';
@@ -521,13 +731,16 @@ function lily_render_hero_fields( $settings ) {
 }
 
 function lily_render_hero_row( $slide, $index ) {
-	$enabled     = ! empty( $slide['enabled'] );
-	$image       = absint( $slide['image'] ?? 0 );
-	$mobile      = absint( $slide['mobile_image'] ?? 0 );
-	$title       = $slide['title'] ?? '';
-	$description = $slide['description'] ?? '';
-	$cta_text    = $slide['cta_text'] ?? '';
-	$cta_url     = $slide['cta_url'] ?? '';
+	$enabled        = ! empty( $slide['enabled'] );
+	$image          = absint( $slide['image'] ?? 0 );
+	$mobile         = absint( $slide['mobile_image'] ?? 0 );
+	$title          = $slide['title'] ?? '';
+	$title_ar       = $slide['title_ar'] ?? '';
+	$description    = $slide['description'] ?? '';
+	$description_ar = $slide['description_ar'] ?? '';
+	$cta_text       = $slide['cta_text'] ?? '';
+	$cta_text_ar    = $slide['cta_text_ar'] ?? '';
+	$cta_url        = $slide['cta_url'] ?? '';
 
 	echo '<div class="lily-hero-row">';
 	echo '<span class="dashicons dashicons-move"></span>';
@@ -545,6 +758,7 @@ function lily_render_hero_row( $slide, $index ) {
 	echo '</div>';
 	echo '<button type="button" class="button" data-lily-image-select>' . esc_html__( 'Choose Image', 'lily' ) . '</button> ';
 	echo '<button type="button" class="button" data-lily-image-remove>' . esc_html__( 'Remove', 'lily' ) . '</button>';
+	lily_image_guidance( 1920, 1080 );
 	echo '</div>';
 
 	echo '<div class="lily-image-field">';
@@ -557,13 +771,17 @@ function lily_render_hero_row( $slide, $index ) {
 	echo '</div>';
 	echo '<button type="button" class="button" data-lily-image-select>' . esc_html__( 'Choose Image', 'lily' ) . '</button> ';
 	echo '<button type="button" class="button" data-lily-image-remove>' . esc_html__( 'Remove', 'lily' ) . '</button>';
+	lily_image_guidance( 1080, 1620 );
 	echo '</div>';
 	echo '</div>';
 
 	printf( '<input type="text" name="lily_homepage[hero_slides][%1$s][title]" value="%2$s" placeholder="%3$s">', esc_attr( $index ), esc_attr( $title ), esc_attr__( 'Slide title', 'lily' ) );
+	printf( '<input type="text" name="lily_homepage[hero_slides][%1$s][title_ar]" value="%2$s" placeholder="%3$s">', esc_attr( $index ), esc_attr( $title_ar ), esc_attr__( 'Slide title (Arabic)', 'lily' ) );
 	printf( '<textarea name="lily_homepage[hero_slides][%1$s][description]" rows="2" placeholder="%2$s">%3$s</textarea>', esc_attr( $index ), esc_attr__( 'Short description', 'lily' ), esc_textarea( $description ) );
+	printf( '<textarea name="lily_homepage[hero_slides][%1$s][description_ar]" rows="2" placeholder="%2$s">%3$s</textarea>', esc_attr( $index ), esc_attr__( 'Short description (Arabic)', 'lily' ), esc_textarea( $description_ar ) );
 	echo '<div class="lily-hero-row__cta">';
 	printf( '<input type="text" name="lily_homepage[hero_slides][%1$s][cta_text]" value="%2$s" placeholder="%3$s">', esc_attr( $index ), esc_attr( $cta_text ), esc_attr__( 'CTA text', 'lily' ) );
+	printf( '<input type="text" name="lily_homepage[hero_slides][%1$s][cta_text_ar]" value="%2$s" placeholder="%3$s">', esc_attr( $index ), esc_attr( $cta_text_ar ), esc_attr__( 'CTA text (Arabic)', 'lily' ) );
 	printf( '<input type="url" name="lily_homepage[hero_slides][%1$s][cta_url]" value="%2$s" placeholder="%3$s">', esc_attr( $index ), esc_url( $cta_url ), esc_attr__( 'CTA URL (optional)', 'lily' ) );
 	echo '</div>';
 	echo '</div>';
@@ -576,6 +794,13 @@ function lily_render_brand_fields( $settings ) {
 	echo '<section id="lily-tab-brands" class="lily-admin-panel"><h2>' . esc_html__( 'Brands', 'lily' ) . '</h2>';
 	lily_admin_toggle_field( $settings, 'show_brands', esc_html__( 'Show Brands', 'lily' ) );
 	lily_admin_text_field( $settings, 'brands_heading', esc_html__( 'Brands Heading', 'lily' ) );
+	lily_render_ar_fields(
+		$settings,
+		esc_html__( 'Brands', 'lily' ),
+		array(
+			'brands_heading' => array( esc_html__( 'Brands Heading', 'lily' ), 'text' ),
+		)
+	);
 	echo '<p class="description">' . esc_html__( 'Pick real brands below to choose the order shown on the homepage. Leave the list empty to show every brand automatically. Logos are managed under Products → Attributes → Brand.', 'lily' ) . '</p>';
 	echo '<div class="lily-brand-rows" data-lily-brand-rows>';
 	foreach ( $brands as $index => $brand ) {
@@ -626,6 +851,14 @@ function lily_render_collection_fields( $settings ) {
 	lily_admin_toggle_field( $settings, 'show_shop_by_collections', esc_html__( 'Show Shop by Collections', 'lily' ) );
 	lily_admin_text_field( $settings, 'collections_heading', esc_html__( 'Collections Heading', 'lily' ) );
 	lily_admin_textarea_field( $settings, 'collections_description', esc_html__( 'Collections Description', 'lily' ) );
+	lily_render_ar_fields(
+		$settings,
+		esc_html__( 'Shop by Collections', 'lily' ),
+		array(
+			'collections_heading'     => array( esc_html__( 'Collections Heading', 'lily' ), 'text' ),
+			'collections_description' => array( esc_html__( 'Collections Description', 'lily' ), 'textarea' ),
+		)
+	);
 	lily_admin_taxonomy_checkboxes( 'product_cat', 'collections_to_display', $settings['collections_to_display'] ?? array(), esc_html__( 'Collections to Display', 'lily' ) );
 	echo '</section>';
 }
@@ -635,56 +868,34 @@ function lily_render_color_fields( $settings ) {
 	lily_admin_toggle_field( $settings, 'show_shop_by_colors', esc_html__( 'Show Shop by Colors', 'lily' ) );
 	lily_admin_text_field( $settings, 'colors_heading', esc_html__( 'Colors Heading', 'lily' ) );
 	lily_admin_textarea_field( $settings, 'colors_description', esc_html__( 'Colors Description', 'lily' ) );
-	lily_admin_taxonomy_checkboxes( 'pa_color', 'colors_to_display', $settings['colors_to_display'] ?? array(), esc_html__( 'Colors to Display', 'lily' ) );
+	lily_render_ar_fields(
+		$settings,
+		esc_html__( 'Shop by Colors', 'lily' ),
+		array(
+			'colors_heading'     => array( esc_html__( 'Colors Heading', 'lily' ), 'text' ),
+			'colors_description' => array( esc_html__( 'Colors Description', 'lily' ), 'textarea' ),
+		)
+	);
+	lily_admin_taxonomy_checkboxes( 'pa_color', 'colors_to_display', $settings['colors_to_display'] ?? array(), esc_html__( 'Colors to Display', 'lily' ), true );
 	lily_admin_link_field( $settings, 'view_all_colors_link', esc_html__( 'View All Colors Link', 'lily' ) );
 	echo '</section>';
 }
 
 function lily_render_best_seller_fields( $settings ) {
-	$product_ids = isset( $settings['best_sellers_products'] ) && is_array( $settings['best_sellers_products'] ) ? array_values( $settings['best_sellers_products'] ) : array();
-
 	echo '<section id="lily-tab-best" class="lily-admin-panel"><h2>' . esc_html__( 'Best Sellers', 'lily' ) . '</h2>';
 	lily_admin_toggle_field( $settings, 'show_best_sellers', esc_html__( 'Show Best Sellers', 'lily' ) );
 	lily_admin_text_field( $settings, 'best_sellers_heading', esc_html__( 'Best Sellers Heading', 'lily' ) );
 	lily_admin_textarea_field( $settings, 'best_sellers_description', esc_html__( 'Best Sellers Description', 'lily' ) );
-	echo '<p class="description">' . esc_html__( 'Pick the products to feature and drag them into the display order. Leave empty to hide the section.', 'lily' ) . '</p>';
-	echo '<div class="lily-best-rows" data-lily-best-rows>';
-	foreach ( $product_ids as $index => $product_id ) {
-		lily_render_best_seller_row( absint( $product_id ), $index );
-	}
-	echo '</div><button type="button" class="button button-secondary" data-lily-add-best>' . esc_html__( 'Add Product', 'lily' ) . '</button>';
-	echo '<script type="text/html" id="tmpl-lily-best-row">';
-	lily_render_best_seller_row( 0, '__INDEX__' );
-	echo '</script></section>';
-}
-
-function lily_render_best_seller_row( $product_id, $index ) {
-	$products = get_posts(
+	lily_render_ar_fields(
+		$settings,
+		esc_html__( 'Best Sellers', 'lily' ),
 		array(
-			'post_type'        => 'product',
-			'post_status'      => 'publish',
-			'numberposts'      => -1,
-			'orderby'          => 'title',
-			'order'            => 'ASC',
-			'suppress_filters' => false,
+			'best_sellers_heading'     => array( esc_html__( 'Best Sellers Heading', 'lily' ), 'text' ),
+			'best_sellers_description' => array( esc_html__( 'Best Sellers Description', 'lily' ), 'textarea' ),
 		)
 	);
-
-	echo '<div class="lily-best-row">';
-	echo '<span class="dashicons dashicons-move"></span>';
-	printf( '<select name="lily_homepage[best_sellers_products][%1$s]">', esc_attr( $index ) );
-	echo '<option value="0">' . esc_html__( 'Select product…', 'lily' ) . '</option>';
-	foreach ( $products as $product_post ) {
-		printf(
-			'<option value="%1$d"%2$s>%3$s</option>',
-			absint( $product_post->ID ),
-			selected( absint( $product_id ), absint( $product_post->ID ), false ),
-			esc_html( $product_post->post_title )
-		);
-	}
-	echo '</select>';
-	echo '<button type="button" class="button-link-delete" data-lily-remove-best>' . esc_html__( 'Remove', 'lily' ) . '</button>';
-	echo '</div>';
+	echo '<p class="description">' . esc_html__( 'Best Sellers are managed per product: edit a product (Products → Edit) and tick the "Best Seller" checkbox. Flagged products appear in this section and receive the BEST SELLER badge everywhere; unticking removes both automatically.', 'lily' ) . '</p>';
+	echo '</section>';
 }
 
 function lily_render_lens_finder_fields( $settings ) {
@@ -696,10 +907,27 @@ function lily_render_lens_finder_fields( $settings ) {
 	lily_admin_text_field( $settings, 'lens_finder_heading', esc_html__( 'Section Heading', 'lily' ) );
 	lily_admin_textarea_field( $settings, 'lens_finder_description', esc_html__( 'Section Description', 'lily' ) );
 	lily_admin_text_field( $settings, 'lens_finder_start_text', esc_html__( 'CTA Button Text', 'lily' ) );
+	lily_render_ar_fields(
+		$settings,
+		esc_html__( 'Lens Finder Content', 'lily' ),
+		array(
+			'lens_finder_eyebrow'     => array( esc_html__( 'Eyebrow', 'lily' ), 'text' ),
+			'lens_finder_heading'     => array( esc_html__( 'Section Heading', 'lily' ), 'text' ),
+			'lens_finder_description' => array( esc_html__( 'Section Description', 'lily' ), 'textarea' ),
+			'lens_finder_start_text'  => array( esc_html__( 'CTA Button Text', 'lily' ), 'text' ),
+		)
+	);
 
 	echo '<h3>' . esc_html__( 'Lens Finder Image', 'lily' ) . '</h3>';
-	lily_admin_image_field( $settings, 'lens_finder_image', esc_html__( 'Image', 'lily' ) );
+	lily_admin_image_field( $settings, 'lens_finder_image', esc_html__( 'Image', 'lily' ), 800, 1000 );
 	lily_admin_text_field( $settings, 'lens_finder_image_alt', esc_html__( 'Image Alt Text', 'lily' ) );
+	lily_render_ar_fields(
+		$settings,
+		esc_html__( 'Lens Finder Image', 'lily' ),
+		array(
+			'lens_finder_image_alt' => array( esc_html__( 'Image Alt Text', 'lily' ), 'text' ),
+		)
+	);
 
 	echo '<h3>' . esc_html__( 'How It Works (4 Steps)', 'lily' ) . '</h3>';
 	$lily_steps = isset( $settings['lens_finder_steps'] ) && is_array( $settings['lens_finder_steps'] ) ? $settings['lens_finder_steps'] : array();
@@ -708,7 +936,9 @@ function lily_render_lens_finder_fields( $settings ) {
 		echo '<fieldset class="lily-link-field"><legend>' . esc_html( sprintf( __( 'Step %d', 'lily' ), $lily_i + 1 ) ) . '</legend>';
 		printf( '<input type="text" name="lily_homepage[lens_finder_steps][%1$d][number]" value="%2$s" placeholder="%3$s" style="max-width:90px">', absint( $lily_i ), esc_attr( $lily_step['number'] ?? '' ), esc_attr__( 'Number', 'lily' ) );
 		printf( '<input type="text" name="lily_homepage[lens_finder_steps][%1$d][title]" value="%2$s" placeholder="%3$s">', absint( $lily_i ), esc_attr( $lily_step['title'] ?? '' ), esc_attr__( 'Title', 'lily' ) );
+		printf( '<input type="text" name="lily_homepage[lens_finder_steps][%1$d][title_ar]" value="%2$s" placeholder="%3$s">', absint( $lily_i ), esc_attr( $lily_step['title_ar'] ?? '' ), esc_attr__( 'Title (Arabic)', 'lily' ) );
 		printf( '<input type="text" name="lily_homepage[lens_finder_steps][%1$d][description]" value="%2$s" placeholder="%3$s">', absint( $lily_i ), esc_attr( $lily_step['description'] ?? '' ), esc_attr__( 'Description', 'lily' ) );
+		printf( '<input type="text" name="lily_homepage[lens_finder_steps][%1$d][description_ar]" value="%2$s" placeholder="%3$s">', absint( $lily_i ), esc_attr( $lily_step['description_ar'] ?? '' ), esc_attr__( 'Description (Arabic)', 'lily' ) );
 		echo '</fieldset>';
 	}
 
@@ -725,13 +955,40 @@ function lily_render_lens_finder_fields( $settings ) {
 		);
 	}
 
+	echo '<h3>' . esc_html__( 'Lens Finder Questions', 'lily' ) . ' — ' . esc_html__( 'Arabic Content', 'lily' ) . '</h3>';
+	echo '<p class="description">' . esc_html__( 'Shown on Arabic pages only. Leave any field blank to reuse its English text.', 'lily' ) . '</p>';
+	$lily_questions_ar = isset( $settings['lens_finder_questions_ar'] ) && is_array( $settings['lens_finder_questions_ar'] ) ? $settings['lens_finder_questions_ar'] : array();
+	foreach ( lily_lens_finder_question_defaults() as $lily_question ) {
+		printf(
+			'<label><span>%1$s</span><input type="text" name="lily_homepage[lens_finder_questions_ar][%2$s]" value="%3$s" placeholder="%4$s"></label>',
+			esc_html( sprintf( __( '%s (Arabic)', 'lily' ), $lily_question['default'] ) ),
+			esc_attr( $lily_question['key'] ),
+			esc_attr( $lily_questions_ar[ $lily_question['key'] ] ?? '' ),
+			esc_html( $lily_question['default'] )
+		);
+	}
+
 	lily_admin_textarea_field( $settings, 'lens_finder_responsibility_text', esc_html__( 'Responsibility Confirmation Text', 'lily' ) );
 	lily_admin_textarea_field( $settings, 'lens_finder_no_results_message', esc_html__( 'No Results Message', 'lily' ) );
+	lily_render_ar_fields(
+		$settings,
+		esc_html__( 'Lens Finder Messages', 'lily' ),
+		array(
+			'lens_finder_responsibility_text' => array( esc_html__( 'Responsibility Confirmation Text', 'lily' ), 'textarea' ),
+			'lens_finder_no_results_message'  => array( esc_html__( 'No Results Message', 'lily' ), 'textarea' ),
+		)
+	);
 	echo '</section>';
 }
 
-function lily_admin_taxonomy_checkboxes( $taxonomy, $name, $selected, $label ) {
-	$terms    = taxonomy_exists( $taxonomy ) ? get_terms( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) ) : array();
+function lily_admin_taxonomy_checkboxes( $taxonomy, $name, $selected, $label, $parents_only = false ) {
+	$args = array( 'taxonomy' => $taxonomy, 'hide_empty' => false );
+
+	if ( $parents_only ) {
+		$args['parent'] = 0;
+	}
+
+	$terms    = taxonomy_exists( $taxonomy ) ? get_terms( $args ) : array();
 	$selected = array_map( 'absint', (array) $selected );
 	echo '<fieldset><legend>' . esc_html( $label ) . '</legend>';
 	if ( empty( $terms ) || is_wp_error( $terms ) ) {

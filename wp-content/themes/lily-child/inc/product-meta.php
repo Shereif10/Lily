@@ -12,6 +12,53 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'add_meta_boxes_product', 'lily_register_product_lens_finder_metabox' );
 add_action( 'save_post_product', 'lily_save_product_lens_finder_meta' );
 
+add_action( 'add_meta_boxes_product', 'lily_register_product_best_seller_metabox' );
+add_action( 'save_post_product', 'lily_save_product_best_seller_meta' );
+
+/**
+ * Best Seller dashboard control — the single source of truth.
+ *
+ * Checking the box marks the product everywhere (BEST SELLER badge on the
+ * shared product card + the Best Sellers homepage section). Unchecking it
+ * removes both automatically — no other list to maintain.
+ */
+function lily_register_product_best_seller_metabox() {
+	add_meta_box(
+		'lily_best_seller',
+		esc_html__( 'Lily Product Flags', 'lily' ),
+		'lily_render_product_best_seller_metabox',
+		'product',
+		'side',
+		'default'
+	);
+}
+
+function lily_render_product_best_seller_metabox( $post ) {
+	wp_nonce_field( 'lily_save_product_best_seller', 'lily_product_best_seller_nonce' );
+
+	printf(
+		'<label><input type="checkbox" name="lily_best_seller" value="1" %1$s> %2$s</label>',
+		checked( lily_is_best_seller( $post->ID ), true, false ),
+		esc_html__( 'Best Seller', 'lily' )
+	);
+}
+
+function lily_save_product_best_seller_meta( $post_id ) {
+	if ( empty( $_POST['lily_product_best_seller_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['lily_product_best_seller_nonce'] ) ), 'lily_save_product_best_seller' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	update_post_meta( $post_id, '_lily_best_seller', empty( $_POST['lily_best_seller'] ) ? '' : '1' );
+}
+
 function lily_register_product_lens_finder_metabox() {
 	add_meta_box(
 		'lily_lens_finder_data',

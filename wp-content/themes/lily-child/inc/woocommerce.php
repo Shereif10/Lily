@@ -45,15 +45,8 @@ if ( ! function_exists( 'lily_cart_items_html' ) ) {
 			$subtotal     = apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
 			$remove_url   = wc_get_cart_remove_url( $cart_item_key );
 
-			/* Brand for this product */
-			$brand_taxonomy = function_exists( 'lily_get_brand_taxonomy' ) ? lily_get_brand_taxonomy() : '';
-			$brand_name     = '';
-			if ( $brand_taxonomy ) {
-				$brand_terms = wp_get_post_terms( $_product->get_id(), $brand_taxonomy, array( 'fields' => 'names' ) );
-				if ( ! is_wp_error( $brand_terms ) && ! empty( $brand_terms ) ) {
-					$brand_name = $brand_terms[0];
-				}
-			}
+			/* Brand for this product (localized canonical name) */
+			$brand_name = function_exists( 'lily_product_brand_name' ) ? lily_product_brand_name( $_product->get_id() ) : '';
 			?>
 			<div class="lily-cart-item">
 

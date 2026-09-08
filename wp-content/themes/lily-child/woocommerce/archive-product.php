@@ -12,6 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/* Shop-only body class so the shop CSS scope applies without touching globals. */
+add_filter(
+	'body_class',
+	static function ( $classes ) {
+		$classes[] = 'lily-shop-page';
+		return $classes;
+	}
+);
+
 get_header();
 
 $lily_is_shop = is_shop();
@@ -25,7 +34,7 @@ if ( $lily_is_shop ) {
 	// A configured Shop page description wins; otherwise the Lily fallback.
 	$lily_description = trim( wp_strip_all_tags( (string) get_the_archive_description() ) );
 	if ( '' === $lily_description ) {
-		$lily_description = esc_html__( 'Explore our collection of lenses and everyday eye-care essentials.', 'lily' );
+		$lily_description = esc_html__( 'Discover the Lily collection of colored and clear lenses, designed for a natural and effortless look.', 'lily' );
 	}
 }
 
@@ -160,161 +169,262 @@ if ( is_wp_error( $lily_brands ) ) {
 }
 $lily_brands_shown = apply_filters( 'lily_shop_sidebar_brand_limit', 8, $lily_brands );
 
+/*
+ * Color filter = Parent Colors only (child shades are product-level data).
+ * Selecting a parent still matches every shade beneath it, because products
+ * carrying a shade also carry the parent assignment automatically.
+ */
 $lily_colors = $lily_filter_groups['color']['taxonomy'] ? get_terms(
 	array(
 		'taxonomy'   => $lily_filter_groups['color']['taxonomy'],
+		'parent'     => 0,
 		'hide_empty' => true,
 	)
 ) : array();
 if ( is_wp_error( $lily_colors ) ) {
 	$lily_colors = array();
 }
+
+$lily_cover_id = function_exists( 'lily_get_archive_cover_image_id' ) ? lily_get_archive_cover_image_id() : 0;
+
+/**
+ * Render the shared archive header (title + description).
+ *
+ * Rendered inside the cover overlay when a cover exists, otherwise in its
+ * original position below the navbar — one markup source, two placements.
+ */
+$lily_render_header = static function () use ( $lily_title, $lily_description ) {
+	?>
+	<header class="lily-shop__header">
+		<h1 class="lily-shop__title"><?php echo esc_html( wp_strip_all_tags( $lily_title ) ); ?></h1>
+		<?php if ( '' !== $lily_description ) : ?>
+			<p class="lily-shop__description"><?php echo esc_html( $lily_description ); ?></p>
+		<?php endif; ?>
+	</header>
+	<?php
+};
 ?>
-<section class="lily-shop">
+<section class="lily-shop<?php echo $lily_cover_id ? ' lily-shop--has-cover' : ''; ?>">
+	<?php
+	/*
+	 * Optional full-bleed archive cover hero (Shop page / current product
+	 * category). Renders OUTSIDE the .lily-container so the image spans the
+	 * whole viewport edge-to-edge, with the archive title + description
+	 * centered directly on top of it. Renders nothing when no cover is
+	 * selected — the original clean header layout applies instead.
+	 */
+	if ( $lily_cover_id ) :
+		?>
+		<figure class="lily-shop-cover">
+			<?php
+			// Alt text comes from the Media Library attachment metadata.
+			echo wp_get_attachment_image(
+				$lily_cover_id,
+				'large',
+				false,
+				array(
+					'class'         => 'lily-shop-cover__img',
+					'loading'       => 'eager',
+					'fetchpriority' => 'high',
+				)
+			);
+			?>
+			<div class="lily-shop-cover__overlay">
+				<?php $lily_render_header(); ?>
+			</div>
+		</figure>
+		<?php
+	endif;
+	?>
+
 	<?php lily_container_open( 'lily-shop__inner' ); ?>
 
-		<header class="lily-shop__header lily-reveal">
-			<h1 class="lily-shop__title"><?php echo esc_html( wp_strip_all_tags( $lily_title ) ); ?></h1>
-			<?php if ( '' !== $lily_description ) : ?>
-				<p class="lily-shop__description"><?php echo esc_html( $lily_description ); ?></p>
-			<?php endif; ?>
-		</header>
+		<?php
+		// No cover configured: keep the original centered header in place.
+		if ( ! $lily_cover_id ) {
+			$lily_render_header();
+		}
+		?>
 
-		<div class="lily-shop__layout lily-reveal">
+		<nav class="lily-shop__cats" aria-label="<?php esc_attr_e( 'Shop categories', 'lily' ); ?>">
+			<a class="lily-shop__cat<?php echo $lily_is_shop ? ' is-active' : ''; ?>" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>"><?php esc_html_e( 'All', 'lily' ); ?></a>
+			<?php foreach ( $lily_categories as $lily_term ) : ?>
+				<a class="lily-shop__cat<?php echo (int) $lily_term->term_id === $lily_current_cat ? ' is-active' : ''; ?>" href="<?php echo esc_url( get_term_link( $lily_term ) ); ?>"><?php echo esc_html( $lily_term->name ); ?></a>
+			<?php endforeach; ?>
+		</nav>
 
-			<button class="lily-shop-filter-toggle" type="button" aria-expanded="false" aria-controls="lily-shop-sidebar">
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="7" y1="12" x2="17" y2="12"></line><line x1="10" y1="17" x2="14" y2="17"></line></svg>
-				<?php esc_html_e( 'Filter', 'lily' ); ?>
-			</button>
+		<div class="lily-shop__layout">
 
 			<div class="lily-shop-drawer-overlay" hidden></div>
 
 			<aside class="lily-shop__sidebar" id="lily-shop-sidebar" aria-label="<?php esc_attr_e( 'Filter products', 'lily' ); ?>">
 				<div class="lily-shop-sidebar-head">
-					<span class="lily-shop__sidebar-title"><?php esc_html_e( 'Filter By', 'lily' ); ?></span>
 					<button class="lily-shop-drawer-close" type="button" aria-label="<?php esc_attr_e( 'Close filters', 'lily' ); ?>">
 						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
 					</button>
 				</div>
 
-				<?php /* Collections — open by default. */ ?>
-				<details class="lily-shop-acc" open>
-					<summary class="lily-shop-acc__summary">
-						<span><?php esc_html_e( 'Collections', 'lily' ); ?></span>
-						<span class="lily-shop-acc__chevron" aria-hidden="true">
-							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-						</span>
-					</summary>
-					<div class="lily-shop-acc__body">
-						<ul class="lily-shop-list">
-							<li>
-								<a class="lily-shop-link<?php echo $lily_is_shop ? ' is-active' : ''; ?>" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">
-									<?php esc_html_e( 'All Products', 'lily' ); ?>
-								</a>
-							</li>
-							<?php foreach ( $lily_categories as $lily_term ) : ?>
-								<li>
-									<a class="lily-shop-link<?php echo (int) $lily_term->term_id === $lily_current_cat ? ' is-active' : ''; ?>" href="<?php echo esc_url( get_term_link( $lily_term ) ); ?>">
-										<?php echo esc_html( $lily_term->name ); ?>
-									</a>
-								</li>
-							<?php endforeach; ?>
-						</ul>
+				<div class="lily-filter-panel">
+					<div class="lily-filter-panel__head">
+						<span class="lily-filter-panel__title"><?php esc_html_e( 'Filter By', 'lily' ); ?></span>
+						<a class="lily-filter-panel__clear" href="<?php echo esc_url( lily_filter_clear_all_url() ); ?>"><?php esc_html_e( 'Clear all', 'lily' ); ?></a>
 					</div>
-				</details>
 
-				<?php foreach ( $lily_filter_groups as $lily_group_key => $lily_group ) : ?>
-					<?php
-					$lily_terms = 'brand' === $lily_group_key ? $lily_brands : $lily_colors;
-
-					if ( '' === $lily_group['taxonomy'] || empty( $lily_terms ) ) {
-						continue;
-					}
-
-					$lily_selected = isset( $_GET[ $lily_group['param'] ] ) ? sanitize_title( wp_unslash( $_GET[ $lily_group['param'] ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-					?>
-					<details class="lily-shop-acc"<?php echo 'color' === $lily_group_key && '' !== $lily_selected ? ' open' : ''; ?>>
+					<?php /* Collections — checkbox multi-select (OR within the group). */ ?>
+					<details class="lily-shop-acc" open>
 						<summary class="lily-shop-acc__summary">
-							<span><?php echo esc_html( $lily_group['label'] ); ?></span>
+							<span><?php esc_html_e( 'Collections', 'lily' ); ?></span>
 							<span class="lily-shop-acc__chevron" aria-hidden="true">
 								<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
 							</span>
 						</summary>
 						<div class="lily-shop-acc__body">
-							<ul class="lily-shop-list">
-								<?php foreach ( $lily_terms as $lily_index => $lily_term ) : ?>
-									<li class="<?php echo $lily_index >= $lily_brands_shown && 'brand' === $lily_group_key ? 'is-extra is-hidden' : ''; ?>">
-										<a class="lily-shop-link lily-shop-link--swatch<?php echo $lily_selected === $lily_term->slug ? ' is-active' : ''; ?>" href="<?php echo esc_url( lily_get_attribute_filter_url( $lily_group['taxonomy'], $lily_term ) ); ?>">
-											<?php if ( 'color' === $lily_group_key ) : ?>
-												<span class="lily-swatch-dot" aria-hidden="true"></span>
-											<?php endif; ?>
-											<span class="lily-shop-link__label"><?php echo esc_html( $lily_term->name ); ?></span>
+							<?php
+							$lily_total_products   = (int) ( wp_count_posts( 'product' )->publish ?? 0 );
+							$lily_selected_cats    = lily_filter_current_values( 'filter_cat' );
+							$lily_on_category_slug = is_product_category() && get_queried_object() instanceof WP_Term ? get_queried_object()->slug : '';
+							$lily_cat_checked      = static function ( $slug ) use ( $lily_selected_cats, $lily_on_category_slug ) {
+								if ( '' !== $lily_on_category_slug ) {
+									return $slug === $lily_on_category_slug || in_array( $slug, $lily_selected_cats, true );
+								}
+								return in_array( $slug, $lily_selected_cats, true );
+							};
+							$lily_all_checked = '' === $lily_on_category_slug && empty( $lily_selected_cats );
+							?>
+							<ul class="lily-filter-list">
+								<li>
+									<a class="lily-filter-row<?php echo $lily_all_checked ? ' is-checked' : ''; ?>" href="<?php echo esc_url( lily_filter_toggle_url( 'filter_cat', '__clear__', wc_get_page_permalink( 'shop' ) ) ); ?>"<?php echo $lily_all_checked ? ' aria-current="true"' : ''; ?>>
+										<span class="lily-check" aria-hidden="true"></span>
+										<span class="lily-filter-row__label"><?php esc_html_e( 'All Products', 'lily' ); ?></span>
+										<span class="lily-filter-row__count"><?php echo esc_html( number_format_i18n( $lily_total_products ) ); ?></span>
+									</a>
+								</li>
+								<?php foreach ( $lily_categories as $lily_term ) : ?>
+									<li>
+										<?php $lily_cat_is_checked = $lily_cat_checked( $lily_term->slug ); ?>
+										<a class="lily-filter-row<?php echo $lily_cat_is_checked ? ' is-checked' : ''; ?>" href="<?php echo esc_url( lily_filter_cat_toggle_url( $lily_term->slug ) ); ?>"<?php echo $lily_cat_is_checked ? ' aria-current="true"' : ''; ?>>
+											<span class="lily-check" aria-hidden="true"></span>
+											<span class="lily-filter-row__label"><?php echo esc_html( $lily_term->name ); ?></span>
+											<span class="lily-filter-row__count"><?php echo esc_html( number_format_i18n( (int) $lily_term->count ) ); ?></span>
 										</a>
 									</li>
 								<?php endforeach; ?>
 							</ul>
-							<?php if ( 'brand' === $lily_group_key && count( $lily_brands ) > $lily_brands_shown ) : ?>
-								<button class="lily-shop-show-more" type="button" data-lily-show-more data-more-text="<?php esc_attr_e( 'Show more', 'lily' ); ?>" data-less-text="<?php esc_attr_e( 'Show less', 'lily' ); ?>">
-									<?php esc_html_e( 'Show more', 'lily' ); ?>
-								</button>
-							<?php endif; ?>
-							<?php if ( '' !== $lily_selected ) : ?>
-								<a class="lily-shop-clear-one" href="<?php echo esc_url( remove_query_arg( $lily_group['param'] ) ); ?>">
-									<?php
-									/* translators: %s: filter group label. */
-									printf( esc_html__( 'Clear %s', 'lily' ), esc_html( $lily_group['label'] ) );
-									?>
-								</a>
-							<?php endif; ?>
 						</div>
 					</details>
-				<?php endforeach; ?>
 
-				<?php /* Price — closed by default. */ ?>
-				<?php if ( $lily_price_max > 0 ) : ?>
-					<details class="lily-shop-acc"<?php echo ( '' !== $lily_current_min || '' !== $lily_current_max ) ? ' open' : ''; ?>>
-						<summary class="lily-shop-acc__summary">
-							<span><?php esc_html_e( 'Price', 'lily' ); ?></span>
-							<span class="lily-shop-acc__chevron" aria-hidden="true">
-								<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-							</span>
-						</summary>
-						<div class="lily-shop-acc__body">
-							<form class="lily-price-form" method="get" action="<?php echo esc_url( is_product_category() ? get_term_link( get_queried_object() ) : wc_get_page_permalink( 'shop' ) ); ?>">
-								<?php echo $lily_render_filter_inputs(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped per value above. ?>
-								<div class="lily-price-range" data-min="<?php echo esc_attr( $lily_price_min ); ?>" data-max="<?php echo esc_attr( $lily_price_max ); ?>">
-									<div class="lily-price-range__track" aria-hidden="true"><span class="lily-price-range__fill"></span></div>
-									<input class="lily-price-range__input lily-price-range__input--min" type="range" min="<?php echo esc_attr( $lily_price_min ); ?>" max="<?php echo esc_attr( $lily_price_max ); ?>" step="1" value="<?php echo esc_attr( '' !== $lily_current_min ? $lily_current_min : $lily_price_min ); ?>" aria-label="<?php esc_attr_e( 'Minimum price', 'lily' ); ?>">
-									<input class="lily-price-range__input lily-price-range__input--max" type="range" min="<?php echo esc_attr( $lily_price_min ); ?>" max="<?php echo esc_attr( $lily_price_max ); ?>" step="1" value="<?php echo esc_attr( '' !== $lily_current_max ? $lily_current_max : $lily_price_max ); ?>" aria-label="<?php esc_attr_e( 'Maximum price', 'lily' ); ?>">
-								</div>
-								<p class="lily-price-hint">
-									<span class="lily-price-hint__min"><span class="lily-price-cur"><?php echo esc_html( $lily_currency_symbol ); ?></span> <span class="lily-price-num"><?php echo esc_html( number_format_i18n( '' !== $lily_current_min ? $lily_current_min : $lily_price_min ) ); ?></span></span>
-									<span class="lily-price-hint__max"><span class="lily-price-cur"><?php echo esc_html( $lily_currency_symbol ); ?></span> <span class="lily-price-num"><?php echo esc_html( number_format_i18n( '' !== $lily_current_max ? $lily_current_max : $lily_price_max ) ); ?></span></span>
-								</p>
-								<div class="lily-price-fields">
-									<label>
-										<span><?php esc_html_e( 'Min', 'lily' ); ?></span>
-										<input type="number" name="min_price" min="0" value="<?php echo esc_attr( '' !== $lily_current_min ? $lily_current_min : '' ); ?>" placeholder="<?php echo esc_attr( $lily_price_min ); ?>">
-									</label>
-									<label>
-										<span><?php esc_html_e( 'Max', 'lily' ); ?></span>
-										<input type="number" name="max_price" min="0" value="<?php echo esc_attr( '' !== $lily_current_max ? $lily_current_max : '' ); ?>" placeholder="<?php echo esc_attr( $lily_price_max ); ?>">
-									</label>
-									<button class="lily-button lily-button--small lily-price-apply" type="submit"><?php esc_html_e( 'Apply', 'lily' ); ?></button>
-								</div>
-							</form>
-						</div>
-					</details>
-				<?php endif; ?>
+					<?php foreach ( $lily_filter_groups as $lily_group_key => $lily_group ) : ?>
+						<?php
+						$lily_terms = 'brand' === $lily_group_key ? $lily_brands : $lily_colors;
+
+						if ( '' === $lily_group['taxonomy'] || empty( $lily_terms ) ) {
+							continue;
+						}
+
+						$lily_selected_values = lily_filter_current_values( $lily_group['param'] );
+						?>
+						<details class="lily-shop-acc" open>
+							<summary class="lily-shop-acc__summary">
+								<span><?php echo esc_html( $lily_group['label'] ); ?></span>
+								<span class="lily-shop-acc__chevron" aria-hidden="true">
+									<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+								</span>
+							</summary>
+							<div class="lily-shop-acc__body">
+								<ul class="lily-filter-list">
+								<?php foreach ( $lily_terms as $lily_index => $lily_term ) : ?>
+									<li class="<?php echo $lily_index >= $lily_brands_shown && 'brand' === $lily_group_key ? 'is-extra is-hidden' : ''; ?>">
+										<?php
+										$lily_is_checked = in_array( $lily_term->slug, $lily_selected_values, true );
+										$lily_term_label = function_exists( 'lily_term_name' ) ? lily_term_name( $lily_term ) : $lily_term->name;
+										?>
+										<a class="lily-filter-row<?php echo $lily_is_checked ? ' is-checked' : ''; ?>" href="<?php echo esc_url( lily_filter_toggle_url( $lily_group['param'], $lily_term->slug ) ); ?>"<?php echo $lily_is_checked ? ' aria-current="true"' : ''; ?>>
+											<span class="lily-check" aria-hidden="true"></span>
+											<?php if ( 'color' === $lily_group_key ) : ?>
+												<span class="lily-swatch-dot" aria-hidden="true" style="background:<?php echo esc_attr( lily_get_color_swatch_color( $lily_term->slug ) ); ?>;"></span>
+											<?php endif; ?>
+											<span class="lily-filter-row__label"><?php echo esc_html( $lily_term_label ); ?></span>
+											<span class="lily-filter-row__count"><?php echo esc_html( number_format_i18n( (int) $lily_term->count ) ); ?></span>
+										</a>
+									</li>
+								<?php endforeach; ?>
+								</ul>
+								<?php if ( 'brand' === $lily_group_key && count( $lily_brands ) > $lily_brands_shown ) : ?>
+									<button class="lily-shop-show-more" type="button" data-lily-show-more data-more-text="<?php esc_attr_e( 'Show more', 'lily' ); ?>" data-less-text="<?php esc_attr_e( 'Show less', 'lily' ); ?>">
+										<?php esc_html_e( 'Show more', 'lily' ); ?>
+									</button>
+								<?php endif; ?>
+								<?php if ( ! empty( $lily_selected_values ) ) : ?>
+									<a class="lily-shop-clear-one" href="<?php echo esc_url( remove_query_arg( $lily_group['param'] ) ); ?>">
+										<?php
+										/* translators: %s: filter group label. */
+										printf( esc_html__( 'Clear %s', 'lily' ), esc_html( $lily_group['label'] ) );
+										?>
+									</a>
+								<?php endif; ?>
+							</div>
+						</details>
+					<?php endforeach; ?>
+
+					<?php /* Price — expanded by default like the approved reference; still collapsible. */ ?>
+					<?php if ( $lily_price_max > 0 ) : ?>
+						<details class="lily-shop-acc" open>
+							<summary class="lily-shop-acc__summary">
+								<span><?php esc_html_e( 'Price', 'lily' ); ?></span>
+								<span class="lily-shop-acc__chevron" aria-hidden="true">
+									<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+								</span>
+							</summary>
+							<div class="lily-shop-acc__body">
+								<form class="lily-price-form" method="get" action="<?php echo esc_url( is_product_category() ? get_term_link( get_queried_object() ) : wc_get_page_permalink( 'shop' ) ); ?>">
+									<?php echo $lily_render_filter_inputs(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped per value above. ?>
+									<div class="lily-price-range" data-min="<?php echo esc_attr( $lily_price_min ); ?>" data-max="<?php echo esc_attr( $lily_price_max ); ?>">
+										<div class="lily-price-range__track" aria-hidden="true"><span class="lily-price-range__fill"></span></div>
+										<input class="lily-price-range__input lily-price-range__input--min" type="range" min="<?php echo esc_attr( $lily_price_min ); ?>" max="<?php echo esc_attr( $lily_price_max ); ?>" step="1" value="<?php echo esc_attr( '' !== $lily_current_min ? $lily_current_min : $lily_price_min ); ?>" aria-label="<?php esc_attr_e( 'Minimum price', 'lily' ); ?>">
+										<input class="lily-price-range__input lily-price-range__input--max" type="range" min="<?php echo esc_attr( $lily_price_min ); ?>" max="<?php echo esc_attr( $lily_price_max ); ?>" step="1" value="<?php echo esc_attr( '' !== $lily_current_max ? $lily_current_max : $lily_price_max ); ?>" aria-label="<?php esc_attr_e( 'Maximum price', 'lily' ); ?>">
+									</div>
+									<p class="lily-price-hint">
+										<span class="lily-price-hint__min"><span class="lily-price-cur"><?php echo esc_html( $lily_currency_symbol ); ?></span> <span class="lily-price-num"><?php echo esc_html( number_format_i18n( '' !== $lily_current_min ? $lily_current_min : $lily_price_min ) ); ?></span></span>
+										<span class="lily-price-hint__max"><span class="lily-price-cur"><?php echo esc_html( $lily_currency_symbol ); ?></span> <span class="lily-price-num"><?php echo esc_html( number_format_i18n( '' !== $lily_current_max ? $lily_current_max : $lily_price_max ) ); ?></span></span>
+									</p>
+									<div class="lily-price-fields">
+										<label>
+											<span><?php esc_html_e( 'Min', 'lily' ); ?></span>
+											<input type="number" name="min_price" min="0" value="<?php echo esc_attr( '' !== $lily_current_min ? $lily_current_min : '' ); ?>" placeholder="<?php echo esc_attr( $lily_price_min ); ?>">
+										</label>
+										<label>
+											<span><?php esc_html_e( 'Max', 'lily' ); ?></span>
+											<input type="number" name="max_price" min="0" value="<?php echo esc_attr( '' !== $lily_current_max ? $lily_current_max : '' ); ?>" placeholder="<?php echo esc_attr( $lily_price_max ); ?>">
+										</label>
+										<button class="lily-button lily-button--small lily-price-apply" type="submit"><?php esc_html_e( 'Apply', 'lily' ); ?></button>
+									</div>
+								</form>
+							</div>
+						</details>
+					<?php endif; ?>
+				</div>
 			</aside>
 
 			<div class="lily-shop__main">
 				<div class="lily-shop-toolbar">
-					<p class="lily-shop-count"><?php echo esc_html( $lily_count_text ); ?></p>
+					<div class="lily-shop-toolbar__left">
+						<button class="lily-shop-filter-toggle" type="button" aria-expanded="false" aria-controls="lily-shop-sidebar">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="7" y1="12" x2="17" y2="12"></line><line x1="10" y1="17" x2="14" y2="17"></line></svg>
+							<?php esc_html_e( 'Filter', 'lily' ); ?>
+						</button>
+						<span class="lily-shop-toolbar__filter-label" aria-hidden="true"><?php esc_html_e( 'Filter', 'lily' ); ?></span>
+						<p class="lily-shop-count"><?php echo esc_html( $lily_count_text ); ?></p>
+					</div>
 
 					<form class="lily-sort-form" method="get" action="">
 						<?php echo $lily_render_filter_inputs(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped per value above. ?>
-						<label class="lily-sort-form__label" for="lily-shop-orderby"><?php esc_html_e( 'Sort by:', 'lily' ); ?></label>
+						<?php if ( '' !== $lily_current_min ) : ?>
+							<input type="hidden" name="min_price" value="<?php echo esc_attr( $lily_current_min ); ?>">
+						<?php endif; ?>
+						<?php if ( '' !== $lily_current_max ) : ?>
+							<input type="hidden" name="max_price" value="<?php echo esc_attr( $lily_current_max ); ?>">
+						<?php endif; ?>
+						<label class="lily-sort-form__label" for="lily-shop-orderby"><?php esc_html_e( 'Sort by', 'lily' ); ?></label>
 						<select id="lily-shop-orderby" name="orderby">
 							<?php foreach ( $lily_sort_options as $lily_value => $lily_label ) : ?>
 								<option value="<?php echo esc_attr( $lily_value ); ?>" <?php selected( $lily_sort_current, $lily_value ); ?>><?php echo esc_html( $lily_label ); ?></option>

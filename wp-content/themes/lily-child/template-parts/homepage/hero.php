@@ -21,16 +21,19 @@ foreach ( $slides_raw as $candidate ) {
 	$image = (int) ( $candidate['image'] ?? 0 );
 	$title = trim( (string) ( $candidate['title'] ?? '' ) );
 
-	if ( ! $image && '' === $title ) {
+	// A slide with only Arabic copy still counts as content.
+	$title_ar_check = function_exists( 'lily_ml_value' ) ? trim( (string) ( $candidate['title_ar'] ?? '' ) ) : '';
+
+	if ( ! $image && '' === $title && '' === $title_ar_check ) {
 		continue;
 	}
 
 	$slide = array(
 		'image'       => $image,
 		'mobile'      => (int) ( $candidate['mobile_image'] ?? 0 ),
-		'title'       => $title,
-		'description' => trim( (string) ( $candidate['description'] ?? '' ) ),
-		'cta_text'    => trim( (string) ( $candidate['cta_text'] ?? '' ) ),
+		'title'       => function_exists( 'lily_ml_value' ) ? (string) lily_ml_value( $title, $candidate['title_ar'] ?? '' ) : $title,
+		'description' => function_exists( 'lily_ml_value' ) ? trim( (string) lily_ml_value( $candidate['description'] ?? '', $candidate['description_ar'] ?? '' ) ) : trim( (string) ( $candidate['description'] ?? '' ) ),
+		'cta_text'    => function_exists( 'lily_ml_value' ) ? trim( (string) lily_ml_value( $candidate['cta_text'] ?? '', $candidate['cta_text_ar'] ?? '' ) ) : trim( (string) ( $candidate['cta_text'] ?? '' ) ),
 		'cta_url'     => trim( (string) ( $candidate['cta_url'] ?? '' ) ),
 	);
 

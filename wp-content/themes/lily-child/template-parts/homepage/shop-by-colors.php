@@ -23,20 +23,34 @@ if ( '' === trim( (string) $description ) ) {
 	$description = esc_html__( 'Discover shades designed to match your unique look.', 'lily' );
 }
 
-// Nothing selected yet: show the existing real pa_color terms so the
-// section still renders; explicit Dashboard selection remains the override.
+// Nothing selected yet: show the real parent pa_color terms so the section
+// still renders; explicit Dashboard selection remains the override. Child
+// shades never surface here — parent colors only.
 if ( empty( $terms ) ) {
-	$terms = get_terms(
-		array(
-			'taxonomy'   => 'pa_color',
-			'hide_empty' => false,
-		)
-	);
+	$terms = function_exists( 'lily_color_parents' )
+		? lily_color_parents( array( 'hide_empty' => false ) )
+		: get_terms(
+			array(
+				'taxonomy'   => 'pa_color',
+				'parent'     => 0,
+				'hide_empty' => false,
+			)
+		);
 
 	if ( is_wp_error( $terms ) ) {
 		$terms = array();
 	}
 }
+
+// Safety net: even a Dashboard selection can only ever show parent colors.
+$terms = array_values(
+	array_filter(
+		(array) $terms,
+		static function ( $term ) {
+			return $term instanceof WP_Term && ! $term->parent;
+		}
+	)
+);
 
 if ( empty( $terms ) ) {
 	return;
@@ -48,6 +62,10 @@ $terms = array_slice( $terms, 0, 10 );
 // Default label + destination for the existing View All dashboard link.
 if ( empty( $view_all['title'] ) ) {
 	$view_all['title'] = __( 'View All Colors', 'lily' );
+}
+
+if ( function_exists( 'lily_ml_value' ) && ! empty( $view_all['title_ar'] ) ) {
+	$view_all['title'] = lily_ml_value( $view_all['title'], $view_all['title_ar'] );
 }
 
 if ( empty( $view_all['url'] ) ) {

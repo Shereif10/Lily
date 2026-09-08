@@ -52,6 +52,29 @@ function lily_enqueue_assets() {
 			'nextImage' => esc_html__( 'Next image', 'lily' ),
 			'increaseQty' => esc_html__( 'Increase quantity', 'lily' ),
 			'decreaseQty' => esc_html__( 'Decrease quantity', 'lily' ),
+			'selectPowerForBothEyes' => esc_html__( 'Please select the prescription power for both eyes.', 'lily' ),
+		)
+	);
+
+	/* Lily Wishlist: one isolated guest-wishlist script, needed on every
+	   page so product-card hearts stay in sync. */
+	wp_enqueue_script(
+		'lily-wishlist',
+		LILY_THEME_URI . '/assets/js/lily-wishlist.js',
+		array(),
+		LILY_THEME_VERSION,
+		true
+	);
+
+	wp_localize_script(
+		'lily-wishlist',
+		'lilyWishlist',
+		array(
+			'restUrl'     => esc_url_raw( rest_url( 'lily/v1/wishlist' ) ),
+			'addLabel'    => esc_html__( 'Add to wishlist', 'lily' ),
+			'removeLabel' => esc_html__( 'Remove from wishlist', 'lily' ),
+			'one'         => esc_html__( '%s item', 'lily' ),
+			'other'       => esc_html__( '%s items', 'lily' ),
 		)
 	);
 

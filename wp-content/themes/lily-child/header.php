@@ -57,6 +57,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endif; ?>
 
 			<?php if ( function_exists( 'wc_get_cart_url' ) ) : ?>
+				<?php
+				$lily_wishlist_page = get_page_by_path( 'wishlist' );
+				$lily_wishlist_url  = $lily_wishlist_page instanceof WP_Post ? get_permalink( $lily_wishlist_page ) : home_url( '/wishlist/' );
+				?>
+				<a class="lily-wishlist-link" href="<?php echo esc_url( $lily_wishlist_url ); ?>" aria-label="<?php esc_attr_e( 'Wishlist', 'lily' ); ?>">
+					<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<path d="M12 20.7C6.4 17.3 3 14 3 10.2 3 7.6 5 5.5 7.6 5.5c1.7 0 3.3.9 4.4 2.4 1.1-1.5 2.7-2.4 4.4-2.4 2.6 0 4.6 2.1 4.6 4.7 0 3.8-3.4 7.1-9 10.5z"></path>
+					</svg>
+					<span class="screen-reader-text"><?php esc_html_e( 'Wishlist', 'lily' ); ?></span>
+					<span class="lily-wishlist-count" data-lily-wishlist-nav-count hidden></span>
+				</a>
 				<a class="lily-cart-link" href="<?php echo esc_url( wc_get_cart_url() ); ?>">
 					<svg class="lily-cart-icon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 						<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>

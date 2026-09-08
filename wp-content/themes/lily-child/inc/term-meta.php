@@ -27,6 +27,7 @@ function lily_brand_add_form_fields() {
 		<div class="lily-image-preview" data-lily-image-preview></div>
 		<button type="button" class="button" data-lily-image-select><?php esc_html_e( 'Choose Logo', 'lily' ); ?></button>
 		<button type="button" class="button" data-lily-image-remove><?php esc_html_e( 'Remove', 'lily' ); ?></button>
+		<?php lily_image_guidance( 480, 96 ); ?>
 		<p><?php esc_html_e( 'Logo shown in the homepage Brands section.', 'lily' ); ?></p>
 	</div>
 	<?php
@@ -45,6 +46,7 @@ function lily_brand_edit_form_fields( $term ) {
 			</div>
 			<button type="button" class="button" data-lily-image-select><?php esc_html_e( 'Choose Logo', 'lily' ); ?></button>
 			<button type="button" class="button" data-lily-image-remove><?php esc_html_e( 'Remove', 'lily' ); ?></button>
+			<?php lily_image_guidance( 480, 96 ); ?>
 			<p class="description"><?php esc_html_e( 'Logo shown in the homepage Brands section.', 'lily' ); ?></p>
 			<?php wp_nonce_field( 'lily_save_brand_logo', 'lily_brand_logo_nonce' ); ?>
 		</td>
@@ -73,6 +75,7 @@ function lily_color_add_form_fields() {
 		<div class="lily-image-preview" data-lily-image-preview></div>
 		<button type="button" class="button" data-lily-image-select><?php esc_html_e( 'Choose Image', 'lily' ); ?></button>
 		<button type="button" class="button" data-lily-image-remove><?php esc_html_e( 'Remove', 'lily' ); ?></button>
+		<?php lily_image_guidance( 600, 600 ); ?>
 		<p><?php esc_html_e( 'Marketing image used by the Shop by Colors homepage section.', 'lily' ); ?></p>
 	</div>
 	<?php
@@ -91,6 +94,7 @@ function lily_color_edit_form_fields( $term ) {
 			</div>
 			<button type="button" class="button" data-lily-image-select><?php esc_html_e( 'Choose Image', 'lily' ); ?></button>
 			<button type="button" class="button" data-lily-image-remove><?php esc_html_e( 'Remove', 'lily' ); ?></button>
+			<?php lily_image_guidance( 600, 600 ); ?>
 			<p class="description"><?php esc_html_e( 'Marketing image used by the Shop by Colors homepage section.', 'lily' ); ?></p>
 			<?php wp_nonce_field( 'lily_save_color_image', 'lily_color_image_nonce' ); ?>
 		</td>
