@@ -82,7 +82,13 @@ add_action( 'admin_enqueue_scripts', 'lily_admin_assets' );
  * @return array
  */
 function lily_homepage_settings_defaults() {
-	return array_merge(
+	static $defaults = null;
+
+	if ( null !== $defaults ) {
+		return $defaults;
+	}
+
+	$defaults = array_merge(
 		array(
 		'show_announcement_bar'              => 1,
 		'announcement_items'                 => array(
@@ -213,6 +219,8 @@ function lily_homepage_settings_defaults() {
 		function_exists( 'lily_returns_settings_defaults' ) ? lily_returns_settings_defaults() : array(),
 		function_exists( 'lily_privacy_settings_defaults' ) ? lily_privacy_settings_defaults() : array()
 	);
+
+	return $defaults;
 }
 
 /**
@@ -999,15 +1007,4 @@ function lily_admin_taxonomy_checkboxes( $taxonomy, $name, $selected, $label, $p
 		printf( '<label class="lily-check"><input type="checkbox" name="lily_homepage[%1$s][]" value="%2$d" %3$s> %4$s</label>', esc_attr( $name ), absint( $term->term_id ), checked( in_array( (int) $term->term_id, $selected, true ), true, false ), esc_html( $term->name ) );
 	}
 	echo '</fieldset>';
-}
-
-function lily_admin_taxonomy_select( $taxonomy, $name, $selected, $label ) {
-	$terms = taxonomy_exists( $taxonomy ) ? get_terms( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) ) : array();
-	echo '<label><span>' . esc_html( $label ) . '</span><select name="lily_homepage[' . esc_attr( $name ) . ']"><option value="0">' . esc_html__( 'Select a category', 'lily' ) . '</option>';
-	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-		foreach ( $terms as $term ) {
-			printf( '<option value="%1$d" %2$s>%3$s</option>', absint( $term->term_id ), selected( $selected, (int) $term->term_id, false ), esc_html( $term->name ) );
-		}
-	}
-	echo '</select></label>';
 }

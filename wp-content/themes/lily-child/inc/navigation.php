@@ -19,7 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function lily_navigation_settings_defaults() {
-	return array(
+	static $defaults = null;
+
+	if ( null !== $defaults ) {
+		return $defaults;
+	}
+
+	$defaults = array(
 		'logo'                 => 0,
 		'show_shop'            => 1,
 		'shop_label'          => 'Shop',
@@ -45,6 +51,8 @@ function lily_navigation_settings_defaults() {
 		'faqs_page'            => 0,
 		'contact_page'         => 0,
 	);
+
+	return $defaults;
 }
 
 /**

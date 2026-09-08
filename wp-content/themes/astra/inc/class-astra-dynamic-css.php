@@ -1482,7 +1482,7 @@ if ( ! class_exists( 'Astra_Dynamic_CSS' ) ) {
 						$gtn_margin_top = array(
 							'.ast-plain-container.ast-no-sidebar #primary' => array(
 								'margin-top'    => '60px',
-								'margin-bottom' => '60px',
+								// 'margin-bottom' => '60px',
 							),
 						);
 						/* Parse CSS from array() -> min-width: (1200)px CSS */

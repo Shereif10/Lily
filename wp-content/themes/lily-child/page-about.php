@@ -94,7 +94,7 @@ $lily_mission_text = lily_get_option( 'mission_text', '' );
 	<section class="lily-about-band lily-about-mission" aria-labelledby="lily-about-mission-heading">
 		<?php lily_container_open( 'lily-about-mission__inner' ); ?>
 			<p class="lily-about-eyebrow lily-about-eyebrow--center" id="lily-about-mission-heading"><?php echo esc_html( lily_get_option( 'mission_eyebrow', esc_html__( 'Our Mission', 'lily' ) ) ); ?></p>
-			<p class="lily-about-mission__statement"><?php echo esc_html( lily_get_option( 'mission_statement', esc_html__( 'To make self-expression feel effortless — through colors that complement the way you see yourself.', 'lily' ) ) ); ?></p>
+			<p class="lily-about-mission__statement"><?php echo esc_html( lily_get_option( 'mission_statement', esc_html__( 'To make self expression feel effortless through colors that complement the way you see yourself.', 'lily' ) ) ); ?></p>
 			<?php if ( '' !== $lily_mission_text ) : ?>
 				<p class="lily-about-mission__text"><?php echo esc_html( $lily_mission_text ); ?></p>
 			<?php endif; ?>
@@ -109,7 +109,7 @@ $lily_mission_text = lily_get_option( 'mission_text', '' );
 				<p class="lily-about-vision__lead"><?php echo esc_html( lily_get_option( 'vision_statement', esc_html__( 'A world where beauty feels personal, natural, and entirely your own.', 'lily' ) ) ); ?></p>
 			</div>
 			<div class="lily-about-vision__text">
-				<p><?php echo esc_html( lily_get_option( 'vision_text', esc_html__( 'We want Lily to be the place you return to whenever you feel like a refresh — a quiet, trusted destination for discovering your next look.', 'lily' ) ) ); ?></p>
+				<p><?php echo esc_html( lily_get_option( 'vision_text', esc_html__( 'We want Lily to be the place you return to whenever you feel like a refresh a quiet, trusted destination for discovering your next look.', 'lily' ) ) ); ?></p>
 			</div>
 		<?php lily_container_close(); ?>
 	</section>

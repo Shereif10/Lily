@@ -107,15 +107,25 @@ function lily_get_current_language() {
 /**
  * Whether the current request serves the Arabic version of the site.
  *
+ * Result is memoized per request: the locale and the TranslatePress URL do
+ * not change mid-request, and the check runs dozens of times per page.
+ *
  * @return bool
  */
 function lily_is_arabic_request() {
+	static $memoized = null;
+
+	if ( null !== $memoized ) {
+		return $memoized;
+	}
+
 	// WordPress locale switched to Arabic (covers admin-ajax/REST and any
 	// request where TranslatePress already set the locale).
 	if ( function_exists( 'get_locale' ) ) {
 		$locale_base = strtolower( strtok( (string) get_locale(), '_-' ) );
 
 		if ( 'ar' === $locale_base ) {
+			$memoized = true;
 			return true;
 		}
 	}
@@ -123,7 +133,9 @@ function lily_is_arabic_request() {
 	$code = strtolower( str_replace( '_', '-', (string) lily_get_current_language() ) );
 	$base = strtok( $code, '-' );
 
-	return 'ar' === $base;
+	$memoized = 'ar' === $base;
+
+	return $memoized;
 }
 
 /**
@@ -174,64 +186,6 @@ function lily_container_open( $class = '' ) {
  */
 function lily_container_close() {
 	echo '</div>';
-}
-
-/**
- * Render a Lily link field as a button.
- *
- * Tolerates malformed or partially submitted link data: anything that does
- * not resolve to a usable URL is silently ignored instead of fatalling.
- *
- * @param array|string $link  Lily link field or URL.
- * @param string       $class Button class.
- */
-function lily_render_link_button( $link, $class = 'lily-button' ) {
-	if ( empty( $link ) ) {
-		return;
-	}
-
-	$url    = '';
-	$title  = '';
-	$target = '_self';
-
-	if ( is_array( $link ) ) {
-		if ( isset( $link['url'] ) && is_string( $link['url'] ) ) {
-			$url = trim( $link['url'] );
-		}
-
-		// Bilingual dashboard link titles: prefer "title_ar" on Arabic
-		// requests, fall back to the English title (never empty output).
-		if ( lily_is_arabic_request() && isset( $link['title_ar'] ) && is_string( $link['title_ar'] ) && '' !== trim( $link['title_ar'] ) ) {
-			$title = trim( $link['title_ar'] );
-		} elseif ( isset( $link['title'] ) && is_string( $link['title'] ) ) {
-			$title = trim( $link['title'] );
-		}
-
-		if ( isset( $link['target'] ) && '_blank' === $link['target'] ) {
-			$target = '_blank';
-		}
-	} elseif ( is_scalar( $link ) ) {
-		$url = trim( (string) $link );
-	} else {
-		return;
-	}
-
-	if ( '' === $url ) {
-		return;
-	}
-
-	if ( '' === $title ) {
-		$title = esc_html__( 'Learn more', 'lily' );
-	}
-
-	printf(
-		'<a class="%1$s" href="%2$s" target="%3$s"%4$s>%5$s</a>',
-		esc_attr( $class ),
-		esc_url( $url ),
-		esc_attr( $target ),
-		'_blank' === $target ? ' rel="noopener noreferrer"' : '',
-		esc_html( $title )
-	);
 }
 
 /**
@@ -392,26 +346,6 @@ function lily_filter_clear_all_url() {
 	}
 
 	return add_query_arg( array_map( 'rawurlencode_deep', $params ), $base_url );
-}
-
-/**
- * TRUE when any shop filter is currently active (any group, price or
- * multi-category selection).
- *
- * @return bool
- */
-function lily_filter_has_active() {
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public catalog filters.
-	foreach ( (array) $_GET as $key => $value ) {
-		if ( 0 === strpos( $key, 'filter_' ) || 0 === strpos( $key, 'query_type_' ) ) {
-			if ( '' !== (string) $value ) {
-				return true;
-			}
-		}
-	}
-
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public catalog filters.
-	return isset( $_GET['min_price'] ) || isset( $_GET['max_price'] );
 }
 
 /**

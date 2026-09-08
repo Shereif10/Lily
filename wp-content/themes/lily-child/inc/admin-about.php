@@ -39,7 +39,7 @@ function lily_about_settings_defaults() {
 		'mission_eyebrow'   => '',
 		'mission_eyebrow_ar' => 'مهمتنا',
 		'mission_statement' => '',
-		'mission_statement_ar' => 'نخلي التعبير عن نفسك سهل — بألوان تكمل صورتك عن نفسك.',
+		'mission_statement_ar' => 'نخلي التعبير عن نفسك سهل بألوان تكمل صورتك عن نفسك.',
 		'mission_text'      => '',
 		'mission_text_ar'   => '',
 		'vision_eyebrow'    => '',

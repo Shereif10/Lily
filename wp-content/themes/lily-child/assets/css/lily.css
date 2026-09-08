@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    LILY — Design System
    Official brand palette (UI only — backgrounds, text, buttons, borders,
    cards, icons, badges, hover/focus/active, form controls, overlays,
@@ -1177,8 +1177,10 @@ html .lily-primary-nav .lily-nav-link:focus {
    -------------------------------------------------------------------------- */
 
 .lily-brands {
-	background: #FAD3CA;
-	padding-block: 48px;
+  /* background: #F7F2E8; */
+  padding-block: 42px;
+  border-top: 1px solid rgba(51, 28, 22, 0.18);
+  border-bottom: 1px solid rgba(51, 28, 22, 0.18);
 }
 
 /* Full-bleed strip — full section width without viewport overflow. */
@@ -1193,7 +1195,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	align-items: center;
 	width: max-content;
 	/* Raster logos multiply against this peach; the section bg matches seamlessly. */
-	background: #FAD3CA;
+	/* background: #FAD3CA; */
 	animation: lily-marquee-scroll var(--lily-marquee-duration, 40s) linear infinite;
 	will-change: transform;
 }
@@ -1241,8 +1243,8 @@ html .lily-primary-nav .lily-nav-link:focus {
 .lily-brand__logo {
 	display: block;
 	width: auto;
-	height: 32px;
-	max-width: 160px;
+	height: 56px;
+	max-width: 250px;
 	object-fit: contain;
 }
 
@@ -1364,7 +1366,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 /* Colors: centered editorial swatch band on soft peach, five per row. */
 .lily-colors {
 	padding-block: clamp(64px, 8vw, 104px);
-	background: #FAD3CA;
+	/* background: #F5F1E8; */
 }
 
 .lily-colors__intro {
@@ -4238,34 +4240,6 @@ html body.lily-product-page main#primary.site-main {
 }
 
 /* ── Color / Skin Tone / Look ───────────────────────────────────── */
-.lily-sp-meta {
-	display: grid;
-	grid-template-columns: repeat(3, auto);
-	justify-content: start;
-	gap: clamp(20px, 4vw, 48px);
-	margin-block-end: 22px;
-}
-
-.lily-sp-meta__item {
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
-}
-
-.lily-sp-label {
-	color: var(--lily-muted);
-	font-size: 0.78rem;
-	font-weight: 600;
-	letter-spacing: 0.07em;
-	text-transform: uppercase;
-}
-
-.lily-sp-meta__value {
-	color: var(--lily-dark-brown);
-	font-size: 0.9rem;
-	font-weight: 600;
-}
-
 /* ── Cart Area ──────────────────────────────────────────────────── */
 .lily-sp-cart-area {
 	padding-block-start: 22px;
@@ -6146,11 +6120,6 @@ html body.woocommerce-checkout .woocommerce-message {
 		grid-template-columns: 1fr;
 	}
 
-	.lily-sp-meta {
-		grid-template-columns: 1fr;
-		gap: 14px;
-	}
-
 	.lily-sp-cart-area form.cart {
 		gap: 12px;
 	}
@@ -6673,14 +6642,14 @@ body.lily-about-page main#primary.site-main.lily-about {
 	padding-block: clamp(64px, 8vw, 112px);
 }
 
-/* Shared eyebrow label with a subtle 1px rule. */
+/* Shared eyebrow label with a subtle rule. */
 .lily-about .lily-about-eyebrow {
 	margin: 0 0 20px;
-	color: #331C16;
-	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	color: rgba(51, 28, 22, 0.72);
+	font-family: var(--lily-font-body);
 	font-size: 12px;
-	font-weight: 400;
-	letter-spacing: 0.08em;
+	font-weight: 600;
+	letter-spacing: 0.1em;
 	line-height: 1.4;
 	text-transform: uppercase;
 }
@@ -6702,7 +6671,11 @@ body.lily-about-page main#primary.site-main.lily-about {
 	margin-inline: auto;
 }
 
-/* 1. Masthead — centered editorial intro + one wide image on cream. */
+
+/* =========================================================
+   1. ABOUT LILY — MASTHEAD
+========================================================= */
+
 .lily-about-masthead {
 	background: #FEFCDD;
 	padding-block: clamp(40px, 5vw, 64px) clamp(64px, 8vw, 112px);
@@ -6722,9 +6695,11 @@ body.lily-about-page main#primary.site-main.lily-about {
 .lily-about-masthead__sub {
 	max-width: 560px;
 	margin: 0 auto;
-	font-size: 15px;
+	font-family: var(--lily-font-body);
+	font-size: 16px;
+	font-weight: 400;
 	line-height: 1.7;
-	color: rgba(51, 28, 22, 0.72);
+	color: rgba(51, 28, 22, 0.82);
 }
 
 .lily-about-masthead__media {
@@ -6740,7 +6715,11 @@ body.lily-about-page main#primary.site-main.lily-about {
 	background: rgba(51, 28, 22, 0.06);
 }
 
-/* 2. Our Story — 45% text / 55% image on the calm cream base. */
+
+/* =========================================================
+   2. OUR STORY
+========================================================= */
+
 .lily-about-story {
 	background: #FEFCDD;
 }
@@ -6757,17 +6736,21 @@ body.lily-about-page main#primary.site-main.lily-about {
 }
 
 .lily-about-story__lead {
-	margin: 0 0 24px;
-	font-size: clamp(20px, 2.4vw, 27px);
-	line-height: 1.45;
+	margin: 0 0 26px;
+	font-family: var(--lily-font-body);
+	font-size: clamp(22px, 2.4vw, 29px);
+	font-weight: 500;
+	line-height: 1.5;
 	color: #331C16;
 }
 
 .lily-about-story__text p {
-	margin: 0 0 16px;
-	font-size: 15px;
-	line-height: 1.7;
-	color: rgba(51, 28, 22, 0.78);
+	margin: 0 0 18px;
+	font-family: var(--lily-font-body);
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.75;
+	color: rgba(51, 28, 22, 0.88);
 }
 
 .lily-about-story__text p:last-child {
@@ -6788,7 +6771,11 @@ body.lily-about-page main#primary.site-main.lily-about {
 	background: rgba(51, 28, 22, 0.08);
 }
 
-/* 3. Our Mission — centered statement on cream. */
+
+/* =========================================================
+   3. OUR MISSION
+========================================================= */
+
 .lily-about-mission {
 	background: #FEFCDD;
 }
@@ -6805,20 +6792,26 @@ body.lily-about-page main#primary.site-main.lily-about {
 	margin: 0;
 	font-family: "Sellendra", "Georgia", serif;
 	font-size: clamp(28px, 3.6vw, 46px);
+	font-weight: 400;
 	line-height: 1.2;
 	color: #331C16;
 }
 
 .lily-about-mission__text {
-	max-width: 560px;
-	margin: 24px 0 0;
-	font-size: 15px;
-	line-height: 1.7;
-	color: rgba(51, 28, 22, 0.72);
+	max-width: 600px;
+	margin: 26px 0 0;
+	font-family: var(--lily-font-body);
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.75;
+	color: rgba(51, 28, 22, 0.82);
 }
 
-/* 4. Our Vision — the ONE full-width color break, statement left,
-   supporting text right on Soft Peach. */
+
+/* =========================================================
+   4. OUR VISION
+========================================================= */
+
 .lily-about-vision {
 	background: #FAD3CA;
 }
@@ -6842,6 +6835,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 	margin: 0;
 	font-family: "Sellendra", "Georgia", serif;
 	font-size: clamp(26px, 3.2vw, 40px);
+	font-weight: 400;
 	line-height: 1.25;
 	color: #331C16;
 }
@@ -6849,12 +6843,18 @@ body.lily-about-page main#primary.site-main.lily-about {
 .lily-about-vision__text p {
 	margin: 0;
 	padding-block-start: 44px;
-	font-size: 15px;
-	line-height: 1.7;
-	color: rgba(51, 28, 22, 0.82);
+	font-family: var(--lily-font-body);
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.75;
+	color: rgba(51, 28, 22, 0.88);
 }
 
-/* 5. Our Approach — three hairline rows on cream, no cards. */
+
+/* =========================================================
+   5. OUR APPROACH
+========================================================= */
+
 .lily-about-approach {
 	background: #FEFCDD;
 }
@@ -6889,7 +6889,9 @@ body.lily-about-page main#primary.site-main.lily-about {
 	flex-shrink: 0;
 	min-inline-size: 48px;
 	color: #885337;
+	font-family: var(--lily-font-body);
 	font-size: 14px;
+	font-weight: 500;
 	letter-spacing: 0.08em;
 }
 
@@ -6901,18 +6903,26 @@ body.lily-about-page main#primary.site-main.lily-about {
 
 .lily-about-approach__name {
 	color: #331C16;
-	font-size: 13px;
+	font-family: var(--lily-font-body);
+	font-size: 14px;
+	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
 }
 
 .lily-about-approach__desc {
-	color: rgba(51, 28, 22, 0.78);
-	font-size: 15px;
+	color: rgba(51, 28, 22, 0.85);
+	font-family: var(--lily-font-body);
+	font-size: 16px;
+	font-weight: 400;
 	line-height: 1.7;
 }
 
-/* 6. Closing CTA — final section back on cream, centered. */
+
+/* =========================================================
+   6. CLOSING CTA
+========================================================= */
+
 .lily-about-cta {
 	background: #FEFCDD;
 }
@@ -6934,10 +6944,12 @@ body.lily-about-page main#primary.site-main.lily-about {
 }
 
 .lily-about-cta__sub {
-	margin: 0 0 32px;
-	font-size: 15px;
+	margin: 0 0 34px;
+	font-family: var(--lily-font-body);
+	font-size: 16px;
+	font-weight: 400;
 	line-height: 1.7;
-	color: rgba(51, 28, 22, 0.72);
+	color: rgba(51, 28, 22, 0.82);
 }
 
 .lily-about-cta__btn {
@@ -6950,7 +6962,9 @@ body.lily-about-page main#primary.site-main.lily-about {
 	border-radius: 8px;
 	background: #885337;
 	color: #FEFCDD;
+	font-family: var(--lily-font-body);
 	font-size: 14px;
+	font-weight: 500;
 	letter-spacing: 0.06em;
 	text-decoration: none;
 	text-transform: uppercase;
@@ -6967,7 +6981,13 @@ body.lily-about-page main#primary.site-main.lily-about {
 	transition: color 200ms ease;
 }
 
+
+/* =========================================================
+   TABLET
+========================================================= */
+
 @media (max-width: 900px) {
+
 	.lily-about-story__inner,
 	.lily-about-vision__inner {
 		grid-template-columns: minmax(0, 1fr);
@@ -6985,9 +7005,16 @@ body.lily-about-page main#primary.site-main.lily-about {
 	.lily-about-masthead__media img {
 		height: 300px;
 	}
+
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 600px) {
+
 	.lily-about-masthead__title {
 		font-size: clamp(48px, 15vw, 68px);
 	}
@@ -6998,7 +7025,8 @@ body.lily-about-page main#primary.site-main.lily-about {
 	.lily-about-vision__text p,
 	.lily-about-approach__desc,
 	.lily-about-cta__sub {
-		font-size: 14px;
+		font-size: 15px;
+		line-height: 1.7;
 	}
 
 	.lily-about-masthead__media img {
@@ -7014,13 +7042,21 @@ body.lily-about-page main#primary.site-main.lily-about {
 		gap: 16px;
 		padding-block: 22px;
 	}
+
 }
 
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
+
 	.lily-about-cta__btn,
 	.lily-about a:not(.lily-about-cta__btn) {
 		transition: none;
 	}
+
 }
 
 /* ==========================================================================
@@ -8097,7 +8133,7 @@ table.lily-ship-table {
 
 /* 3. Help CTA — Soft Peach band, centered. */
 .lily-terms-cta {
-	background: #FAD3CA;
+	background: #4B2E2B;
 	padding-block: clamp(64px, 8vw, 96px);
 }
 
@@ -8113,7 +8149,7 @@ table.lily-ship-table {
 	font-size: 12px;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: #885337;
+	color: #FEFCDD;
 }
 
 .lily-terms-eyebrow--center {
@@ -8126,7 +8162,7 @@ table.lily-ship-table {
 	font-family: "Sellendra", "Georgia", serif;
 	font-size: clamp(28px, 3.6vw, 44px);
 	line-height: 1.2;
-	color: #331C16;
+	color: #FEFCDD;
 }
 
 @media (max-width: 900px) {

@@ -110,7 +110,6 @@ if ( isset( WC()->query ) && method_exists( WC()->query, 'get_filtered_price' ) 
 		$lily_price_max = (int) ceil( (float) $lily_price_row->maxp );
 	}
 }
-set_transient( 'lily_shop_price_range', array( $lily_price_min, $lily_price_max ), HOUR_IN_SECONDS );
 
 $lily_currency_symbol = function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '';
 

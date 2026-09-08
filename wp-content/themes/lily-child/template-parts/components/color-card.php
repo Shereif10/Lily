@@ -26,11 +26,14 @@ $lily_swatch = '';
 if ( ! $image_url ) {
 	$lily_swatch = lily_get_color_swatch_color( $term->slug );
 }
+
+/* Intrinsic dimensions reserve the circular swatch's space before the
+ * image loads (CLS). CSS still controls the rendered size (92 × 92 circle). */
 ?>
 <article class="lily-color-card">
 	<a href="<?php echo esc_url( $link ); ?>">
 		<?php if ( $image_url ) : ?>
-			<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $label ); ?>" loading="lazy">
+			<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $label ); ?>" width="600" height="600" loading="lazy">
 		<?php else : ?>
 			<span class="lily-color-card__swatch" style="background:<?php echo esc_attr( $lily_swatch ); ?>;" aria-hidden="true"></span>
 		<?php endif; ?>

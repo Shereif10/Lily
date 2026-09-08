@@ -182,25 +182,6 @@ function lily_reviews_rating_enabled() {
 	return 'yes' === get_option( 'woocommerce_enable_review_rating', 'yes' );
 }
 
-/**
- * Default HOW TO USE copy — derived from the canonical default steps so the
- * step editor and this fallback share one source. Filterable per product.
- *
- * @param WC_Product|null $product Product or null.
- * @return string
- */
-function lily_product_how_to_use_content( $product = null ) {
-	$default = implode( ' ', lily_how_to_use_default_steps() );
-
-	/**
-	 * Filter the HOW TO USE accordion copy.
-	 *
-	 * @param string         $default Default copy.
-	 * @param WC_Product|null $product Current product or null.
-	 */
-	return apply_filters( 'lily_product_how_to_use', $default, $product );
-}
-
 /* ── Stars ────────────────────────────────────────────────────────────── */
 
 /**

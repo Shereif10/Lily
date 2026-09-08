@@ -55,7 +55,7 @@ $lily_status = isset( $_GET['lily_contact'] ) ? sanitize_key( wp_unslash( $_GET[
 					<ul class="lily-contact-info__list">
 						<li>
 							<span class="lily-contact-info__label"><?php esc_html_e( 'Phone', 'lily' ); ?></span>
-							<a class="lily-contact-info__value" href="tel:+201234567890" dir="ltr">+20 123 456 7890</a>
+							<a class="lily-contact-info__value" href="tel:+201060760098" dir="ltr">+20 1060760098</a>
 						</li>
 						<li>
 							<span class="lily-contact-info__label"><?php esc_html_e( 'Email', 'lily' ); ?></span>
@@ -63,7 +63,7 @@ $lily_status = isset( $_GET['lily_contact'] ) ? sanitize_key( wp_unslash( $_GET[
 						</li>
 						<li>
 							<span class="lily-contact-info__label"><?php esc_html_e( 'WhatsApp', 'lily' ); ?></span>
-							<a class="lily-contact-info__value" href="https://wa.me/201234567890" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Chat with us', 'lily' ); ?></a>
+							<a class="lily-contact-info__value" href="https://wa.me/201060760098" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Chat with us', 'lily' ); ?></a>
 						</li>
 					</ul>
 					<p class="lily-contact-info__eyebrow"><?php echo esc_html( lily_get_option( 'contact_eyebrow', esc_html__( 'We are here for you', 'lily' ) ) ); ?></p>

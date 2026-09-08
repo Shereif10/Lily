@@ -1304,25 +1304,3 @@ function lily_save_product_editor_pricing_stock( $post_id ) {
 	wc_delete_product_transients( $post_id );
 }
 add_action( 'woocommerce_process_product_meta', 'lily_save_product_editor_pricing_stock', 99 );
-
-/**
- * Per-product HOW TO USE content: the editor meta wins, otherwise the
- * standard filterable default.
- *
- * @param string         $content Default content (from the filter chain).
- * @param WC_Product|null $product Current product.
- * @return string
- */
-function lily_product_editor_how_to_use( $content, $product ) {
-	$product_id = ( $product instanceof WC_Product ) ? $product->get_id() : 0;
-
-	if ( ! $product_id ) {
-		return $content;
-	}
-
-	$custom = get_post_meta( $product_id, '_lily_how_to_use', true );
-	$custom = is_string( $custom ) ? trim( wp_strip_all_tags( $custom ) ) : '';
-
-	return '' !== $custom ? $custom : $content;
-}
-add_filter( 'lily_product_how_to_use', 'lily_product_editor_how_to_use', 10, 2 );

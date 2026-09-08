@@ -180,130 +180,6 @@
 		closeDropdowns();
 	}, { passive: true });
 
-	/* Hero carousel */
-	var carousel = document.querySelector('[data-lily-carousel]');
-
-	if (carousel) {
-		var heroSlides = Array.prototype.slice.call(carousel.querySelectorAll('[data-lily-slide]'));
-		var heroDots = Array.prototype.slice.call(carousel.querySelectorAll('[data-lily-carousel-dot]'));
-		var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-		var heroCurrent = 0;
-		var heroTimer = null;
-		var HERO_INTERVAL = 6500;
-
-		var heroGo = function (index) {
-			index = (index + heroSlides.length) % heroSlides.length;
-
-			heroSlides[heroCurrent].classList.remove('is-active');
-			heroSlides[heroCurrent].setAttribute('aria-hidden', 'true');
-
-			if (heroDots[heroCurrent]) {
-				heroDots[heroCurrent].classList.remove('is-active');
-				heroDots[heroCurrent].setAttribute('aria-selected', 'false');
-			}
-
-			heroCurrent = index;
-
-			heroSlides[heroCurrent].classList.add('is-active');
-			heroSlides[heroCurrent].setAttribute('aria-hidden', 'false');
-
-			if (heroDots[heroCurrent]) {
-				heroDots[heroCurrent].classList.add('is-active');
-				heroDots[heroCurrent].setAttribute('aria-selected', 'true');
-			}
-		};
-
-		var heroStop = function () {
-			if (heroTimer) {
-				clearInterval(heroTimer);
-				heroTimer = null;
-			}
-		};
-
-		var heroStart = function () {
-			heroStop();
-			if (!reduceMotion.matches && heroSlides.length > 1) {
-				heroTimer = setInterval(function () {
-					heroGo(heroCurrent + 1);
-				}, HERO_INTERVAL);
-			}
-		};
-
-		var prevBtn = carousel.querySelector('[data-lily-carousel-prev]');
-		var nextBtn = carousel.querySelector('[data-lily-carousel-next]');
-
-		if (prevBtn) {
-			prevBtn.addEventListener('click', function () {
-				heroGo(heroCurrent - 1);
-				heroStart();
-			});
-		}
-
-		if (nextBtn) {
-			nextBtn.addEventListener('click', function () {
-				heroGo(heroCurrent + 1);
-				heroStart();
-			});
-		}
-
-		heroDots.forEach(function (dot) {
-			dot.addEventListener('click', function () {
-				heroGo(parseInt(dot.getAttribute('data-index'), 10) || 0);
-				heroStart();
-			});
-		});
-
-		carousel.addEventListener('mouseenter', heroStop);
-		carousel.addEventListener('mouseleave', heroStart);
-		carousel.addEventListener('focusin', heroStop);
-		carousel.addEventListener('focusout', heroStart);
-
-		carousel.addEventListener('keydown', function (event) {
-			if (event.key === 'ArrowLeft') {
-				heroGo(heroCurrent - 1);
-				heroStart();
-			} else if (event.key === 'ArrowRight') {
-				heroGo(heroCurrent + 1);
-				heroStart();
-			}
-		});
-
-		/* Touch swipe (direction-aware for RTL) */
-		var touchStartX = null;
-
-		carousel.addEventListener('touchstart', function (event) {
-			if (event.touches.length === 1) {
-				touchStartX = event.touches[0].clientX;
-			}
-		}, { passive: true });
-
-		carousel.addEventListener('touchend', function (event) {
-			if (touchStartX === null) {
-				return;
-			}
-
-			var dx = event.changedTouches[0].clientX - touchStartX;
-			touchStartX = null;
-
-			if (Math.abs(dx) < 40) {
-				return;
-			}
-
-			var rtl = document.documentElement.getAttribute('dir') === 'rtl';
-			var forward = (dx < 0) !== rtl;
-			heroGo(heroCurrent + (forward ? 1 : -1));
-			heroStart();
-		}, { passive: true });
-
-		if (reduceMotion.addEventListener) {
-			reduceMotion.addEventListener('change', function () {
-				heroStart();
-			});
-		}
-
-		heroStart();
-	}
-
 	/* Announcement bar marquee */
 	var announcement = document.querySelector('.lily-announcement');
 
@@ -326,11 +202,10 @@
 		window.addEventListener('resize', syncAnnouncement, { passive: true });
 		syncAnnouncement();
 	}
-}());
 
 	/**
 	 * Subtle scroll reveal: section headings and cards fade/slide in once.
-	 * Progressive enhancement only â€” without JS, everything stays visible.
+	 * Progressive enhancement only — without JS, everything stays visible.
 	 */
 	function initLilyReveal() {
 		var candidates = document.querySelectorAll(
@@ -547,7 +422,7 @@
 
 	/* --------------------------------------------------------------------
 	 * Quantity: [ − ] input [ + ] around the native input
-	 * Single Product + Cart
+	 * Single Product + Cart (also re-run after each drawer re-render)
 	 * ------------------------------------------------------------------ */
 	function initProductQty() {
 		var wraps = document.querySelectorAll('.lily-sp-cart-area .quantity, .woocommerce-cart-form .quantity, #lily-cart-drawer .quantity');
@@ -595,8 +470,6 @@
 			wrap.appendChild(plus);
 		});
 	}
-
-	initProductQty();
 
 	/* --------------------------------------------------------------------
 	 * PRESCRIPTION POWER — quiet client-side gate (UX layer only).
@@ -1161,4 +1034,4 @@
 	} else {
 		bootLilyModules();
 	}
-
+}());
