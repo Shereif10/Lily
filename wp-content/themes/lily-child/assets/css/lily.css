@@ -599,7 +599,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 
 .lily-dropdown {
 	position: absolute;
-	top: 100%;
+	top: 80%;
 	inset-inline: 0;
 	z-index: 49;
 	width: calc(100vw - 64px);
@@ -1084,10 +1084,10 @@ html .lily-primary-nav .lily-nav-link:focus {
 /* Editorial overlay â€” sits on the lower-start area of the photography */
 .lily-hero__eyebrow {
 	margin: 0 0 18px;
-	color: var(--lily-warm-brown);
+	color: var(--lily-dark-brown);
 	font-family: var(--lily-font-body);
-	font-size: 12px;
-	font-weight: 600;
+	font-size: 18px;
+	font-weight: 800;
 	letter-spacing: 0.14em;
 	line-height: 1.2;
 	text-transform: uppercase;

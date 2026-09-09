@@ -376,7 +376,6 @@ function lily_nav_get_structure() {
 
 			$items[] = array(
 				'label'   => lily_nav_get_option( 'company_label', __( 'Company', 'lily' ) ),
-				'hover'   => true,
 				'columns' => array(
 					array(
 						'title' => '',

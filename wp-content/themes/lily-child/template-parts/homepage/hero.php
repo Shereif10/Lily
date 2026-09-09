@@ -85,7 +85,7 @@ if ( '' === $slide['cta_text'] ) {
 
 			<div class="lily-hero__container lily-container">
 				<div class="lily-hero__content">
-					<p class="lily-hero__eyebrow"><?php esc_html_e( 'Lily Contact Lenses', 'lily' ); ?></p>
+					<p class="lily-hero__eyebrow"><?php esc_html_e( 'Lily Original Lenses', 'lily' ); ?></p>
 
 					<?php if ( '' !== $slide['title'] ) : ?>
 					<?php
