@@ -409,32 +409,94 @@ html.lily-reveal .lily-reveal.is-visible {
 .lily-announcement {
 	position: relative;
 	z-index: 60;
-	background: #4B2E2B;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	min-height: 42px;
+
+	background: linear-gradient(
+		90deg,
+		#3E2523 0%,
+		#5A3733 50%,
+		#3E2523 100%
+	);
+
 	color: var(--lily-cream);
+
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+	overflow: hidden;
+}
+
+/* Subtle premium glow */
+.lily-announcement::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(255, 255, 255, 0.05) 50%,
+		transparent 100%
+	);
+
+	pointer-events: none;
 }
 
 .lily-announcement__text {
-	height: 38px;
+	position: relative;
+	z-index: 1;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	min-height: 42px;
+
 	margin: 0;
-	padding-inline: 24px;
-	overflow: hidden;
+	padding-inline: 32px;
+
 	font-family: var(--lily-font-body);
-	font-size: 12.5px;
+	font-size: 11px;
 	font-weight: 500;
-	letter-spacing: 0.1em;
-	line-height: 38px;
+
+	letter-spacing: 0.14em;
+	line-height: 1.4;
+
 	text-align: center;
-	text-transform: none;
+	text-transform: uppercase;
+
 	white-space: nowrap;
-	text-overflow: ellipsis;
+}
+
+/* Arabic */
+[dir="rtl"] .lily-announcement__text {
+	letter-spacing: 0;
+	font-size: 12px;
+	text-transform: none;
 }
 
 @media (max-width: 900px) {
+
+	.lily-announcement {
+		min-height: 38px;
+	}
+
 	.lily-announcement__text {
-		height: 34px;
+		min-height: 38px;
 		padding-inline: 16px;
-		font-size: 11.5px;
-		line-height: 34px;
+
+		font-size: 10px;
+		letter-spacing: 0.09em;
+
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	[dir="rtl"] .lily-announcement__text {
+		font-size: 11px;
 	}
 }
 
@@ -1177,52 +1239,91 @@ html .lily-primary-nav .lily-nav-link:focus {
    -------------------------------------------------------------------------- */
 
 .lily-brands {
-  /* background: #F7F2E8; */
-  padding-block: 42px;
-  border-top: 1px solid rgba(51, 28, 22, 0.18);
-  border-bottom: 1px solid rgba(51, 28, 22, 0.18);
+	/* background: #F7F2E8; */
+	padding-block: 42px;
+	border-top: 1px solid rgba(51, 28, 22, 0.18);
+	border-bottom: 1px solid rgba(51, 28, 22, 0.18);
 }
 
-/* Full-bleed strip — full section width without viewport overflow. */
+/* Prevent the section from creating horizontal overflow */
 .lily-brands__strip {
 	width: 100%;
 	max-width: 100%;
 	overflow: hidden;
+
+	/*
+	 * The marquee should always use LTR layout internally.
+	 * This isolates it from the Arabic RTL website direction.
+	 */
+	direction: ltr;
 }
 
+/* Moving container */
 .lily-brands__track {
 	display: flex;
 	align-items: center;
+
 	width: max-content;
-	/* Raster logos multiply against this peach; the section bg matches seamlessly. */
-	/* background: #FAD3CA; */
-	animation: lily-marquee-scroll var(--lily-marquee-duration, 40s) linear infinite;
+	min-width: max-content;
+
+	direction: ltr;
+
+	animation: lily-marquee-scroll
+		var(--lily-marquee-duration, 40s)
+		linear
+		infinite;
+
 	will-change: transform;
 }
 
+/* Pause marquee */
 .lily-brands__strip:hover .lily-brands__track,
 .lily-brands__strip:focus-within .lily-brands__track {
 	animation-play-state: paused;
 }
 
+/*
+ * The track contains exactly TWO identical sets.
+ *
+ * Moving the track by half of its own width lands exactly
+ * at the beginning of the second identical set.
+ */
 @keyframes lily-marquee-scroll {
-	from { transform: translateX(0); }
-	to { transform: translateX(-50%); }
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(-50%);
+	}
 }
 
-/* Each identical half carries its own trailing gap so the loop seam is invisible. */
+/* One complete set of brands */
 .lily-brands__set {
 	display: flex;
 	align-items: center;
+
+	/*
+	 * Critical:
+	 * Prevent flexbox from shrinking either copy.
+	 */
 	flex: 0 0 auto;
+
+	direction: ltr;
+
 	gap: 60px;
+
 	margin: 0;
-	padding: 0;
-	padding-inline-end: 60px;
+	padding: 0 60px 0 0;
+
 	list-style: none;
+
+	white-space: nowrap;
 }
 
+/* Individual brand */
 .lily-brand {
+	display: block;
 	flex: 0 0 auto;
 	line-height: 0;
 }
@@ -1232,30 +1333,33 @@ html .lily-primary-nav .lily-nav-link:focus {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+
 	color: inherit;
 	text-decoration: none;
 }
 
-/* Brand strip UI is Soft Peach; brand logos and artwork always keep their
-   original colors (like product photography) — no blend modes, filters or
-   recoloring are applied to force them into the palette. */
+/* Brand logos */
 .lily-brand img,
 .lily-brand__logo {
 	display: block;
+
 	width: auto;
 	height: 56px;
 	max-width: 250px;
+
 	object-fit: contain;
 }
 
+/* Mobile */
 @media (max-width: 900px) {
+
 	.lily-brands {
 		padding-block: 36px;
 	}
 
 	.lily-brands__set {
 		gap: 40px;
-		padding-inline-end: 40px;
+		padding-right: 40px;
 	}
 
 	.lily-brand img,
@@ -1265,18 +1369,18 @@ html .lily-primary-nav .lily-nav-link:focus {
 	}
 }
 
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
+
 	.lily-brands__track {
 		animation: none;
+		transform: none;
 	}
 
 	.lily-brands__strip {
 		overflow-x: auto;
-		-webkit-mask-image: none;
-		mask-image: none;
 	}
 }
-
 /* --------------------------------------------------------------------------
    Collections & Colors â€” shared card system
    -------------------------------------------------------------------------- */
@@ -2054,7 +2158,12 @@ html .lily-best-sellers__arrow:focus-visible {
 	cursor: pointer;
 	appearance: none;
 	-webkit-appearance: none;
-	transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+	transition:
+		background-color 180ms ease,
+		color 180ms ease,
+		border-color 180ms ease,
+		box-shadow 180ms ease,
+		transform 180ms ease;
 }
 
 .lily-lens-finder__cta:hover {
@@ -2104,7 +2213,10 @@ html .lily-best-sellers__arrow:focus-visible {
 	color: var(--lily-cream);
 }
 
-/* How it works — four quiet editorial steps */
+/* ========================================
+   HOW IT WORKS — FOUR EDITORIAL STEPS
+======================================== */
+
 .lily-lens-finder__steps {
 	margin-block-start: 40px;
 }
@@ -2121,7 +2233,8 @@ html .lily-best-sellers__arrow:focus-visible {
 .lily-lens-finder__steps-list li {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-start;
+	align-items: stretch;
+	min-width: 0;
 }
 
 .lily-lens-finder__steps-list li + li {
@@ -2129,12 +2242,46 @@ html .lily-best-sellers__arrow:focus-visible {
 	padding-inline-start: 24px;
 }
 
+/*
+ * الرقم والأيقونة في نفس الصف.
+ * justify-content: space-between يضعهما على طرفي الـ Step.
+ * align-items: center يجعل مركز الأيقونة على نفس مركز الرقم.
+ */
+.lily-lens-finder__step-top {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	min-height: 44px;
+}
+
 .lily-lens-finder__step-number {
+	display: flex;
+	align-items: center;
+	height: 44px;
 	color: var(--lily-cream);
 	font-family: var(--lily-font-accent);
 	font-size: 36px;
 	font-weight: 400;
 	line-height: 1;
+}
+
+.lily-lens-finder__step-icon {
+	position: absolute;
+	inset-inline-end: 0;
+	top: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	transform: translateY(-50%) translateY(-7px);
+}
+
+.lily-lens-finder__step-icon svg {
+	display: block;
+	width: 30px;
+	height: 30px;
 }
 
 .lily-lens-finder__step-title {
@@ -2153,6 +2300,10 @@ html .lily-best-sellers__arrow:focus-visible {
 	font-size: 12px;
 	line-height: 1.5;
 }
+
+/* ========================================
+   TABLET & MOBILE
+======================================== */
 
 @media (max-width: 900px) {
 	.lily-lens-finder {
@@ -2191,6 +2342,21 @@ html .lily-best-sellers__arrow:focus-visible {
 	.lily-lens-finder__steps-list {
 		gap: 16px;
 	}
+
+	.lily-lens-finder__step-number {
+		font-size: 32px;
+	}
+
+	.lily-lens-finder__step-icon {
+		flex-basis: 32px;
+		width: 32px;
+		height: 32px;
+	}
+
+	.lily-lens-finder__step-icon svg {
+		width: 27px;
+		height: 27px;
+	}
 }
 
 @media (min-width: 901px) and (max-width: 1024px) {
@@ -2198,6 +2364,10 @@ html .lily-best-sellers__arrow:focus-visible {
 		padding-block: 64px;
 	}
 }
+
+/* ========================================
+   LENS FINDER PANEL
+======================================== */
 
 .lily-lens-finder__panel {
 	position: relative;
@@ -2451,6 +2621,7 @@ html .lily-best-sellers__arrow:focus-visible {
 
 .lily-footer-menu a {
 	position: relative;
+	white-space: nowrap;
 	display: inline-block;
 	padding-block: 3px;
 	color: rgba(254, 252, 221, 0.84);
@@ -10537,3 +10708,7 @@ html body.woocommerce-checkout #payment div.payment_box {
 	width: auto;
 	object-fit: contain;
 }
+
+
+
+

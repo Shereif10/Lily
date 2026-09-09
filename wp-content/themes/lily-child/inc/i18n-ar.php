@@ -90,7 +90,7 @@ function lily_ar_dictionary() {
 
 		// ── Hero ─────────────────────────────────────────────────────
 		'Shop Now'                     => 'تسوقي الآن',
-		'Lily Original Lenses'          => 'عدسات ليلي اللاصقة',
+		'Lily Original Lenses'          => 'عدسات ليلي الأصلية',
 		'Featured collections'         => 'تشكيلات مميزة',
 
 		// ── Homepage sections ────────────────────────────────────────
