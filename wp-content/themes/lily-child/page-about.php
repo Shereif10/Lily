@@ -144,14 +144,11 @@ $lily_mission_text = lily_get_option( 'mission_text', '' );
 		<?php lily_container_close(); ?>
 	</section>
 
-	<?php /* 6. FIND YOUR PERFECT LENS — final closing CTA. */ ?>
-	<section class="lily-about-band lily-about-cta" aria-labelledby="lily-about-cta-heading">
-		<?php lily_container_open( 'lily-about-cta__inner' ); ?>
-			<h2 class="lily-about-cta__title" id="lily-about-cta-heading"><?php echo esc_html( lily_get_option( 'cta_heading', esc_html__( 'Find Your Perfect Lens', 'lily' ) ) ); ?></h2>
-			<p class="lily-about-cta__sub"><?php echo esc_html( lily_get_option( 'cta_text', esc_html__( 'Discover the color that feels like you.', 'lily' ) ) ); ?></p>
-			<a class="lily-about-cta__btn" href="<?php echo esc_url( $lily_cta_url ); ?>"><?php echo esc_html( lily_get_option( 'cta_button', esc_html__( 'Shop Lenses', 'lily' ) ) ); ?></a>
-		<?php lily_container_close(); ?>
-	</section>
+	<?php
+	/* 6. FIND YOUR PERFECT LENS — reuse the exact Homepage Lens Finder section. */
+	get_template_part( 'template-parts/homepage/find-your-best-lenses' );
+	?>
+	
 </main>
 
 <?php

@@ -1,9 +1,9 @@
 /* ==========================================================================
-   LILY — Design System
-   Official brand palette (UI only — backgrounds, text, buttons, borders,
+   LILY â€” Design System
+   Official brand palette (UI only â€” backgrounds, text, buttons, borders,
    cards, icons, badges, hover/focus/active, form controls, overlays,
    shadows, decorative elements):
-     Cream      #FEFCDD  (~50% visual foundation)
+     Cream      #FFFEF8  (~50% visual foundation)
      Warm Brown #885337  (~25%)
      Soft Peach #FAD3CA  (~10%)
      Warm Tan   #AC7D61  (~20% accents)
@@ -13,22 +13,109 @@
    photography always keeps its original colors. Never apply color filters,
    monochrome effects, blend modes or tint overlays to photography to force
    it into the palette.
-   Local brand fonts: Elms Sans Light (EN), Amiri (AR), Sellendra (accent).
+   Local brand fonts: Elms Sans (EN), Amiri (AR), Sellendra (accent).
    Logical properties throughout; RTL overrides live in rtl.css.
    ========================================================================== */
 
+/* Real static font files (inspected via sfnt tables — none are variable):
+   Elms Sans  — one family name, per-file weights: Thin 100, ExtraLight 200,
+   Light 300, Regular 400, Medium 500, SemiBold 600, Bold 700, ExtraBold 800,
+   Black 900 (+ Italic 400 italic, used by .lily-sp-color-notice).
+   Amiri      — Regular 400, Bold 700 (Arabic never uses italics: rtl.css
+   forces font-style normal). Sellendra — Regular 400 only. */
+
 @font-face {
-	font-family: "Elms Sans Light";
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-Thin.ttf") format("truetype");
+	font-weight: 100;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-ExtraLight.ttf") format("truetype");
+	font-weight: 200;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
 	src: url("../fonts/ElmsSans-Light.ttf") format("truetype");
-	font-weight: 100 900;
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-SemiBold.ttf") format("truetype");
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-ExtraBold.ttf") format("truetype");
+	font-weight: 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-Black.ttf") format("truetype");
+	font-weight: 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Elms Sans";
+	src: url("../fonts/ElmsSans-Italic.ttf") format("truetype");
+	font-weight: 400;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Amiri";
+	src: url("../fonts/Amiri-Regular.ttf") format("truetype");
+	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
 	font-family: "Amiri";
-	src: url("../fonts/Amiri Regular.ttf") format("truetype");
-	font-weight: 400 700;
+	src: url("../fonts/Amiri-Bold.ttf") format("truetype");
+	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
 }
@@ -42,17 +129,18 @@
 }
 
 :root {
-	--lily-cream: #FEFCDD;
+	--lily-cream: #FFFEF8;
 	--lily-warm-brown: #885337;
 	--lily-peach: #FAD3CA;
 	--lily-tan: #AC7D61;
 	--lily-deep-brown: #723427;
 	--lily-espresso: #4B2E2B;
 	--lily-dark-brown: #331C16;
+	--lily-sand: #EFECDD;
 
 	--lily-bg: var(--lily-cream);
-	--lily-surface: #FEFCDD;
-	--lily-white: #FEFCDD;
+	--lily-surface: #FFFEF8;
+	--lily-white: #FFFEF8;
 	--lily-text: var(--lily-dark-brown);
 	--lily-muted: #885337;
 	--lily-line: rgba(51, 28, 22, 0.14);
@@ -60,8 +148,8 @@
 	--lily-accent-dark: #331C16;
 	--lily-error: #885337;
 
-	--lily-font-display: "Elms Sans Light", "Georgia", "Times New Roman", serif;
-	--lily-font-body: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	--lily-font-display: "Elms Sans", "Georgia", "Times New Roman", serif;
+	--lily-font-body: "Elms Sans", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
 	--lily-font-arabic: "Amiri", "Tahoma", "Segoe UI", serif;
 	--lily-font-accent: "Sellendra", "Georgia", serif;
 
@@ -79,7 +167,7 @@
 	--lily-ease: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-/* Astra bridge — the Customizer link palette ships WordPress blues that
+/* Astra bridge â€” the Customizer link palette ships WordPress blues that
    drive every inherited a:hover / a:focus state (specificity beats Lily's
    single-class component colors). Re-point the link pair at Lily warm
    tones; this later stylesheet wins the cascade. Admin is untouched. */
@@ -106,7 +194,7 @@ html body {
 /* Astra paints its plain-container body white; reclaim the cream foundation.
    Search results render through Astra's "Separate Containers" layout
    (.ast-separate-container), which paints its own pale site-content
-   background — that shows through as a mismatched strip above the results
+   background â€” that shows through as a mismatched strip above the results
    header whenever the responsive top padding creates a gap. */
 html body.ast-plain-container,
 html body.ast-page-builder-template,
@@ -127,8 +215,8 @@ html h1,
 html h2,
 html h3,
 html h4 {
-	font-family: var(--lily-font-display);
-	font-weight: 550;
+	font-family: var(--lily-font-accent);
+	font-weight: 700;
 	color: var(--lily-text);
 }
 
@@ -153,7 +241,7 @@ textarea:focus-visible {
 
 /* Astra's inline CSS sets a literal blue input focus border; outrank it
    with a Lily warm border on every text-like control. Range, checkbox and
-   radio inputs are excluded — they keep their custom Lily styling. */
+   radio inputs are excluded â€” they keep their custom Lily styling. */
 html body input[type="text"]:focus,
 html body input[type="number"]:focus,
 html body input[type="email"]:focus,
@@ -255,7 +343,7 @@ html body select:focus {
 }
 
 /* --------------------------------------------------------------------------
-   Subtle scroll reveal â€” enabled by JS only, so content is never hidden
+   Subtle scroll reveal Ã¢â‚¬â€ enabled by JS only, so content is never hidden
    when JavaScript is unavailable. Honors prefers-reduced-motion.
    -------------------------------------------------------------------------- */
 
@@ -420,12 +508,7 @@ html.lily-reveal .lily-reveal.is-visible {
 
 	min-height: 42px;
 
-	background: linear-gradient(
-		90deg,
-		#3E2523 0%,
-		#5A3733 50%,
-		#3E2523 100%
-	);
+	background: var(--lily-deep-brown);
 
 	color: var(--lily-cream);
 
@@ -578,7 +661,7 @@ html.lily-reveal .lily-reveal.is-visible {
 	min-width: 0;
 }
 
-/* Wide desktop: the full menu fits — lock every label to one line.
+/* Wide desktop: the full menu fits â€” lock every label to one line.
    Below this width the previous wrapping behavior is preserved so the
    header never forces page overflow. */
 @media (min-width: 1280px) {
@@ -591,7 +674,7 @@ html.lily-reveal .lily-reveal.is-visible {
 	}
 }
 
-/* Strong reset â€” Astra styles bare <button> elements site-wide */
+/* Strong reset Ã¢â‚¬â€ Astra styles bare <button> elements site-wide */
 html .lily-primary-nav .lily-nav-link {
 	position: relative;
 	display: inline-flex;
@@ -631,13 +714,13 @@ html .lily-primary-nav .lily-nav-link:focus {
 	transition: transform 180ms ease;
 }
 
-/* NEW status badge â€” Lens Finder links only (nav + footer) */
+/* NEW status badge Ã¢â‚¬â€ Lens Finder links only (nav + footer) */
 .lily-nav-badge {
 	display: inline-block;
 	flex-shrink: 0;
 	padding: 3px 8px;
 	border-radius: var(--lily-pill);
-	background: var(--lily-warm-brown);
+	background: var(--lily-deep-brown);
 	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
 	font-size: 9px;
@@ -675,7 +758,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	visibility: hidden;
 	opacity: 0;
 	transform: translateY(-4px);
-	background: #FEFCDD;
+	background: var(--lily-cream);
 	border: 1px solid rgba(51, 28, 22, 0.1);
 	border-radius: 8px;
 	box-shadow: 0 12px 30px rgba(51, 28, 22, 0.08);
@@ -842,7 +925,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 /* TranslatePress shortcode switcher: re-theme via its own CSS variables.
-   !important is required — TRP sets these vars inline. */
+   !important is required â€” TRP sets these vars inline. */
 .lily-header-actions .lily-language-switcher .trp-shortcode-switcher__wrapper {
 	--bg: transparent !important;
 	--bg-hover: rgba(51, 28, 22, 0.05) !important;
@@ -894,9 +977,33 @@ html .lily-primary-nav .lily-nav-link:focus {
 	width: 100%;
 }
 
-/* The anchor only holds space; TRP's overlay renders the visible control. */
-.lily-header-actions .trp-shortcode-anchor {
+/* The anchor only holds space; TRP's overlay renders the visible control.
+   (Lily replaces the whole control with .lily-lang-flag — see below — but
+   this stays for any unfiltered TRP switcher instance.) */
+.lily-header-actions .trp-shortcode-anchor:not(.trp-opposite-button) {
 	visibility: hidden !important;
+}
+
+/* Flag-only language switcher: one small flag icon, rendered by
+   lily_flag_only_language_switcher(). Same 38px geometry as the neighboring
+   header icon buttons so the actions row keeps its alignment. */
+.lily-lang-flag {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	--flag-size: 16px;
+	--flag-radius: 2px;
+}
+
+.lily-lang-flag:hover .trp-flag-image {
+	opacity: 0.85;
+}
+
+.lily-language-switcher--drawer .lily-lang-flag,
+.lily-site-footer .lily-lang-flag {
+	color: inherit;
 }
 
 /* Dropdown menu: cream panel matching the Lily palette. */
@@ -968,13 +1075,18 @@ html .lily-primary-nav .lily-nav-link:focus {
 	height: 18px;
 	padding-inline: 4px;
 	border-radius: 50%;
-	background: var(--lily-warm-brown);
+	background: var(--lily-deep-brown);
 	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
 	font-size: 10px;
 	font-weight: 400;
 	line-height: 1;
 	box-sizing: border-box;
+}
+
+/* Navbar cart count â€” deep brown per the approved palette. */
+.lily-cart-count {
+	background: var(--lily-deep-brown);
 }
 
 /* Search bar (toggled from the header) */
@@ -999,9 +1111,9 @@ html .lily-primary-nav .lily-nav-link:focus {
 	min-height: 44px;
 	padding: 8px 4px;
 	border: 0;
-	border-block-end: 1px solid var(--lily-line);
+	border-block-end: 1px solid var(--lily-tan);
 	border-radius: 0;
-	background: transparent;
+	background: var(--lily-sand);
 	color: var(--lily-text);
 	caret-color: var(--lily-warm-brown);
 	font-family: var(--lily-font-body);
@@ -1017,7 +1129,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 
 .lily-search-bar input[type="search"]:focus {
 	outline: none;
-	border-block-end-color: var(--lily-warm-brown);
+	border-block-end-color: var(--lily-tan);
 }
 
 .lily-search-bar .lily-icon-btn {
@@ -1084,7 +1196,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 /* --------------------------------------------------------------------------
-   Hero â€” full-bleed editorial carousel (first screen)
+   Hero Ã¢â‚¬â€ full-bleed editorial carousel (first screen)
    -------------------------------------------------------------------------- */
 
 .lily-hero {
@@ -1126,10 +1238,10 @@ html .lily-primary-nav .lily-nav-link:focus {
 	align-items: flex-start;
 	box-sizing: border-box;
 	width: 100%;
-	max-width: 520px;
+	/* max-width: 520px; */
 }
 
-/* Hero photography keeps its original colors — no tint veil, color filter,
+/* Hero photography keeps its original colors â€” no tint veil, color filter,
    blend mode or overlay is applied to force it into the palette. Text
    legibility comes from brand-colored type only. */
 
@@ -1148,10 +1260,10 @@ html .lily-primary-nav .lily-nav-link:focus {
 	object-position: center;
 }
 
-/* Editorial overlay â€” sits on the lower-start area of the photography */
+/* Editorial overlay Ã¢â‚¬â€ sits on the lower-start area of the photography */
 .lily-hero__eyebrow {
-	margin: 0 0 18px;
-	color: var(--lily-dark-brown);
+	/* margin: 0 0 18px; */
+	color: var(--lily-sand);
 	font-family: var(--lily-font-body);
 	font-size: 18px;
 	font-weight: 800;
@@ -1161,16 +1273,17 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 .lily-hero__title {
-	margin: 0;
-	max-width: 520px;
-	color: var(--lily-dark-brown);
+	/* max-width: 520px; */
+	color: var(--lily-sand);
 	font-family: var(--lily-font-accent);
-	font-size: clamp(48px, 5vw, 72px);
+	font-size: clamp(32px, 5vw, 72px);
 	font-weight: 400;
-	line-height: 0.95;
+	line-height: 1;
+		margin: 22px 0 0;
+
 }
 
-/* Editorial accent line — "Differently" in the reference */
+/* Editorial accent line â€” "Differently" in the reference */
 .lily-hero__title-accent {
 	display: block;
 	font-style: italic;
@@ -1179,7 +1292,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 .lily-hero__description {
 	margin: 22px 0 0;
 	max-width: 430px;
-	color: var(--lily-dark-brown);
+	color: var(--lily-sand);
 	font-family: var(--lily-font-body);
 	font-size: 16px;
 	font-weight: 400;
@@ -1196,7 +1309,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	padding: 14px 34px;
 	border: 1px solid transparent;
 	border-radius: var(--lily-pill);
-	background: var(--lily-warm-brown);
+	background: var(--lily-deep-brown);
 	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
 	font-size: 0.95rem;
@@ -1238,7 +1351,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 /* --------------------------------------------------------------------------
-   Brands â€” editorial full-width logo marquee
+   Brands Ã¢â‚¬â€ editorial full-width logo marquee
    The heading stays inside the content container; the moving strip is
    deliberately full-bleed and runs edge-to-edge across the viewport.
    -------------------------------------------------------------------------- */
@@ -1387,7 +1500,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	}
 }
 /* --------------------------------------------------------------------------
-   Collections & Colors â€” shared card system
+   Collections & Colors Ã¢â‚¬â€ shared card system
    -------------------------------------------------------------------------- */
 
 .lily-collections__grid,
@@ -1397,7 +1510,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	gap: clamp(16px, 2.2vw, 24px);
 }
 
-/* Collections: editorial split layout — text left, three images right. */
+/* Collections: editorial split layout â€” text left, three images right. */
 .lily-collections {
 	padding-block: clamp(64px, 7vw, 96px);
 }
@@ -1447,9 +1560,9 @@ html .lily-primary-nav .lily-nav-link:focus {
 	margin-block-start: 30px;
 	min-height: 50px;
 	padding: 12px 30px;
-	border: 1px solid rgba(51, 28, 22, 0.25);
+	border: 1px solid var(--lily-tan);
 	border-radius: var(--lily-pill);
-	background: transparent;
+	background: #FFFFFF;
 	color: var(--lily-text);
 	font-family: var(--lily-font-body);
 	font-size: 0.95rem;
@@ -1461,9 +1574,9 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 .lily-collections__cta:hover {
-	background: rgba(51, 28, 22, 0.06);
-	border-color: rgba(51, 28, 22, 0.6);
-	color: var(--lily-text);
+	background: var(--lily-tan);
+	border-color: var(--lily-tan);
+	color: var(--lily-cream);
 	box-shadow: none;
 }
 
@@ -1472,10 +1585,10 @@ html .lily-primary-nav .lily-nav-link:focus {
 	gap: 12px;
 }
 
-/* Colors: centered editorial swatch band on soft peach, five per row. */
+/* Colors: centered editorial swatch band on the Lily sand tone, five per row. */
 .lily-colors {
 	padding-block: clamp(64px, 8vw, 104px);
-	/* background: #F5F1E8; */
+	background: var(--lily-sand);
 }
 
 .lily-colors__intro {
@@ -1540,9 +1653,9 @@ html .lily-primary-nav .lily-nav-link:focus {
 	gap: 10px;
 	min-height: 50px;
 	padding: 12px 30px;
-	border: 1px solid rgba(51, 28, 22, 0.25);
+	border: 1px solid var(--lily-tan);
 	border-radius: var(--lily-pill);
-	background: transparent;
+	background: #FFFFFF;
 	color: var(--lily-text);
 	font-family: var(--lily-font-body);
 	font-size: 0.95rem;
@@ -1554,9 +1667,9 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 .lily-colors__cta:hover {
-	background: rgba(51, 28, 22, 0.06);
-	border-color: rgba(51, 28, 22, 0.6);
-	color: var(--lily-text);
+	background: var(--lily-tan);
+	border-color: var(--lily-tan);
+	color: var(--lily-cream);
 	box-shadow: none;
 }
 
@@ -1653,7 +1766,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 /* ==========================================================================
-   MASTER PRODUCT CARD — one system for every product on the site.
+   MASTER PRODUCT CARD â€” one system for every product on the site.
    Shop grid, category/search archives, Best Sellers carousel, Related
    Products, Wishlist and Lens Finder results all render this component.
    Sections may control layout around the card (columns, gaps, width) but
@@ -1674,7 +1787,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	transition: box-shadow 260ms var(--lily-ease);
 }
 
-/* Subtle hover: a quiet shadow deepening only — no lift, no scale. */
+/* Subtle hover: a quiet shadow deepening only â€” no lift, no scale. */
 .lily-product-card:hover {
 	box-shadow: var(--lily-shadow);
 }
@@ -1694,7 +1807,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	z-index: 2;
 }
 
-/* Image area — identical proportions everywhere: 1 / 1.06, centered,
+/* Image area â€” identical proportions everywhere: 1 / 1.06, centered,
    object-fit contain so lens products are never cropped. */
 .lily-product-card__image {
 	display: block;
@@ -1721,7 +1834,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	text-align: start;
 }
 
-/* Brand + color metadata stack — quietest layer of the hierarchy.
+/* Brand + color metadata stack â€” quietest layer of the hierarchy.
    Both rows always reserve their height, so cards stay aligned whether a
    product has a brand, a color, both or neither (no fake fallback text). */
 .lily-product-card__meta {
@@ -1732,7 +1845,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	min-height: 40px;
 }
 
-/* Manufacturer brand (real product brand term — pa_brand / product_brand). */
+/* Manufacturer brand (real product brand term â€” pa_brand / product_brand). */
 .lily-product-card__brand {
 	min-height: 1em;
 	color: var(--lily-warm-brown);
@@ -1743,7 +1856,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	text-transform: uppercase;
 }
 
-/* Product name — fixed two-line reserve, same height in every card. */
+/* Product name â€” fixed two-line reserve, same height in every card. */
 .lily-product-card h3 {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -1774,7 +1887,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	color: var(--lily-warm-brown);
 }
 
-/* Color metadata row (swatch + color name) — same quiet typography. */
+/* Color metadata row (swatch + color name) â€” same quiet typography. */
 .lily-product-card__color {
 	display: inline-flex;
 	align-items: center;
@@ -1801,7 +1914,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	text-transform: uppercase;
 }
 
-/* Rating row — fixed reserve so cards without reviews stay aligned.
+/* Rating row â€” fixed reserve so cards without reviews stay aligned.
    Stars always precede the numeric value, regardless of external
    WooCommerce Blocks order rules on the rating wrapper. */
 .lily-product-card__rating {
@@ -1835,7 +1948,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	font-size: 12px;
 }
 
-/* Price — pinned above the Add to Cart row for vertical alignment. */
+/* Price â€” pinned above the Add to Cart row for vertical alignment. */
 .lily-product-card__price {
 	margin-block-start: auto;
 	padding-block-start: 2px;
@@ -1855,12 +1968,13 @@ html .lily-primary-nav .lily-nav-link:focus {
 	text-decoration: none;
 }
 
-/* Add to Cart — the global Lily pill: warm brown, cream text, deep-brown
+/* Add to Cart â€” the global Lily pill: warm tan, cream text, deep-brown
    hover. Calm interaction: no lift, no glow, no gradient. */
 .lily-product-card .lily-button {
 	justify-content: center;
 	width: 100%;
 	min-height: 44px;
+	background: var(--lily-tan);
 	color: var(--lily-cream);
 }
 
@@ -1884,7 +1998,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 /* --------------------------------------------------------------------------
-   Best Sellers — centered editorial carousel (section-scoped presentation;
+   Best Sellers â€” centered editorial carousel (section-scoped presentation;
    the shared product card keeps its shop styling untouched)
    -------------------------------------------------------------------------- */
 
@@ -1942,9 +2056,9 @@ html .lily-primary-nav .lily-nav-link:focus {
 	margin-block-start: 24px;
 	min-height: 50px;
 	padding: 12px 30px;
-	border: 1px solid rgba(51, 28, 22, 0.25);
+	border: 1px solid var(--lily-tan);
 	border-radius: var(--lily-pill);
-	background: transparent;
+	background: #FFFFFF;
 	color: var(--lily-text);
 	font-family: var(--lily-font-body);
 	font-size: 0.95rem;
@@ -1956,9 +2070,9 @@ html .lily-primary-nav .lily-nav-link:focus {
 }
 
 .lily-best-sellers__cta:hover {
-	background: rgba(51, 28, 22, 0.06);
-	border-color: rgba(51, 28, 22, 0.6);
-	color: var(--lily-text);
+	background: var(--lily-tan);
+	border-color: var(--lily-tan);
+	color: var(--lily-cream);
 	box-shadow: none;
 }
 
@@ -1984,7 +2098,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	display: none;
 }
 
-/* Carousel layout only — the cards themselves are the master component. */
+/* Carousel layout only â€” the cards themselves are the master component. */
 .lily-products-row--best .lily-product-card {
 	flex: 0 0 calc((100% - 72px) / 4);
 }
@@ -1999,7 +2113,7 @@ html .lily-primary-nav .lily-nav-link:focus {
 	height: 40px;
 	padding: 0;
 	border: 1px solid var(--lily-line);
-	border-radius: 0;
+	border-radius: var(--lily-pill);
 	background: transparent;
 	color: var(--lily-dark-brown);
 	-webkit-tap-highlight-color: transparent;
@@ -2219,7 +2333,7 @@ html .lily-best-sellers__arrow:focus-visible {
 }
 
 /* ========================================
-   HOW IT WORKS — FOUR EDITORIAL STEPS
+   HOW IT WORKS â€” FOUR EDITORIAL STEPS
 ======================================== */
 
 .lily-lens-finder__steps {
@@ -2248,9 +2362,9 @@ html .lily-best-sellers__arrow:focus-visible {
 }
 
 /*
- * الرقم والأيقونة في نفس الصف.
- * justify-content: space-between يضعهما على طرفي الـ Step.
- * align-items: center يجعل مركز الأيقونة على نفس مركز الرقم.
+ * Ø§Ù„Ø±Ù‚Ù… ÙˆØ§Ù„Ø£ÙŠÙ‚ÙˆÙ†Ø© ÙÙŠ Ù†ÙØ³ Ø§Ù„ØµÙ.
+ * justify-content: space-between ÙŠØ¶Ø¹Ù‡Ù…Ø§ Ø¹Ù„Ù‰ Ø·Ø±ÙÙŠ Ø§Ù„Ù€ Step.
+ * align-items: center ÙŠØ¬Ø¹Ù„ Ù…Ø±ÙƒØ² Ø§Ù„Ø£ÙŠÙ‚ÙˆÙ†Ø© Ø¹Ù„Ù‰ Ù†ÙØ³ Ù…Ø±ÙƒØ² Ø§Ù„Ø±Ù‚Ù….
  */
 .lily-lens-finder__step-top {
 	position: relative;
@@ -2740,7 +2854,7 @@ html .lily-best-sellers__arrow:focus-visible {
 @media (min-width: 1025px) {
 	.lily-products-row:not(.lily-products-row--results):not(.lily-products-row--best) {
 		grid-auto-flow: row;
-		/* Compact, capped card widths — 1–5 products always centered, never stretched. */
+		/* Compact, capped card widths â€” 1â€“5 products always centered, never stretched. */
 		grid-template-columns: repeat(auto-fit, minmax(190px, 230px));
 		justify-content: center;
 		overflow-x: visible;
@@ -3077,7 +3191,7 @@ html .lily-best-sellers__arrow:focus-visible {
 
 
 /* --------------------------------------------------------------------------
-   Shop / product archive — editorial catalog layout
+   Shop / product archive â€” editorial catalog layout
    Sidebar + product area; content-driven spacing only, no viewport hero.
    -------------------------------------------------------------------------- */
 
@@ -3089,7 +3203,7 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 .lily-shop {
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	padding-block: clamp(40px, 5vw, 64px) clamp(64px, 7vw, 96px);
 	overflow-x: clip;
 }
@@ -3099,7 +3213,7 @@ html body.lily-shop-page main#primary.site-main {
    Dashboard-editable; renders nothing when no cover is selected.
    Full-bleed by structure: the cover figure renders OUTSIDE .lily-container
    as a direct child of .lily-shop, so plain 100% width already spans the
-   whole viewport edge-to-edge — no viewport-unit hacks, no negative margins,
+   whole viewport edge-to-edge â€” no viewport-unit hacks, no negative margins,
    no horizontal overflow. The archive title + description are centered
    directly on top of the image.
    -------------------------------------------------------------------------- */
@@ -3118,7 +3232,7 @@ html body.lily-shop-page main#primary.site-main {
 
 /* Specificity note: the archive sits inside WooCommerce's .woocommerce
    wrapper, whose `img { height: auto }` (0,1,1) would beat a single-class
-   rule — so the img selector carries .lily-shop scope (0,2,0). */
+   rule â€” so the img selector carries .lily-shop scope (0,2,0). */
 .lily-shop .lily-shop-cover__img {
 	display: block;
 	width: 100%;
@@ -3126,7 +3240,7 @@ html body.lily-shop-page main#primary.site-main {
 	object-fit: cover;
 }
 
-/* Text overlay — centered on the cover. Only the position and the light
+/* Text overlay â€” centered on the cover. Only the position and the light
    Lily-cream type color change; family, size, weight and spacing inherit
    from the existing header typography untouched. */
 .lily-shop-cover__overlay {
@@ -3154,7 +3268,7 @@ html body.lily-shop-page main#primary.site-main {
 	color: rgba(254, 252, 221, 0.92);
 }
 
-/* Keep the pre-cover → category-nav rhythm of the old header spacing. */
+/* Keep the pre-cover â†’ category-nav rhythm of the old header spacing. */
 .lily-shop--has-cover .lily-shop__inner {
 	padding-block-start: clamp(40px, 5vw, 64px);
 }
@@ -3183,7 +3297,7 @@ html body.lily-shop-page main#primary.site-main {
 	max-width: 540px;
 	margin: 0 auto;
 	color: rgba(51, 28, 22, 0.72);
-	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-family: "Elms Sans", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
 	font-size: 15px;
 	line-height: 1.7;
 }
@@ -3202,7 +3316,7 @@ html body.lily-shop-page main#primary.site-main {
 	min-width: 0;
 }
 
-/* Category navigation — quiet centered text links */
+/* Category navigation â€” quiet centered text links */
 .lily-shop__cats {
 	display: flex;
 	flex-wrap: wrap;
@@ -3220,7 +3334,7 @@ html body.lily-shop-page main#primary.site-main {
 	padding: 2px 0 8px;
 	border-bottom: 1px solid transparent;
 	color: #331C16;
-	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-family: "Elms Sans", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
 	font-size: 15px;
 	line-height: 1.4;
 	text-decoration: none;
@@ -3264,7 +3378,7 @@ html body.lily-shop-page main#primary.site-main {
 	background: rgba(51, 28, 22, 0.4);
 	opacity: 0;
 	transition: opacity 200ms ease;
-	/* Only the visible overlay should intercept clicks — otherwise, once
+	/* Only the visible overlay should intercept clicks â€” otherwise, once
 	   it's first opened, the still-rendered (but faded-out) overlay is left
 	   sitting over the whole page and swallows every tap after closing. */
 	pointer-events: none;
@@ -3275,7 +3389,7 @@ html body.lily-shop-page main#primary.site-main {
 	pointer-events: auto;
 }
 
-/* Filter panel — one clean sidebar in the page's own cream, gently raised
+/* Filter panel â€” one clean sidebar in the page's own cream, gently raised
    via border + soft official-color shadow. Natural height, never scrolls. */
 .lily-filter-panel {
 	box-sizing: border-box;
@@ -3319,7 +3433,7 @@ html body.lily-shop-page main#primary.site-main {
 
 .lily-filter-panel__title {
 	color: #331C16;
-	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-family: "Elms Sans", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
 	font-size: 18px;
 	font-weight: 600;
 	letter-spacing: 0.01em;
@@ -3328,7 +3442,7 @@ html body.lily-shop-page main#primary.site-main {
 .lily-filter-panel__clear {
 	flex-shrink: 0;
 	padding: 6px 4px;
-	border-radius: 8px;
+	border-radius: var(--lily-pill);
 	color: #723427;
 	font-family: inherit;
 	font-size: 14px;
@@ -3368,7 +3482,7 @@ html body.lily-shop-page main#primary.site-main {
 	padding-block: 18px;
 	list-style: none;
 	color: #4B2E2B;
-	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-family: "Elms Sans", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
 	font-size: 15px;
 	font-weight: 500;
 	letter-spacing: 0.01em;
@@ -3480,7 +3594,7 @@ html body.lily-shop-page main#primary.site-main {
 	color: rgba(114, 52, 39, 0.75);
 }
 
-/* Custom checkbox — one visual system, no browser defaults */
+/* Custom checkbox â€” one visual system, no browser defaults */
 .lily-check {
 	position: relative;
 	flex-shrink: 0;
@@ -3507,7 +3621,7 @@ html body.lily-shop-page main#primary.site-main {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FEFCDD' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 12px auto no-repeat;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFEF8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 12px auto no-repeat;
 }
 
 /* Color swatch: product-data color (like homepage color cards), secondary
@@ -3550,7 +3664,7 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 /* --------------------------------------------------------------------------
-   Price range — Lily dual-handle slider
+   Price range â€” Lily dual-handle slider
    Kills ALL native blue from WebKit + Firefox range inputs.
    -------------------------------------------------------------------------- */
 .lily-price-range {
@@ -3683,7 +3797,7 @@ html body.lily-shop-page main#primary.site-main {
 	align-items: end;
 }
 
-/* Min/Max text stays for assistive tech but steps aside visually —
+/* Min/Max text stays for assistive tech but steps aside visually â€”
    the reference shows two clean equal fields only. */
 .lily-price-fields label {
 	position: relative;
@@ -3735,7 +3849,7 @@ html body.lily-shop-page main#primary.site-main {
 	box-shadow: 0 0 0 2px rgba(114, 52, 39, 0.18);
 }
 
-/* Apply — full primary Lily button presence (shape/typography/hover come
+/* Apply â€” full primary Lily button presence (shape/typography/hover come
    from .lily-button); panel-scoped official palette keeps the strict rule */
 .lily-price-apply {
 	grid-column: 1 / -1;
@@ -3756,7 +3870,7 @@ html body.lily-shop-page main#primary.site-main {
 	color: var(--lily-cream);
 }
 
-/* Filter / Sort bar — quiet editorial hairline row */
+/* Filter / Sort bar â€” quiet editorial hairline row */
 .lily-shop-toolbar {
 	display: flex;
 	align-items: center;
@@ -3825,7 +3939,7 @@ html body.lily-shop-page main#primary.site-main {
 .lily-sort-form__go {
 	padding: 6px 14px;
 	border: 1px solid rgba(51, 28, 22, 0.2);
-	border-radius: 0;
+	border-radius: var(--lily-pill);
 	background: none;
 	color: #331C16;
 	font-family: inherit;
@@ -3833,7 +3947,7 @@ html body.lily-shop-page main#primary.site-main {
 	cursor: pointer;
 }
 
-/* Product grid — fixed 4-column editorial grid around existing cards */
+/* Product grid â€” fixed 4-column editorial grid around existing cards */
 .lily-shop-grid {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3848,7 +3962,7 @@ html body.lily-shop-page main#primary.site-main {
 }
 
 /* --------------------------------------------------------------------------
-   WooCommerce pagination — simple editorial text navigation (no boxes)
+   WooCommerce pagination â€” simple editorial text navigation (no boxes)
    -------------------------------------------------------------------------- */
 html body.lily-shop-page .woocommerce-pagination ul {
 	display: flex !important;
@@ -3918,7 +4032,7 @@ html body.lily-shop-page .woocommerce-pagination ul li a:hover {
 	background: transparent !important;
 }
 
-/* Prev / Next — plain arrow, muted */
+/* Prev / Next â€” plain arrow, muted */
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.prev,
 html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.next {
 	font-size: 16px;
@@ -3955,7 +4069,7 @@ html body.lily-shop-page .woocommerce-pagination ul li a.page-numbers.next:focus
 }
 
 /* ---------------------------------------------------------------------------
-   Blue-outline reset — kill any inherited browser/Astra blue focus rings
+   Blue-outline reset â€” kill any inherited browser/Astra blue focus rings
    inside the shop page while preserving keyboard accessibility with
    Lily-coloured focus treatments.
    --------------------------------------------------------------------------- */
@@ -4010,7 +4124,7 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 		font-size: 14px;
 	}
 
-	/* All four tabs must stay on ONE single row on mobile — fully visible,
+	/* All four tabs must stay on ONE single row on mobile â€” fully visible,
 	   no wrapping, no horizontal scrolling. Mobile-only tightening of type
 	   and spacing; desktop (>900px) is unchanged. */
 	.lily-shop__cats {
@@ -4046,7 +4160,7 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 		gap: 8px;
 		padding: 0;
 		border: 0;
-		border-radius: 0;
+		border-radius: var(--lily-pill);
 		background: transparent;
 		color: #331C16;
 		font-family: inherit;
@@ -4068,7 +4182,7 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 		z-index: 70;
 		width: min(320px, 86vw);
 		padding: 22px 24px 32px;
-		background: #FEFCDD;
+		background: var(--lily-cream);
 		border-inline-end: 1px solid rgba(51, 28, 22, 0.12);
 		overflow-y: auto;
 		overflow-x: hidden;
@@ -4107,7 +4221,7 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 		width: 36px;
 		height: 36px;
 		border: 0;
-		border-radius: 0;
+		border-radius: var(--lily-pill);
 		background: transparent;
 		color: #331C16;
 		cursor: pointer;
@@ -4129,7 +4243,7 @@ html body.lily-shop-page input:focus:not(:focus-visible) {
 		display: none;
 	}
 
-	/* Natural panel height — no max-height, no overflow containers.
+	/* Natural panel height â€” no max-height, no overflow containers.
 	   The filter grows with its content and the PAGE handles scrolling,
 	   so the sidebar can never grow its own scrollbars. */
 	.lily-shop__sidebar {
@@ -4173,7 +4287,7 @@ html body.lily-product-page main#primary.site-main {
 	overflow-x: clip;
 }
 
-/* ── Breadcrumb ─────────────────────────────────────────────────── */
+/* â”€â”€ Breadcrumb â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-breadcrumb {
 	padding-block: clamp(12px, 2vw, 20px);
 }
@@ -4198,7 +4312,7 @@ html body.lily-product-page main#primary.site-main {
 	opacity: 0.5;
 }
 
-/* ── Main two-column layout ─────────────────────────────────────── */
+/* â”€â”€ Main two-column layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-main {
 	display: grid;
 	grid-template-columns: 1.05fr 1fr;
@@ -4207,7 +4321,7 @@ html body.lily-product-page main#primary.site-main {
 	padding-block: clamp(16px, 3vw, 32px);
 }
 
-/* ── Gallery ────────────────────────────────────────────────────── */
+/* â”€â”€ Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-gallery {
 	position: sticky;
 	top: clamp(20px, 3vw, 40px);
@@ -4319,7 +4433,7 @@ html body.lily-product-page main#primary.site-main {
 	outline-offset: 3px;
 }
 
-/* ── Product Info ───────────────────────────────────────────────── */
+/* â”€â”€ Product Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-brand {
 	margin: 0 0 6px;
 	color: var(--lily-muted);
@@ -4367,7 +4481,7 @@ html body.lily-product-page main#primary.site-main {
 	margin: 0;
 }
 
-/* ── Lens Specifications ────────────────────────────────────────── */
+/* â”€â”€ Lens Specifications â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-specs {
 	margin-block-end: 20px;
 	padding-block-start: 22px;
@@ -4419,8 +4533,8 @@ html body.lily-product-page main#primary.site-main {
 	text-align: end;
 }
 
-/* ── Color / Skin Tone / Look ───────────────────────────────────── */
-/* ── Cart Area ──────────────────────────────────────────────────── */
+/* â”€â”€ Color / Skin Tone / Look â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* â”€â”€ Cart Area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-cart-area {
 	padding-block-start: 22px;
 	margin-block-end: 8px;
@@ -4451,6 +4565,7 @@ html body.lily-product-page main#primary.site-main {
 	width: 40px;
 	padding: 0;
 	border: 0;
+	border-radius: var(--lily-pill);
 	background: transparent;
 	color: var(--lily-dark-brown);
 	font-size: 1.1rem;
@@ -4578,7 +4693,7 @@ html body.lily-product-page main#primary.site-main {
 	box-shadow: 0 0 0 2px rgba(114, 52, 39, 0.18);
 }
 
-/* ── Prescription Power ─────────────────────────────────────────── */
+/* â”€â”€ Prescription Power â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-rx {
 	width: 100%;
 	margin-block-end: 22px;
@@ -4613,7 +4728,7 @@ html body.lily-product-page main#primary.site-main {
 }
 
 /* Lily select control: soft warm-brown hairline, 44px, 12px radius,
-   custom chevron — no browser-default styling, official focus ring.
+   custom chevron â€” no browser-default styling, official focus ring.
    `html body` scope (0,1,2) out-specifies Astra's WooCommerce compat
    `.woocommerce select` (0,1,1), which otherwise forces its own radius,
    padding and background on every select on the page. */
@@ -4649,7 +4764,7 @@ html body .lily-rx__select {
 	font-size: 0.82rem;
 }
 
-/* ── Prescription validation feedback (official Lily tones only) ── */
+/* â”€â”€ Prescription validation feedback (official Lily tones only) â”€â”€ */
 /* Missing eye power: warm-brown border + soft blush tint (#FAD3CA alpha).
    `html body` scope matches the base select rule so Astra can't override. */
 html body .lily-rx__select.is-invalid {
@@ -4658,7 +4773,7 @@ html body .lily-rx__select.is-invalid {
 	box-shadow: inset 0 0 0 1px rgba(136, 83, 55, 0.45);
 }
 
-/* Restrained premium message — quiet deep-brown text, no harsh red. */
+/* Restrained premium message â€” quiet deep-brown text, no harsh red. */
 .lily-rx__error {
 	margin-block: 10px 0;
 	color: #723427;
@@ -4670,7 +4785,7 @@ html body .lily-rx__select.is-invalid {
 	display: none;
 }
 
-/* ── Color notice ───────────────────────────────────────────────── */
+/* â”€â”€ Color notice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-color-notice {
 	margin-block: 14px;
 	color: var(--lily-muted);
@@ -4678,7 +4793,7 @@ html body .lily-rx__select.is-invalid {
 	font-style: italic;
 }
 
-/* ── Service information row ────────────────────────────────────── */
+/* â”€â”€ Service information row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-services {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -4736,7 +4851,7 @@ html body .lily-rx__select.is-invalid {
 	color: var(--lily-warm-brown);
 }
 
-/* ── Product Details + Related (lower editorial split) ──────────── */
+/* â”€â”€ Product Details + Related (lower editorial split) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-lower {
 	display: grid;
 	grid-template-columns: 1.05fr 1fr;
@@ -4785,7 +4900,7 @@ html body .lily-rx__select.is-invalid {
 	margin-block-end: 16px;
 }
 
-/* ── Related Products ───────────────────────────────────────────── */
+/* â”€â”€ Related Products â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-related__grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4799,7 +4914,7 @@ html body .lily-rx__select.is-invalid {
 }
 
 /* ==========================================================================
-   Single Product — WooCommerce Blue Override + Focus Reset
+   Single Product â€” WooCommerce Blue Override + Focus Reset
    Everything below is scoped INSIDE main#primary.site-main so no product
    rule can ever reach the global footer, navbar or announcement bar.
    ========================================================================== */
@@ -4856,7 +4971,7 @@ html body.lily-product-page main#primary.site-main input[type="number"]:focus {
 }
 
 /* Quiet warm-brown link treatment for EDITORIAL CONTENT only (anti-blue
-   guard). Surgical selectors — never page-wide — so product-card titles,
+   guard). Surgical selectors â€” never page-wide â€” so product-card titles,
    buttons and every other UI anchor keep their own component colors, and
    the global footer (outside <main>) can never be reached. */
 html body.lily-product-page main.site-main .lily-sp-short-desc a,
@@ -4874,7 +4989,7 @@ html body.lily-product-page main.site-main .lily-review-form__note a:hover {
 }
 
 /* ==========================================================================
-   Cart + Checkout — Lily editorial styling
+   Cart + Checkout â€” Lily editorial styling
    Scoped to body.woocommerce-cart / body.woocommerce-checkout
    ========================================================================== */
 
@@ -4892,7 +5007,7 @@ html body.woocommerce-checkout main#primary.site-main {
 /* Astra's default #primary top margin (60px) only applies at min-width:1200px,
    so below that the page title sits flush under the sticky header and its
    accent-font ascenders get visually clipped. Restore breathing room below
-   1200px only — desktop (>=1200px) is untouched. Also covers My Account,
+   1200px only â€” desktop (>=1200px) is untouched. Also covers My Account,
    which uses the same default Astra page-title markup. */
 @media (max-width: 1199px) {
 	html body.woocommerce-cart .entry-header,
@@ -4908,7 +5023,7 @@ html body.woocommerce-checkout .entry-content {
 	padding-block-end: clamp(48px, 7vw, 88px);
 }
 
-/* ── Page headings (global typography hierarchy) ────────────────── */
+/* â”€â”€ Page headings (global typography hierarchy) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 html body.woocommerce-cart .entry-title,
 html body.woocommerce-checkout .entry-title {
 	margin-block-end: clamp(18px, 3vw, 28px);
@@ -4919,7 +5034,7 @@ html body.woocommerce-checkout .entry-title {
 	letter-spacing: -0.01em;
 }
 
-/* ── Cart notices ───────────────────────────────────────────────── */
+/* â”€â”€ Cart notices â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 html body.woocommerce-cart .woocommerce-message,
 html body.woocommerce-cart .woocommerce-info,
 html body.woocommerce-cart .woocommerce-error,
@@ -4955,7 +5070,7 @@ html body.woocommerce-checkout .woocommerce-error a {
 	color: var(--lily-warm-brown);
 }
 
-/* Server-side validation notices on the single product page — printed
+/* Server-side validation notices on the single product page â€” printed
    inside the cart area (scoped to main#primary, footer can never match). */
 html body.lily-product-page main#primary.site-main .woocommerce-error {
 	list-style: none;
@@ -4974,7 +5089,7 @@ html body.lily-product-page main#primary.site-main .woocommerce-error li {
 	list-style: none;
 }
 
-/* ── Cart layout ────────────────────────────────────────────────── */
+/* â”€â”€ Cart layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-cart-form {
 	display: grid;
 	grid-template-columns: 1.5fr 1fr;
@@ -5096,7 +5211,7 @@ html body.lily-product-page main#primary.site-main .woocommerce-error li {
 	font-weight: 700;
 }
 
-/* Cart quantity: same [ − ] 1 [ + ] language as Single Product */
+/* Cart quantity: same [ âˆ’ ] 1 [ + ] language as Single Product */
 .woocommerce-cart-form .quantity,
 .lily-cart-item__qty .quantity {
 	display: inline-flex;
@@ -5157,7 +5272,7 @@ html body.lily-product-page main#primary.site-main .woocommerce-error li {
 	outline-offset: 3px;
 }
 
-/* ── Cart summary ───────────────────────────────────────────────── */
+/* â”€â”€ Cart summary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-cart-summary {
 	padding: clamp(20px, 3vw, 30px);
 	border: 1px solid var(--lily-line);
@@ -5224,7 +5339,7 @@ html body.lily-product-page main#primary.site-main .woocommerce-error li {
 	margin-block-start: 12px;
 	padding: 13px 28px;
 	border: 0;
-	border-radius: 12px;
+	border-radius: var(--lily-pill);
 	background: transparent;
 	color: var(--lily-muted);
 	font-family: var(--lily-font-body);
@@ -5294,7 +5409,7 @@ html body.lily-product-page main#primary.site-main .woocommerce-error li {
 	outline-offset: 3px;
 }
 
-/* "Added to cart" notice forward button → quiet link */
+/* "Added to cart" notice forward button â†’ quiet link */
 html body.woocommerce-cart .woocommerce-message .wc-forward,
 html body.woocommerce-cart .woocommerce-info .wc-forward,
 html body.woocommerce-checkout .woocommerce-message .wc-forward,
@@ -5318,7 +5433,7 @@ html body.woocommerce-checkout .woocommerce-message .wc-forward:hover {
 	background: transparent;
 }
 
-/* ── Empty cart ─────────────────────────────────────────────────── */
+/* â”€â”€ Empty cart â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-cart-empty {
 	display: flex;
 	flex-direction: column;
@@ -5348,7 +5463,7 @@ html body.woocommerce-checkout .woocommerce-message .wc-forward:hover {
 	min-height: 48px;
 	margin-block-start: 14px;
 	padding: 12px 36px;
-	border-radius: 12px;
+	border-radius: var(--lily-pill);
 	background: var(--lily-warm-brown);
 	color: var(--lily-cream);
 	font-size: 0.86rem;
@@ -5371,7 +5486,7 @@ html body.woocommerce-checkout .woocommerce-message .wc-forward:hover {
 }
 
 
-/* ── Checkout — editorial composition ─────────────────────────────── */
+/* â”€â”€ Checkout â€” editorial composition â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 /* Align every checkout element (title + content) to one editorial column */
 html body.woocommerce-checkout article.ast-article-single {
@@ -5392,7 +5507,7 @@ html body.woocommerce-checkout article.ast-article-single {
 	min-width: 0;
 }
 
-/* Page masthead — oversized Sellendra title + warm accent rule */
+/* Page masthead â€” oversized Sellendra title + warm accent rule */
 html body.woocommerce-checkout .page-header,
 html body.woocommerce-checkout .entry-header {
 	margin-block-end: 0;
@@ -5415,10 +5530,10 @@ html body.woocommerce-checkout .entry-title::after {
 	height: 3px;
 	margin-block-start: clamp(18px, 2.4vw, 26px);
 	border-radius: 2px;
-	background: var(--lily-warm-brown);
+	/* background: var(--lily-warm-brown); */
 }
 
-/* ── Section titles (shared by Billing / Payment / Summary) ──────── */
+/* â”€â”€ Section titles (shared by Billing / Payment / Summary) â”€â”€â”€â”€â”€â”€â”€â”€ */
 html body.woocommerce-checkout .woocommerce-billing-fields > h3,
 html body.woocommerce-checkout .woocommerce-additional-fields > h3,
 html body.woocommerce-checkout .lily-checkout__section-title,
@@ -5436,7 +5551,7 @@ html body.woocommerce-checkout .lily-checkout__section-title,
 	line-height: 1.3;
 }
 
-/* Lily section titles: clean editorial hairline — no decorative glyphs */
+/* Lily section titles: clean editorial hairline â€” no decorative glyphs */
 
 html body.woocommerce-checkout .woocommerce-billing-fields > h3::after,
 html body.woocommerce-checkout .lily-checkout__section-title::after {
@@ -5446,7 +5561,7 @@ html body.woocommerce-checkout .lily-checkout__section-title::after {
 	background: rgba(136, 83, 55, 0.3);
 }
 
-/* ── Order summary panel — the one defined element of the page ────── */
+/* â”€â”€ Order summary panel â€” the one defined element of the page â”€â”€â”€â”€â”€â”€ */
 .lily-checkout__summary {
 	position: sticky;
 	top: clamp(20px, 3vw, 40px);
@@ -5494,7 +5609,7 @@ html body.woocommerce-checkout #payment {
 	margin-block-start: clamp(22px, 3vw, 30px);
 }
 
-/* ── Billing details — open editorial form, no card wrapper ──────── */
+/* â”€â”€ Billing details â€” open editorial form, no card wrapper â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-checkout__billing {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5530,7 +5645,7 @@ html body.woocommerce-checkout .woocommerce-billing-fields > h3 {
 }
 
 /* Intentional field choreography (independent of WooCommerce DOM order):
-   Full Name full width → Phone + Email paired → Area full → Address full */
+   Full Name full width â†’ Phone + Email paired â†’ Area full â†’ Address full */
 #billing_first_name_field {
 	grid-column: 1 / -1;
 	order: 1;
@@ -5568,7 +5683,7 @@ html body.woocommerce-checkout .form-row {
 	padding: 0;
 }
 
-/* Field labels — small caps, quiet warm tone */
+/* Field labels â€” small caps, quiet warm tone */
 html body.woocommerce-checkout .form-row label {
 	display: block;
 	margin-block-end: 9px;
@@ -5592,9 +5707,9 @@ html body.woocommerce-checkout .select2-container--default .select2-selection--s
 	width: 100%;
 	height: 52px;
 	padding: 0 16px;
-	border: 1px solid rgba(136, 83, 55, 0.38);
+	border: 1px solid var(--lily-espresso);
 	border-radius: 10px;
-	background: rgba(254, 252, 221, 0.62);
+	background: var(--lily-sand);
 	color: var(--lily-dark-brown);
 	font-family: inherit;
 	font-size: 0.98rem;
@@ -5606,7 +5721,7 @@ html body.woocommerce-checkout .select2-container--default .select2-selection--s
 	transition: border-color 180ms var(--lily-ease), background-color 180ms var(--lily-ease);
 }
 
-/* Native area select — identical language, Lily chevron in warm brown */
+/* Native area select â€” identical language, Lily chevron in warm brown */
 html body.woocommerce-checkout .form-row select {
 	padding-inline-end: 40px;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23885337' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
@@ -5619,7 +5734,7 @@ html[dir="rtl"] body.woocommerce-checkout .form-row select {
 	background-position: left 15px center;
 }
 
-/* Detailed address — a genuinely larger textarea */
+/* Detailed address â€” a genuinely larger textarea */
 html body.woocommerce-checkout .form-row textarea.input-text {
 	height: auto;
 	min-height: 138px;
@@ -5651,7 +5766,7 @@ html body.woocommerce-checkout .select2-container--default .select2-selection--s
 
 html body.woocommerce-checkout .form-row .input-text:-webkit-autofill,
 html body.woocommerce-checkout .form-row select:-webkit-autofill {
-	-webkit-box-shadow: 0 0 0 40px #FEFCDD inset;
+	-webkit-box-shadow: 0 0 0 40px var(--lily-cream) inset;
 	-webkit-text-fill-color: var(--lily-dark-brown);
 	caret-color: var(--lily-dark-brown);
 }
@@ -5706,7 +5821,7 @@ html body.woocommerce-checkout .woocommerce-additional-fields {
 	color: var(--lily-dark-brown);
 }
 
-/* ── Order review — editorial product ledger, not a WC table ─────── */
+/* â”€â”€ Order review â€” editorial product ledger, not a WC table â”€â”€â”€â”€â”€â”€â”€ */
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table,
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tbody {
 	display: block;
@@ -5726,7 +5841,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table th {
 	background: transparent;
 }
 
-/* Product row: image · info · price */
+/* Product row: image Â· info Â· price */
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tbody tr.cart_item {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
@@ -5804,7 +5919,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot td
 	white-space: nowrap;
 }
 
-/* Prescription metadata — quiet supporting information */
+/* Prescription metadata â€” quiet supporting information */
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table dl.variation,
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table .wc-item-meta {
 	margin: 4px 0 0;
@@ -5859,7 +5974,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot th
 	white-space: nowrap;
 }
 
-/* Subtotal — warm brown monetary accent */
+/* Subtotal â€” warm brown monetary accent */
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.cart-subtotal th {
 	color: var(--lily-warm-brown);
 	font-weight: 600;
@@ -5871,7 +5986,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr
 	font-weight: 700;
 }
 
-/* Shipping — present but quiet */
+/* Shipping â€” present but quiet */
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.shipping th,
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.shipping td,
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.shipping td .amount {
@@ -5895,7 +6010,7 @@ html body.woocommerce-checkout .woocommerce-shipping-totals td .amount {
 	color: rgba(51, 28, 22, 0.78);
 }
 
-/* Total — the strongest monetary value on the page */
+/* Total â€” the strongest monetary value on the page */
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr.order-total {
 	margin-block-start: 8px;
 	padding-block: clamp(14px, 2vw, 18px) 4px;
@@ -5917,7 +6032,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot tr
 	line-height: 1.1;
 }
 
-/* ── Payment — banded sub-section inside the summary ─────────────── */
+/* â”€â”€ Payment â€” banded sub-section inside the summary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 html body.woocommerce-checkout #payment {
 	float: none !important;
 	width: 100%;
@@ -5946,7 +6061,7 @@ html body.woocommerce-checkout #payment ul.payment_methods {
 	list-style: none;
 }
 
-/* COD — refined bordered row, custom Lily radio */
+/* COD â€” refined bordered row, custom Lily radio */
 html body.woocommerce-checkout #payment ul.payment_methods li {
 	display: flex;
 	align-items: center;
@@ -6024,7 +6139,7 @@ html body.woocommerce-checkout #payment .place-order {
 	margin: 0;
 }
 
-/* Place order — the dominant action of the page */
+/* Place order â€” the dominant action of the page */
 html body.woocommerce-checkout #place_order {
 	display: flex;
 	align-items: center;
@@ -6034,7 +6149,7 @@ html body.woocommerce-checkout #place_order {
 	margin: 0;
 	padding: 16px 32px;
 	border: 0;
-	border-radius: 12px;
+	border-radius: var(--lily-pill);
 	background: var(--lily-warm-brown) !important;
 	color: var(--lily-cream) !important;
 	font-family: var(--lily-font-body);
@@ -6095,7 +6210,7 @@ html body.woocommerce-checkout .woocommerce-form-coupon button {
 	min-height: 46px;
 	padding: 10px 24px;
 	border: 1px solid rgba(136, 83, 55, 0.38);
-	border-radius: 10px;
+	border-radius: var(--lily-pill);
 	background: transparent;
 	color: var(--lily-dark-brown);
 	font-family: inherit;
@@ -6109,7 +6224,7 @@ html body.woocommerce-checkout .woocommerce-form-coupon button {
 
 html body.woocommerce-checkout .woocommerce-form-coupon button:hover {
 	border-color: #723427;
-	color: #723427;
+	color: var(--lily-cream);
 }
 
 .lily-checkout__login-note {
@@ -6119,7 +6234,7 @@ html body.woocommerce-checkout .woocommerce-form-coupon button:hover {
 	line-height: 1.55;
 }
 
-/* Every link on checkout speaks Lily warm brown — zero blue */
+/* Every link on checkout speaks Lily warm brown â€” zero blue */
 html body.woocommerce-checkout a.showcoupon,
 html body.woocommerce-checkout .woocommerce-privacy-policy-link,
 html body.woocommerce-checkout .woocommerce-checkout-review-order-table a {
@@ -6134,7 +6249,7 @@ html body.woocommerce-checkout .woocommerce-checkout-review-order-table a:hover 
 	background: transparent;
 }
 
-/* WooCommerce appends its own "(optional)" chip — Lily labels already carry it */
+/* WooCommerce appends its own "(optional)" chip â€” Lily labels already carry it */
 html body.woocommerce-checkout .form-row label .optional {
 	display: none;
 }
@@ -6146,7 +6261,7 @@ html body.woocommerce-checkout .woocommerce-error {
 	padding-inline-start: 44px;
 }
 
-/* The info/message glyph reads as stray chrome on the quiet bar — drop it */
+/* The info/message glyph reads as stray chrome on the quiet bar â€” drop it */
 html body.woocommerce-checkout .woocommerce-info::before,
 html body.woocommerce-checkout .woocommerce-message::before {
 	display: none;
@@ -6162,7 +6277,7 @@ html body.woocommerce-checkout .woocommerce-message {
 	font-size: 0.9rem;
 }
 
-/* ── Cart + Checkout — Responsive ───────────────────────────────── */
+/* â”€â”€ Cart + Checkout â€” Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 @media (max-width: 900px) {
 	.lily-cart-form,
@@ -6191,7 +6306,7 @@ html body.woocommerce-checkout .woocommerce-message {
 	}
 }
 
-/* Checkout — mobile single flow */
+/* Checkout â€” mobile single flow */
 @media (max-width: 600px) {
 	html body.woocommerce-checkout .entry-title {
 		font-size: clamp(2.2rem, 9vw, 2.7rem);
@@ -6274,7 +6389,7 @@ html body.woocommerce-checkout .woocommerce-message {
 }
 
 /* ==========================================================================
-   Single Product — Responsive
+   Single Product â€” Responsive
    ========================================================================== */
 
 @media (max-width: 900px) {
@@ -6324,7 +6439,7 @@ html body.woocommerce-checkout .woocommerce-message {
 }
 
 /* ==========================================================================
-   LILY — CART DRAWER (native WooCommerce presentation layer)
+   LILY â€” CART DRAWER (native WooCommerce presentation layer)
    ========================================================================== */
 
 .lily-drawer-overlay {
@@ -6391,6 +6506,13 @@ html[dir="rtl"] .lily-cart-drawer {
 	line-height: 1;
 }
 
+/* Astra's `.woocommerce-js h2` (margin-bottom .7em) out-specifies the title
+   class and pushes the title+count above the vertically centered close
+   button. The id outranks it so the header stays one coherent flex row. */
+#lily-cart-drawer .lily-drawer__title {
+	margin: 0;
+}
+
 .lily-drawer__count-badge {
 	display: inline-flex;
 	align-items: center;
@@ -6411,19 +6533,13 @@ html[dir="rtl"] .lily-cart-drawer {
 	justify-content: center;
 	width: 34px;
 	height: 34px;
-	margin-inline-end: auto; /* pin controls toward the outer edge */
 	padding: 0;
 	border: 1px solid rgba(254, 252, 221, 0.35);
-	border-radius: 50%;
+	border-radius: var(--lily-pill);
 	background: transparent;
 	color: var(--lily-cream);
 	cursor: pointer;
 	transition: border-color 160ms var(--lily-ease), background-color 160ms var(--lily-ease);
-}
-
-html[dir="rtl"] .lily-drawer__close {
-	margin-inline-end: 0;
-	margin-inline-start: auto;
 }
 
 .lily-drawer__close:hover,
@@ -6519,7 +6635,7 @@ html[dir="rtl"] .lily-drawer__close {
 	height: 30px;
 }
 
-/* Quantity [ − ] n [ + ] inherits the Lily system; compact for the rail */
+/* Quantity [ âˆ’ ] n [ + ] inherits the Lily system; compact for the rail */
 #lily-cart-drawer .quantity {
 	min-height: 40px;
 }
@@ -6532,6 +6648,19 @@ html[dir="rtl"] .lily-drawer__close {
 
 #lily-cart-drawer .lily-qty-btn {
 	width: 38px;
+}
+
+/* Minimum quantity is 1: the minus control is visually inactive at 1. */
+#lily-cart-drawer .lily-qty-btn[disabled] {
+	opacity: 0.35;
+	cursor: not-allowed;
+}
+
+/* The drawer auto-focuses the close button on open; the global
+   focus-visible ring rule paints a 4px radius over every control, so
+   re-assert the pill here (outline behavior unchanged). */
+.lily-drawer__close:focus-visible {
+	border-radius: var(--lily-pill);
 }
 
 /* Footer: totals + CTA */
@@ -6551,7 +6680,7 @@ html[dir="rtl"] .lily-drawer__close {
 	margin: 0;
 	font-size: 0.94rem;
 	letter-spacing: 0.13em;
-	border-radius: 12px;
+	border-radius: var(--lily-pill);
 }
 
 .lily-drawer__checkout:hover {
@@ -6589,7 +6718,7 @@ html[dir="rtl"] .lily-drawer__close {
 	justify-content: center;
 	min-height: 48px;
 	padding: 12px 32px;
-	border-radius: 12px;
+	border-radius: var(--lily-pill);
 	background: var(--lily-warm-brown);
 	color: var(--lily-cream);
 	font-size: 0.85rem;
@@ -6610,7 +6739,7 @@ html[dir="rtl"] .lily-drawer__close {
 	outline-offset: 3px;
 }
 
-/* Page lock while open — prevents the background page from scrolling
+/* Page lock while open â€” prevents the background page from scrolling
    behind the drawer/overlay (and any horizontal overflow bleed) */
 html body.lily-drawer-open {
 	overflow: hidden;
@@ -6637,7 +6766,7 @@ html body.lily-drawer-open {
 	}
 }
 /* ==========================================================================
-   LILY — Static content pages (About / Contact / FAQ / Policies)
+   LILY â€” Static content pages (About / Contact / FAQ / Policies)
    Temporary functional styling; final branding pass comes later.
    ========================================================================== */
 
@@ -6691,7 +6820,7 @@ html body.lily-drawer-open {
 }
 
 .lily-faq__item[open] summary::after {
-	content: "\2212"; /* − : semantics never change, decoration only */
+	content: "\2212"; /* âˆ’ : semantics never change, decoration only */
 }
 
 .lily-faq__item summary:focus-visible {
@@ -6774,7 +6903,7 @@ html body.lily-drawer-open {
 	min-height: 52px;
 	padding: 12px 34px;
 	border: 0;
-	border-radius: 12px;
+	border-radius: var(--lily-pill);
 	background: var(--lily-warm-brown);
 	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
@@ -6817,7 +6946,7 @@ body.lily-contact-status-error .entry-content::before {
 }
 
 /* ==========================================================================
-   LILY — About Us page only (scoped to body.lily-about-page / .lily-about)
+   LILY â€” About Us page only (scoped to body.lily-about-page / .lily-about)
    Editorial rhythm: masthead, story, mission, vision, approach, closing CTA.
    Global header, footer, shop and homepage styles are untouched.
    ========================================================================== */
@@ -6827,7 +6956,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	overflow-x: clip;
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
@@ -6867,11 +6996,11 @@ body.lily-about-page main#primary.site-main.lily-about {
 
 
 /* =========================================================
-   1. ABOUT LILY — MASTHEAD
+   1. ABOUT LILY â€” MASTHEAD
 ========================================================= */
 
 .lily-about-masthead {
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	padding-block: clamp(40px, 5vw, 64px) clamp(64px, 8vw, 112px);
 	text-align: center;
 }
@@ -6915,7 +7044,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 ========================================================= */
 
 .lily-about-story {
-	background: #FEFCDD;
+	background: var(--lily-bg);
 }
 
 .lily-about-story__inner {
@@ -6932,7 +7061,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 .lily-about-story__lead {
 	margin: 0 0 26px;
 	font-family: var(--lily-font-body);
-	font-size: clamp(22px, 2.4vw, 29px);
+	font-size: clamp(28px, 2.4vw, 29px);
 	font-weight: 500;
 	line-height: 1.5;
 	color: #331C16;
@@ -6941,8 +7070,8 @@ body.lily-about-page main#primary.site-main.lily-about {
 .lily-about-story__text p {
 	margin: 0 0 18px;
 	font-family: var(--lily-font-body);
-	font-size: 16px;
-	font-weight: 400;
+	font-size: 18px;
+	font-weight: 500;
 	line-height: 1.75;
 	color: rgba(51, 28, 22, 0.88);
 }
@@ -6971,7 +7100,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 ========================================================= */
 
 .lily-about-mission {
-	background: #FEFCDD;
+	background: var(--lily-bg);
 }
 
 .lily-about-mission__inner {
@@ -6984,7 +7113,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 .lily-about-mission__statement {
 	max-width: 820px;
 	margin: 0;
-	font-family: "Sellendra", "Georgia", serif;
+  font-family: var(--lily-font-body);
 	font-size: clamp(28px, 3.6vw, 46px);
 	font-weight: 400;
 	line-height: 1.2;
@@ -7007,7 +7136,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 ========================================================= */
 
 .lily-about-vision {
-	background: #FAD3CA;
+	background: var(--lily-sand);
 }
 
 .lily-about-vision__inner {
@@ -7027,7 +7156,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 
 .lily-about-vision__lead {
 	margin: 0;
-	font-family: "Sellendra", "Georgia", serif;
+  font-family: var(--lily-font-body);
 	font-size: clamp(26px, 3.2vw, 40px);
 	font-weight: 400;
 	line-height: 1.25;
@@ -7038,9 +7167,9 @@ body.lily-about-page main#primary.site-main.lily-about {
 	margin: 0;
 	padding-block-start: 44px;
 	font-family: var(--lily-font-body);
-	font-size: 16px;
-	font-weight: 400;
-	line-height: 1.75;
+	font-size: 28px;
+	font-weight: 600;
+	line-height: 1.25;
 	color: rgba(51, 28, 22, 0.88);
 }
 
@@ -7050,7 +7179,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 ========================================================= */
 
 .lily-about-approach {
-	background: #FEFCDD;
+	background: var(--lily-bg);
 }
 
 .lily-about-approach .lily-about-eyebrow {
@@ -7098,7 +7227,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 .lily-about-approach__name {
 	color: #331C16;
 	font-family: var(--lily-font-body);
-	font-size: 14px;
+	font-size: 24px;
 	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -7118,7 +7247,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 ========================================================= */
 
 .lily-about-cta {
-	background: #FEFCDD;
+	background: var(--lily-bg);
 }
 
 .lily-about-cta__inner {
@@ -7153,9 +7282,10 @@ body.lily-about-page main#primary.site-main.lily-about {
 	min-height: 54px;
 	padding: 16px 28px;
 	border: 0;
-	border-radius: 8px;
+	/* Matches the product-card Add to Cart pill radius. */
+	border-radius: var(--lily-pill);
 	background: #885337;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
 	font-size: 14px;
 	font-weight: 500;
@@ -7168,7 +7298,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 
 .lily-about-cta__btn:hover {
 	background: #4B2E2B;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 }
 
 .lily-about a:not(.lily-about-cta__btn) {
@@ -7254,7 +7384,7 @@ body.lily-about-page main#primary.site-main.lily-about {
 }
 
 /* ==========================================================================
-   LILY — FAQ page only (scoped to body.lily-faq-page / .lily-faqs)
+   LILY â€” FAQ page only (scoped to body.lily-faq-page / .lily-faqs)
    Quiet editorial accordion: cream base, hairline rows, plus/minus only.
    Global header, footer, shop and homepage styles are untouched.
    ========================================================================== */
@@ -7264,11 +7394,11 @@ body.lily-faq-page main#primary.site-main.lily-faqs {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	overflow-x: clip;
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
-/* Centered editorial masthead — no hero image, no decoration. */
+/* Centered editorial masthead â€” no hero image, no decoration. */
 .lily-faqs-masthead {
 	text-align: center;
 	padding-block: clamp(64px, 8vw, 96px) 0;
@@ -7292,7 +7422,7 @@ body.lily-faq-page main#primary.site-main.lily-faqs {
 	color: rgba(51, 28, 22, 0.72);
 }
 
-/* FAQ list — narrow, centered, no cards. */
+/* FAQ list â€” narrow, centered, no cards. */
 .lily-faqs__list {
 	max-width: 900px;
 	margin: clamp(48px, 6vw, 64px) auto 0;
@@ -7323,7 +7453,7 @@ body.lily-faq-page main#primary.site-main.lily-faqs {
 	border: 0;
 	background: transparent;
 	color: #331C16;
-	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-family: "Elms Sans", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
 	font-size: 17px;
 	line-height: 1.4;
 	text-align: start;
@@ -7331,14 +7461,14 @@ body.lily-faq-page main#primary.site-main.lily-faqs {
 	transition: color 200ms ease;
 }
 
-/* FAQ hover/focus/active must stay calm cream — never blue, never tinted,
+/* FAQ hover/focus/active must stay calm cream â€” never blue, never tinted,
    never lifted. High page scope neutralizes any inherited theme/browser
    button styling (including the sticky :focus fill left after mouse click).
    Keyboard users still get the deep-brown :focus-visible ring below. */
 html body.lily-faq-page .lily-faqs__q:hover,
 html body.lily-faq-page .lily-faqs__q:focus,
 html body.lily-faq-page .lily-faqs__q:active {
-	background: #FEFCDD;
+	background: var(--lily-cream);
 	background-image: none;
 	border-color: transparent;
 	box-shadow: none;
@@ -7370,7 +7500,7 @@ html body.lily-faq-page .lily-faqs__q:active .lily-faqs__icon::after {
 	min-width: 0;
 }
 
-/* Minimal plus/minus control — no circle, no box. */
+/* Minimal plus/minus control â€” no circle, no box. */
 .lily-faqs__icon {
 	position: relative;
 	flex-shrink: 0;
@@ -7399,7 +7529,7 @@ html body.lily-faq-page .lily-faqs__q:active .lily-faqs__icon::after {
 	transform: scaleY(0);
 }
 
-/* Smooth expand/collapse — height and opacity only. */
+/* Smooth expand/collapse â€” height and opacity only. */
 .lily-faqs__acollapse {
 	display: grid;
 	grid-template-rows: 0fr;
@@ -7459,7 +7589,7 @@ html body.lily-faq-page .lily-faqs__q:active .lily-faqs__icon::after {
 }
 
 /* ==========================================================================
-   LILY — Contact page only (scoped to body.lily-contact-page / .lily-contact)
+   LILY â€” Contact page only (scoped to body.lily-contact-page / .lily-contact)
    Quiet editorial hero, two-column contact + form, soft CTA band.
    Global header, footer, buttons, shop and homepage styles are untouched.
    ========================================================================== */
@@ -7469,7 +7599,7 @@ body.lily-contact-page main#primary.site-main.lily-contact {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	overflow-x: clip;
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
@@ -7486,7 +7616,7 @@ body.lily-contact-page main#primary.site-main.lily-contact {
 	text-align: center;
 }
 
-/* 1. Hero — centered and spacious. */
+/* 1. Hero â€” centered and spacious. */
 .lily-contact-hero {
 	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
 	text-align: center;
@@ -7518,7 +7648,7 @@ body.lily-contact-page main#primary.site-main.lily-contact {
 	color: rgba(51, 28, 22, 0.72);
 }
 
-/* 2. Main contact section — two columns with a subtle divider. */
+/* 2. Main contact section â€” two columns with a subtle divider. */
 .lily-contact-main {
 	padding-block: 0 clamp(64px, 8vw, 96px);
 }
@@ -7669,7 +7799,7 @@ a.lily-contact-info__value:hover {
 	margin: 26px 0 0;
 }
 
-/* 3. Lens Finder CTA — Soft Peach band, centered. */
+/* 3. Lens Finder CTA â€” Soft Peach band, centered. */
 .lily-contact-cta {
 	background: #FAD3CA;
 	padding-block: clamp(64px, 8vw, 96px);
@@ -7734,7 +7864,7 @@ a.lily-contact-info__value:hover {
 }
 
 /* ==========================================================================
-   LILY — Shipping Policy page only (scoped to body.lily-shipping-page)
+   LILY â€” Shipping Policy page only (scoped to body.lily-shipping-page)
    Editorial hero, numbered policy rows, soft help CTA band.
    Global header, footer, buttons, shop and homepage styles are untouched.
    ========================================================================== */
@@ -7744,11 +7874,11 @@ body.lily-shipping-page main#primary.site-main.lily-shipping {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	overflow-x: clip;
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
-/* 1. Hero — centered and spacious. */
+/* 1. Hero â€” centered and spacious. */
 .lily-shipping-hero {
 	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
 	text-align: center;
@@ -7787,7 +7917,7 @@ body.lily-shipping-page main#primary.site-main.lily-shipping {
 	color: rgba(51, 28, 22, 0.72);
 }
 
-/* 2. Policy content — centered, numbered editorial rows. */
+/* 2. Policy content â€” centered, numbered editorial rows. */
 .lily-shipping-policy {
 	padding-block: 0 clamp(64px, 8vw, 96px);
 }
@@ -7851,7 +7981,7 @@ body.lily-shipping-page main#primary.site-main.lily-shipping {
 	color: rgba(51, 28, 22, 0.8);
 }
 
-/* 3. Help CTA — Soft Peach band, centered. */
+/* 3. Help CTA â€” Soft Peach band, centered. */
 .lily-shipping-cta {
 	background: #FAD3CA;
 	padding-block: clamp(64px, 8vw, 96px);
@@ -7927,7 +8057,7 @@ body.lily-shipping-page main#primary.site-main.lily-shipping {
 }
 
 /* ==========================================================================
-   LILY — Returns & Exchange page only (scoped to body.lily-returns-page)
+   LILY â€” Returns & Exchange page only (scoped to body.lily-returns-page)
    Editorial hero, numbered policy rows, soft help CTA band.
    Global header, footer, buttons, shop and homepage styles are untouched.
    ========================================================================== */
@@ -7937,11 +8067,11 @@ body.lily-returns-page main#primary.site-main.lily-returns {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	overflow-x: clip;
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
-/* 1. Hero — centered and spacious. */
+/* 1. Hero â€” centered and spacious. */
 .lily-returns-hero {
 	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
 	text-align: center;
@@ -7973,7 +8103,7 @@ body.lily-returns-page main#primary.site-main.lily-returns {
 	color: rgba(51, 28, 22, 0.75);
 }
 
-/* 2. Policy content — centered, numbered editorial rows. */
+/* 2. Policy content â€” centered, numbered editorial rows. */
 .lily-returns-policy {
 	padding-block: 0 clamp(64px, 8vw, 96px);
 }
@@ -8037,7 +8167,7 @@ body.lily-returns-page main#primary.site-main.lily-returns {
 	color: rgba(51, 28, 22, 0.8);
 }
 
-/* 3. Help CTA — Soft Peach band, centered. */
+/* 3. Help CTA â€” Soft Peach band, centered. */
 .lily-returns-cta {
 	background: #FAD3CA;
 	padding-block: clamp(64px, 8vw, 96px);
@@ -8109,7 +8239,7 @@ body.lily-returns-page main#primary.site-main.lily-returns {
 }
 
 /* ==========================================================================
-   LILY — Terms & Conditions page only (scoped to body.lily-terms-page)
+   LILY â€” Terms & Conditions page only (scoped to body.lily-terms-page)
    Editorial hero, numbered terms rows, soft help CTA band.
    Global header, footer, buttons, shop and homepage styles are untouched.
    ========================================================================== */
@@ -8119,11 +8249,11 @@ body.lily-terms-page main#primary.site-main.lily-terms {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	overflow-x: clip;
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
-/* 1. Hero — breadcrumb, eyebrow, dominant start-aligned title, intro. */
+/* 1. Hero â€” breadcrumb, eyebrow, dominant start-aligned title, intro. */
 .lily-terms-hero {
 	padding-block: clamp(48px, 6vw, 80px) clamp(40px, 5vw, 64px);
 	text-align: center;
@@ -8186,7 +8316,7 @@ body.lily-terms-page main#primary.site-main.lily-terms {
 	margin-block-start: 16px;
 }
 
-/* 2. Terms content — wide horizontal section units: number marker,
+/* 2. Terms content â€” wide horizontal section units: number marker,
    strong title block, readable body, hairline dividers. */
 .lily-terms-policy {
 	padding-block: 0 clamp(64px, 8vw, 96px);
@@ -8215,6 +8345,16 @@ body.lily-terms-page main#primary.site-main.lily-terms {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	grid-column: 1;
+	grid-row: 1;
+	/* Vertically centered on the title block. The negative margins cancel
+	   the circle's height surplus so the title row keeps the title's own
+	   outer size, and the translate removes the title's own .7em bottom
+	   margin from the centering reference — exact for one-line titles and
+	   for wrapped title blocks alike. Body position never moves. */
+	align-self: center;
+	margin-block: calc((clamp(60px, 6vw, 76px) - clamp(24px, 3vw, 34px) * 1.25) / -2);
+	translate: 0 calc(clamp(24px, 3vw, 34px) * -0.35);
 	width: clamp(60px, 6vw, 76px);
 	height: clamp(60px, 6vw, 76px);
 	border-radius: 50%;
@@ -8225,11 +8365,16 @@ body.lily-terms-page main#primary.site-main.lily-terms {
 	color: #885337;
 }
 
+/* The content wrapper dissolves so title/body become grid rows of the
+   section row: the circle centers on the title block only. */
 .lily-terms-row__content {
-	min-width: 0;
+	display: contents;
 }
 
 .lily-terms-row__title {
+	grid-column: 2;
+	grid-row: 1;
+	min-width: 0;
 	margin: 0;
 	font-size: clamp(24px, 3vw, 34px);
 	font-weight: 550;
@@ -8238,6 +8383,9 @@ body.lily-terms-page main#primary.site-main.lily-terms {
 }
 
 .lily-terms-row__body {
+	grid-column: 2;
+	grid-row: 2;
+	min-width: 0;
 	margin-block-start: clamp(16px, 2vw, 24px);
 	max-width: 76ch;
 }
@@ -8278,10 +8426,12 @@ body.lily-terms-page main#primary.site-main.lily-terms {
 	color: #885337;
 }
 
-/* Shipping & Delivery fee table — same legal-page visual language:
+/* Shipping & Delivery fee table â€” same legal-page visual language:
    hairline borders, bronze header labels, readable body text. Scoped to
    the shipping page only; every other page is untouched. */
 .lily-ship-table__wrap {
+	grid-column: 2;
+	grid-row: 3;
 	margin-block-start: clamp(18px, 2.5vw, 26px);
 	border: 1px solid rgba(51, 28, 22, 0.14);
 	border-radius: 16px;
@@ -8325,7 +8475,7 @@ table.lily-ship-table {
 	display: none;
 }
 
-/* 3. Help CTA — Soft Peach band, centered. */
+/* 3. Help CTA â€” Soft Peach band, centered. */
 .lily-terms-cta {
 	background: #4B2E2B;
 	padding-block: clamp(64px, 8vw, 96px);
@@ -8343,7 +8493,7 @@ table.lily-ship-table {
 	font-size: 12px;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 }
 
 .lily-terms-eyebrow--center {
@@ -8356,7 +8506,7 @@ table.lily-ship-table {
 	font-family: "Sellendra", "Georgia", serif;
 	font-size: clamp(28px, 3.6vw, 44px);
 	line-height: 1.2;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 }
 
 @media (max-width: 900px) {
@@ -8374,6 +8524,8 @@ table.lily-ship-table {
 		width: 52px;
 		height: 52px;
 		font-size: 17px;
+		margin-block: calc((52px - clamp(21px, 5.4vw, 27px) * 1.25) / -2);
+		translate: 0 calc(clamp(21px, 5.4vw, 27px) * -0.35);
 	}
 
 	.lily-terms-row__title {
@@ -8451,6 +8603,8 @@ table.lily-ship-table {
 		width: 46px;
 		height: 46px;
 		font-size: 16px;
+		margin-block: calc((46px - clamp(20px, 6vw, 25px) * 1.25) / -2);
+		translate: 0 calc(clamp(20px, 6vw, 25px) * -0.35);
 	}
 
 	.lily-terms-row__title {
@@ -8470,7 +8624,7 @@ table.lily-ship-table {
 }
 
 /* ==========================================================================
-   LILY — Refund Policy page only (scoped to body.lily-refund-page)
+   LILY â€” Refund Policy page only (scoped to body.lily-refund-page)
    Editorial hero, numbered refund rows, soft help CTA band.
    Global header, footer, buttons, shop and homepage styles are untouched.
    ========================================================================== */
@@ -8480,11 +8634,11 @@ body.lily-refund-page main#primary.site-main.lily-refund {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	overflow-x: clip;
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
-/* 1. Hero — centered and spacious. */
+/* 1. Hero â€” centered and spacious. */
 .lily-refund-hero {
 	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
 	text-align: center;
@@ -8516,7 +8670,7 @@ body.lily-refund-page main#primary.site-main.lily-refund {
 	color: rgba(51, 28, 22, 0.75);
 }
 
-/* 2. Refund content — centered, numbered editorial rows. */
+/* 2. Refund content â€” centered, numbered editorial rows. */
 .lily-refund-policy {
 	padding-block: 0 clamp(64px, 8vw, 96px);
 }
@@ -8580,7 +8734,7 @@ body.lily-refund-page main#primary.site-main.lily-refund {
 	color: rgba(51, 28, 22, 0.8);
 }
 
-/* 3. Help CTA — Soft Peach band, centered. */
+/* 3. Help CTA â€” Soft Peach band, centered. */
 .lily-refund-cta {
 	background: #FAD3CA;
 	padding-block: clamp(64px, 8vw, 96px);
@@ -8652,7 +8806,7 @@ body.lily-refund-page main#primary.site-main.lily-refund {
 }
 
 /* ==========================================================================
-   LILY — Cookie Policy page only (scoped to body.lily-cookie-page)
+   LILY â€” Cookie Policy page only (scoped to body.lily-cookie-page)
    Editorial hero, numbered cookie rows, soft help CTA band.
    Global header, footer, buttons, shop and homepage styles are untouched.
    ========================================================================== */
@@ -8662,11 +8816,11 @@ body.lily-cookie-page main#primary.site-main.lily-cookie {
 	margin-block-start: 0;
 	margin-block-end: 0;
 	overflow-x: clip;
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
-/* 1. Hero — centered and spacious. */
+/* 1. Hero â€” centered and spacious. */
 .lily-cookie-hero {
 	padding-block: clamp(64px, 8vw, 96px) clamp(48px, 6vw, 72px);
 	text-align: center;
@@ -8698,7 +8852,7 @@ body.lily-cookie-page main#primary.site-main.lily-cookie {
 	color: rgba(51, 28, 22, 0.75);
 }
 
-/* 2. Cookie content — centered, numbered editorial rows. */
+/* 2. Cookie content â€” centered, numbered editorial rows. */
 .lily-cookie-policy {
 	padding-block: 0 clamp(64px, 8vw, 96px);
 }
@@ -8762,7 +8916,7 @@ body.lily-cookie-page main#primary.site-main.lily-cookie {
 	color: rgba(51, 28, 22, 0.8);
 }
 
-/* 3. Help CTA — Soft Peach band, centered. */
+/* 3. Help CTA â€” Soft Peach band, centered. */
 .lily-cookie-cta {
 	background: #FAD3CA;
 	padding-block: clamp(64px, 8vw, 96px);
@@ -8834,13 +8988,13 @@ body.lily-cookie-page main#primary.site-main.lily-cookie {
 }
 
 /* ==========================================================================
-   LILY Wishlist — scoped only. The heart is a quiet detail over the product
+   LILY Wishlist â€” scoped only. The heart is a quiet detail over the product
    image; the Wishlist page reuses the Shop grid/cards untouched.
    ========================================================================== */
 
 /* Heart button on product cards (logical position mirrors in RTL).
-   Hover: ONLY the heart icon changes color — the button background,
-   border, size and position never react (one behavior everywhere).
+   Hover: no visual change at all - the peach tile with the tan heart is
+   the single state; saved only fills the heart in the same tan.
    bg/border are re-declared on hover because Astra's global `button:hover`
    would otherwise paint its customizer color over this control. */
 .lily-wishlist-btn {
@@ -8853,10 +9007,10 @@ body.lily-cookie-page main#primary.site-main.lily-cookie {
 	width: 40px;
 	height: 40px;
 	padding: 0;
-	border: 1px solid rgba(51, 28, 22, 0.14);
+	border: 1px solid var(--lily-tan);
 	border-radius: 50%;
-	background: rgba(254, 252, 221, 0.92);
-	color: #331C16;
+	background: var(--lily-peach);
+	color: var(--lily-tan);
 	cursor: pointer;
 	transition: color 180ms ease;
 }
@@ -8872,21 +9026,30 @@ body.lily-cookie-page main#primary.site-main.lily-cookie {
 }
 
 button.lily-wishlist-btn:hover {
-	color: #723427;
-	background: rgba(254, 252, 221, 0.92);
-	border-color: rgba(51, 28, 22, 0.14);
+	color: var(--lily-tan);
+	background: var(--lily-peach);
+	border-color: var(--lily-tan);
 }
 
 .lily-wishlist-btn.is-saved {
-	color: #723427;
+	color: var(--lily-tan);
 }
 
 .lily-wishlist-btn.is-saved svg {
-	fill: #723427;
+	fill: var(--lily-tan);
 }
 
 .lily-wishlist-btn:focus {
 	outline: none;
+}
+
+/* Astra paints its global `button:active / button:focus` background and
+   border over this control; pin both to the same peach/tan so press and
+   focus never change the button's appearance. */
+.lily-wishlist-btn:active,
+.lily-wishlist-btn:focus {
+	background: var(--lily-peach);
+	border-color: var(--lily-tan);
 }
 
 .lily-wishlist-btn:focus-visible {
@@ -8894,9 +9057,9 @@ button.lily-wishlist-btn:hover {
 	outline-offset: 3px;
 }
 
-/* Wishlist page — quiet editorial continuation of the Shop. */
+/* Wishlist page â€” quiet editorial continuation of the Shop. */
 .lily-wishlist {
-	background: #FEFCDD;
+	background: var(--lily-bg);
 	color: #331C16;
 }
 
@@ -8944,12 +9107,12 @@ button.lily-wishlist-btn:hover {
 	line-height: 1.5;
 }
 
-/* Grid reuses .lily-shop-grid columns/gaps/breakpoints — no new spacing. */
+/* Grid reuses .lily-shop-grid columns/gaps/breakpoints â€” no new spacing. */
 .lily-wishlist__grid {
 	margin: 0;
 }
 
-/* Breadcrumb — quiet, visible only while the empty state is showing so the
+/* Breadcrumb â€” quiet, visible only while the empty state is showing so the
    filled wishlist keeps its original masthead + grid composition untouched. */
 .lily-wishlist__crumbs {
 	display: none;
@@ -8991,7 +9154,7 @@ button.lily-wishlist-btn:hover {
 	display: none;
 }
 
-/* Empty state — full editorial hero. The whitespace IS the design. */
+/* Empty state â€” full editorial hero. The whitespace IS the design. */
 .lily-wishlist__empty {
 	display: flex;
 	flex-direction: column;
@@ -9047,9 +9210,9 @@ button.lily-wishlist-btn:hover {
 	margin-block-start: 40px;
 	padding-inline: 28px;
 	border: 0;
-	border-radius: 8px;
+	border-radius: var(--lily-pill);
 	background: #885337;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
 	font-size: 14px;
 	letter-spacing: 0.06em;
@@ -9061,7 +9224,7 @@ button.lily-wishlist-btn:hover {
 
 .lily-wishlist__cta:hover {
 	background: #4B2E2B;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 }
 
 .lily-wishlist__cta:focus-visible {
@@ -9115,7 +9278,7 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 }
 
 /* ==========================================================================
-   Lily navbar Wishlist shortcut — reuses .lily-cart-link geometry so the
+   Lily navbar Wishlist shortcut â€” reuses .lily-cart-link geometry so the
    action row keeps its exact spacing. Quiet count badge, hidden when empty.
    ========================================================================== */
 
@@ -9146,10 +9309,10 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 }
 
 /* ==========================================================================
-   Lily product badges — ONE warm-brown badge system for both states.
+   Lily product badges â€” ONE warm-brown badge system for both states.
    BEST SELLER comes from the product's dashboard flag (Lily Product Flags
    metabox); SALE from WooCommerce's native sale state. Identical design for
-   both (same background, text, font, size, radius, padding) — only the
+   both (same background, text, font, size, radius, padding) â€” only the
    label differs. Stacked top-left in that exact order; the wishlist heart
    stays top-right.
    ========================================================================== */
@@ -9172,8 +9335,8 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 	align-items: center;
 	padding: 6px 12px;
 	border-radius: var(--lily-pill);
-	background: #885337;
-	color: #FEFCDD;
+	background: var(--lily-tan);
+	color: var(--lily-cream);
 	font-family: var(--lily-font-body);
 	font-size: 11px;
 	font-weight: 700;
@@ -9196,7 +9359,7 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 }
 
 /* ==========================================================================
-   Lily cart coupon — native WooCommerce apply/remove flow, quiet styling.
+   Lily cart coupon â€” native WooCommerce apply/remove flow, quiet styling.
    Only ever shows one state: the entry field OR the single active coupon.
    ========================================================================== */
 
@@ -9247,7 +9410,7 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 	min-height: 50px;
 	padding: 0 22px;
 	border: 1px solid rgba(136, 83, 55, 0.55);
-	border-radius: 10px;
+	border-radius: var(--lily-pill);
 	background: transparent;
 	color: var(--lily-dark-brown);
 	font-family: inherit;
@@ -9263,7 +9426,7 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 
 .lily-cart-coupon__apply:hover {
 	border-color: #723427;
-	color: #723427;
+	color: var(--lily-cream);
 }
 
 .lily-cart-coupon__apply:focus-visible,
@@ -9318,7 +9481,7 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 }
 
 /* ==========================================================================
-   LILY — Single Product accordions + Product Reviews
+   LILY â€” Single Product accordions + Product Reviews
    Scoped to .lily-sp-accordions / .lily-reviews only.
    Editorial: cream base, hairlines, whitespace. No cards, no shadows,
    no gradients, no blue anywhere. Logical properties throughout (RTL-safe).
@@ -9357,7 +9520,7 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 	background: transparent;
 	background-image: none;
 	color: #331C16;
-	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-family: "Elms Sans", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
 	font-size: 0.92rem;
 	font-weight: 700;
 	letter-spacing: 0.08em;
@@ -9369,14 +9532,14 @@ html[dir="rtl"] .lily-wishlist__cta-arrow {
 	transition: color 200ms ease;
 }
 
-/* Calm cream interaction states — never blue, never tinted, never lifted.
+/* Calm cream interaction states â€” never blue, never tinted, never lifted.
    High scope neutralises inherited theme/browser button styling, including
    the sticky :focus fill left behind after a mouse click. Keyboard users
    keep the deep-brown :focus-visible ring defined below. */
 html body .lily-sp-acc__q:hover,
 html body .lily-sp-acc__q:focus,
 html body .lily-sp-acc__q:active {
-	background: #FEFCDD;
+	background: var(--lily-cream);
 	background-image: none;
 	border-color: transparent;
 	box-shadow: none;
@@ -9397,7 +9560,7 @@ html body .lily-sp-acc__q:focus:not(:focus-visible) {
 	min-inline-size: 0;
 }
 
-/* Minimal plus/minus control — no circle, no box. */
+/* Minimal plus/minus control â€” no circle, no box. */
 .lily-sp-acc__icon {
 	position: relative;
 	flex-shrink: 0;
@@ -9435,7 +9598,7 @@ html body .lily-sp-acc__q:active .lily-sp-acc__icon::after {
 	background: #885337;
 }
 
-/* Smooth expand/collapse — height and opacity only (180–220ms ease). */
+/* Smooth expand/collapse â€” height and opacity only (180â€“220ms ease). */
 .lily-sp-acc__collapse {
 	display: grid;
 	grid-template-rows: 0fr;
@@ -9460,7 +9623,7 @@ html body .lily-sp-acc__q:active .lily-sp-acc__icon::after {
 	padding-block-end: 26px;
 }
 
-/* ── Reviews editorial layout ─────────────────────────────────────── */
+/* â”€â”€ Reviews editorial layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .lily-reviews {
 	padding-block: 30px 8px;
@@ -9484,7 +9647,7 @@ html body .lily-sp-acc__q:active .lily-sp-acc__icon::after {
 .lily-reviews__title {
 	margin: 0;
 	color: #331C16;
-	font-family: "Elms Sans Light", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
+	font-family: "Elms Sans", "Segoe UI", -apple-system, "Helvetica Neue", sans-serif;
 	font-size: 0.92rem;
 	font-weight: 700;
 	letter-spacing: 0.08em;
@@ -9509,9 +9672,9 @@ html body .lily-sp-acc__q:active .lily-sp-acc__icon::after {
 	padding-block: 14px;
 	padding-inline: 28px;
 	border: 0;
-	border-radius: 8px;
+	border-radius: var(--lily-pill);
 	background: #885337;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 	font-family: inherit;
 	font-size: 0.85rem;
 	font-weight: 600;
@@ -9530,7 +9693,7 @@ html body .lily-reviews__submit:hover {
 	background-image: none;
 	border-color: transparent;
 	box-shadow: none;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 }
 
 html body .lily-reviews__write:focus:not(:focus-visible),
@@ -9557,7 +9720,7 @@ html body .lily-reviews__submit:focus:not(:focus-visible) {
 	line-height: 1.6;
 }
 
-/* Rating summary — editorial, never inside a card. */
+/* Rating summary â€” editorial, never inside a card. */
 .lily-reviews__summary {
 	display: flex;
 	align-items: center;
@@ -9596,7 +9759,7 @@ html body .lily-reviews__submit:focus:not(:focus-visible) {
 	line-height: 1.5;
 }
 
-/* Individual reviews — hairline separators only. */
+/* Individual reviews â€” hairline separators only. */
 .lily-reviews__list {
 	list-style: none;
 	margin: 0;
@@ -9669,7 +9832,7 @@ html body .lily-reviews__submit:focus:not(:focus-visible) {
 	margin-block-end: 0;
 }
 
-/* Review photos — small editorial thumbnails, no shadow. */
+/* Review photos â€” small editorial thumbnails, no shadow. */
 .lily-reviews__photos {
 	display: flex;
 	flex-wrap: wrap;
@@ -9717,7 +9880,7 @@ html body .lily-reviews__photo:focus:not(:focus-visible) {
 	object-fit: cover;
 }
 
-/* Empty state — calm and compact. */
+/* Empty state â€” calm and compact. */
 .lily-reviews__empty {
 	margin-block-start: 24px;
 	padding-block: 26px;
@@ -9738,7 +9901,7 @@ html body .lily-reviews__photo:focus:not(:focus-visible) {
 	line-height: 1.6;
 }
 
-/* ── Review form ──────────────────────────────────────────────────── */
+/* â”€â”€ Review form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .lily-review-formwrap {
 	margin-block-start: 28px;
@@ -9906,7 +10069,7 @@ html body .lily-review-form input[type="email"]:hover {
 	line-height: 1.6;
 }
 
-/* ── Lightweight photo lightbox (no dependency) ───────────────────── */
+/* â”€â”€ Lightweight photo lightbox (no dependency) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .lily-review-lightbox[hidden] {
 	display: none;
@@ -9940,7 +10103,7 @@ html body .lily-review-form input[type="email"]:hover {
 	max-inline-size: min(880px, calc(100vw - 48px));
 	max-block-size: calc(100vh - 120px);
 	border-radius: 10px;
-	background: #FEFCDD;
+	background: var(--lily-cream);
 	object-fit: contain;
 }
 
@@ -9956,7 +10119,7 @@ html body .lily-review-form input[type="email"]:hover {
 	padding: 0;
 	border: 0;
 	border-radius: 50%;
-	background: #FEFCDD;
+	background: var(--lily-cream);
 	color: #331C16;
 	font-size: 1.4rem;
 	line-height: 1;
@@ -9965,15 +10128,15 @@ html body .lily-review-form input[type="email"]:hover {
 
 .lily-review-lightbox__close:hover {
 	background: #4B2E2B;
-	color: #FEFCDD;
+	color: var(--lily-cream);
 }
 
 .lily-review-lightbox__close:focus-visible {
-	outline: 2px solid #FEFCDD;
+	outline: 2px solid var(--lily-cream);
 	outline-offset: 3px;
 }
 
-/* ── Reviews responsive ───────────────────────────────────────────── */
+/* â”€â”€ Reviews responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 @media (max-width: 900px) {
 	.lily-reviews__head {
@@ -10034,22 +10197,22 @@ html body .lily-review-form input[type="email"]:hover {
 }
 
 /* ==========================================================================
-   LILY — Single Product reference composition
-   Scoped to .lily-single-product only. One calm continuous page on #FEFCDD:
+   LILY â€” Single Product reference composition
+   Scoped to .lily-single-product only. One calm continuous page on #FFFEF8:
    global container alignment, 56/44 hero, rail gallery, hairline lens
    information, full-width accordions, independent You May Also Like.
    No new backgrounds, no shadows, no gradients, no blue. Logical
    properties throughout (RTL mirrors naturally).
    ========================================================================== */
 
-/* ── Hero composition: gallery 56 / information 44 ─────────────────── */
+/* â”€â”€ Hero composition: gallery 56 / information 44 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-single-product .lily-sp-main {
 	grid-template-columns: 56fr 44fr;
 	gap: clamp(24px, 4vw, 56px);
 	align-items: start;
 }
 
-/* ── Gallery: vertical thumbnail rail + dominant main image ────────── */
+/* â”€â”€ Gallery: vertical thumbnail rail + dominant main image â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-single-product .lily-sp-gallery {
 	display: grid;
 	grid-template-columns: 76px minmax(0, 1fr);
@@ -10058,7 +10221,7 @@ html body .lily-review-form input[type="email"]:hover {
 }
 
 /* Gallery main image area: calm rounded editorial card on the Lily cream
-   field — 22px radius matches the card system, object-fit contain never
+   field â€” 22px radius matches the card system, object-fit contain never
    crops, soft official-color shadow only (no borders, no harsh contrast). */
 .lily-single-product .lily-sp-gallery__main {
 	border-radius: var(--lily-radius-lg);
@@ -10074,7 +10237,7 @@ html body .lily-review-form input[type="email"]:hover {
 	overflow-y: auto;
 }
 
-/* ── Lens information: hairline rows, no boxes ─────────────────────── */
+/* â”€â”€ Lens information: hairline rows, no boxes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-single-product .lily-sp-specs-grid {
 	gap: 0 clamp(20px, 3vw, 40px);
 }
@@ -10088,12 +10251,12 @@ html body .lily-review-form input[type="email"]:hover {
 	padding-inline: 0;
 }
 
-/* ── Quantity + large Add to Cart share one row ────────────────────── */
+/* â”€â”€ Quantity + large Add to Cart share one row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-single-product .lily-sp-cart-area button.single_add_to_cart_button {
 	min-block-size: 50px;
 }
 
-/* ── Add to Wishlist: quiet secondary row reusing the shared heart ─── */
+/* â”€â”€ Add to Wishlist: quiet secondary row reusing the shared heart â”€â”€â”€ */
 .lily-sp-wishlist {
 	display: flex;
 	align-items: center;
@@ -10109,12 +10272,12 @@ html body .lily-review-form input[type="email"]:hover {
 	inset: auto;
 	inline-size: 34px;
 	block-size: 34px;
-	color: #885337;
+	color: var(--lily-tan);
 	opacity: 1;
 }
 
 .lily-sp-wishlist .lily-wishlist-btn:hover {
-	color: #723427;
+	color: var(--lily-tan);
 	opacity: 1;
 }
 
@@ -10130,12 +10293,12 @@ html body .lily-review-form input[type="email"]:hover {
 	display: inline;
 }
 
-/* ── Accordions: full container width below the hero ───────────────── */
+/* â”€â”€ Accordions: full container width below the hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-single-product .lily-sp-accordions {
 	margin-block-start: clamp(48px, 6vw, 80px);
 }
 
-/* ── Reviews: full content width (never beside related) ────────────── */
+/* â”€â”€ Reviews: full content width (never beside related) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-single-product .lily-reviews__head {
 	align-items: center;
 }
@@ -10144,7 +10307,7 @@ html body .lily-review-form input[type="email"]:hover {
 	margin-inline-start: auto;
 }
 
-/* ── You May Also Like: independent section on cream ───────────────── */
+/* â”€â”€ You May Also Like: independent section on cream â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .lily-sp-related {
 	margin-block-start: clamp(100px, 10vw, 140px);
 	padding-block-end: clamp(64px, 8vw, 110px);
@@ -10206,7 +10369,7 @@ html body .lily-sp-related__all:focus:not(:focus-visible) {
 	grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* ── Single product responsive ─────────────────────────────────────── */
+/* â”€â”€ Single product responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1023px) {
 	.lily-single-product .lily-sp-related__grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -10266,25 +10429,25 @@ html body .lily-sp-related__all:focus:not(:focus-visible) {
 }
 
 /* ==========================================================================
-   LILY — Typography hierarchy normalization (CSS only)
+   LILY â€” Typography hierarchy normalization (CSS only)
    Measured imbalances only: on product cards the price rendered heavier
    than the product name at the same size. Names now lead; prices stay
-   clearly readable one step below. Nothing else changes — same families,
+   clearly readable one step below. Nothing else changes â€” same families,
    sizes, colors, spacing and layout; weights stay within the file's
    existing 400/500/600 vocabulary. No letter-spacing or casing changes,
    so Arabic/RTL rendering is unaffected.
    ========================================================================== */
 
 /* Product-card hierarchy (name 600 > price 500 > metadata 500) now lives
-   in the master card component block — no page-specific overrides here. */
+   in the master card component block â€” no page-specific overrides here. */
 
 /* ==========================================================================
-   LILY — Typography hierarchy rebalance, pass 2 (CSS only)
+   LILY â€” Typography hierarchy rebalance, pass 2 (CSS only)
    The previous pass (3 rules) was visually indistinguishable. This pass
-   rebalances every hierarchy level so eyebrow → heading → description and
-   name → price → metadata read clearly at normal viewing distance.
-   Levers used, per level: declared font weights only (400/500/600 —
-   the file's existing vocabulary, within the @font-face 100–900 range;
+   rebalances every hierarchy level so eyebrow â†’ heading â†’ description and
+   name â†’ price â†’ metadata read clearly at normal viewing distance.
+   Levers used, per level: declared font weights only (400/500/600 â€”
+   the file's existing vocabulary, within the @font-face 100â€“900 range;
    no new 700+ synthetic bolds, no new faces), modest small-text sizes,
    line-height, and alpha-opacity lifts on already-translucent text.
    Untouched: layout, spacing, sizes of sections/containers, palette hues,
@@ -10292,8 +10455,8 @@ html body .lily-sp-related__all:focus:not(:focus-visible) {
    text-transform (Arabic/RTL rendering unaffected).
    ========================================================================== */
 
-/* — Headings lead everywhere (display-accent faces keep their explicit
-   400; everything on the body/display grotesque steps 550 → 600). — */
+/* â€” Headings lead everywhere (display-accent faces keep their explicit
+   400; everything on the body/display grotesque steps 550 â†’ 600). â€” */
 html h1,
 html h2,
 html h3,
@@ -10301,8 +10464,8 @@ html h4 {
 	font-weight: 600;
 }
 
-/* — Homepage section descriptions: comfortably readable (500) yet still
-   secondary to the 600 headings above them (size + muted tone unchanged). — */
+/* â€” Homepage section descriptions: comfortably readable (500) yet still
+   secondary to the 600 headings above them (size + muted tone unchanged). â€” */
 .lily-section-heading p {
 	font-weight: 500;
 }
@@ -10313,14 +10476,14 @@ html h4 {
 	font-weight: 500;
 }
 
-/* — Hero: eyebrow and title untouched (subtle / strongest by design);
-   the description steps 400 → 500 with a breath of line-height. — */
+/* â€” Hero: eyebrow and title untouched (subtle / strongest by design);
+   the description steps 400 â†’ 500 with a breath of line-height. â€” */
 .lily-hero__description {
 	font-weight: 500;
 	line-height: 1.65;
 }
 
-/* — Section eyebrows stay tiny and quiet, but no longer disappear. — */
+/* â€” Section eyebrows stay tiny and quiet, but no longer disappear. â€” */
 .lily-collections__eyebrow,
 .lily-colors__eyebrow,
 .lily-best-sellers__eyebrow,
@@ -10328,7 +10491,7 @@ html h4 {
 	font-weight: 500;
 }
 
-/* — Collection / color index labels and text CTA links. — */
+/* â€” Collection / color index labels and text CTA links. â€” */
 .lily-collection-card h3,
 .lily-color-card .lily-color-card__label {
 	font-weight: 500;
@@ -10339,7 +10502,7 @@ html h4 {
 	font-weight: 500;
 }
 
-/* — Navbar: one step up at the same size (desktop + mobile inherit). — */
+/* â€” Navbar: one step up at the same size (desktop + mobile inherit). â€” */
 html .lily-primary-nav .lily-nav-link {
 	font-weight: 500;
 }
@@ -10349,7 +10512,7 @@ html .lily-primary-nav .lily-nav-link {
 	font-weight: 500;
 }
 
-/* — Lens Finder on espresso: description + titles lead, quiet text lifts. — */
+/* â€” Lens Finder on espresso: description + titles lead, quiet text lifts. â€” */
 .lily-lens-finder__intro p.lily-lens-finder__description {
 	font-weight: 500;
 }
@@ -10369,10 +10532,10 @@ html .lily-primary-nav .lily-nav-link {
 	font-weight: 500;
 }
 
-/* — Product cards: name (600) > price (500) > metadata (500) live in the
-   master card component block. — */
+/* â€” Product cards: name (600) > price (500) > metadata (500) live in the
+   master card component block. â€” */
 
-/* — Single product: title leads; price steps 700 → 600, still dominant. — */
+/* â€” Single product: title leads; price steps 700 â†’ 600, still dominant. â€” */
 .lily-sp-price {
 	font-weight: 600;
 }
@@ -10381,7 +10544,7 @@ html .lily-primary-nav .lily-nav-link {
 	font-weight: 500;
 }
 
-/* — Shop chrome: labels, links, counts and hints. — */
+/* â€” Shop chrome: labels, links, counts and hints. â€” */
 .lily-shop__description {
 	color: rgba(51, 28, 22, 0.84);
 	font-weight: 500;
@@ -10422,9 +10585,9 @@ html .lily-primary-nav .lily-nav-link {
 	font-weight: 500;
 }
 
-/* — Footer on espresso: same hues, lifted translucency; links also 500.
+/* â€” Footer on espresso: same hues, lifted translucency; links also 500.
    Brand (display face) stays strongest; headings clear; links readable;
-   supporting text quieter but legible. — */
+   supporting text quieter but legible. â€” */
 .lily-footer-since {
 	color: rgba(254, 252, 221, 0.72);
 }
@@ -10463,7 +10626,7 @@ html .lily-primary-nav .lily-nav-link {
 	color: rgba(254, 252, 221, 0.92);
 }
 
-/* — Forms, helpers and quiet metadata: same hues, lifted for legibility. — */
+/* â€” Forms, helpers and quiet metadata: same hues, lifted for legibility. â€” */
 html body.woocommerce-checkout .form-row label {
 	color: rgba(51, 28, 22, 0.8);
 }
@@ -10523,7 +10686,7 @@ html body.woocommerce-checkout #payment div.payment_box {
 	color: rgba(51, 28, 22, 0.75);
 }
 
-/* — Mobile: 11px color labels step to 12px (weight inherits 500). — */
+/* â€” Mobile: 11px color labels step to 12px (weight inherits 500). â€” */
 @media (max-width: 600px) {
 	.lily-color-card .lily-color-card__label {
 		font-size: 12px;
@@ -10550,7 +10713,7 @@ html body.woocommerce-checkout #payment div.payment_box {
 }
 
 /* ==========================================================================
-   Product page — Lens Details (3-column grid) + Perfect Match section +
+   Product page â€” Lens Details (3-column grid) + Perfect Match section +
    step-based HOW TO USE list. Pure layout refinements in the existing
    design system; logical properties keep RTL mirroring automatic.
    ========================================================================== */
@@ -10636,7 +10799,7 @@ html body.woocommerce-checkout #payment div.payment_box {
 }
 
 /* ==========================================================================
-   Footer "Follow Us" — icon-only social row. Inherits footer typography and
+   Footer "Follow Us" â€” icon-only social row. Inherits footer typography and
    palette; logical properties keep RTL mirroring automatic.
    ========================================================================== */
 
@@ -10670,7 +10833,7 @@ html body.woocommerce-checkout #payment div.payment_box {
 }
 
 .lily-footer-social a:hover {
-	color: #FEFCDD;
+	color: var(--lily-cream);
 	border-color: rgba(254, 252, 221, 0.6);
 	background: rgba(254, 252, 221, 0.08);
 }
@@ -10701,7 +10864,7 @@ html body.woocommerce-checkout #payment div.payment_box {
 /* ==========================================================================
    Dashboard-controlled logos (Navigation Settings logo / Footer Settings
    logo). They render in the exact same footprint as the existing fallback
-   logo paths — no layout change.
+   logo paths â€” no layout change.
    ========================================================================== */
 
 .lily-site-branding .lily-nav-logo {
@@ -10733,7 +10896,7 @@ html body.woocommerce-checkout #payment div.payment_box {
 }
 
 /* ==========================================================================
-   LILY — Responsive polish pass (mobile 320–767 / tablet 768–1024)
+   LILY â€” Responsive polish pass (mobile 320â€“767 / tablet 768â€“1024)
    Append-only layer: every rule below lives inside a max-width query,
    so the 1025px+ desktop rendering is unchanged. No markup, PHP, JS,
    WooCommerce logic or dashboard settings are affected.
@@ -11067,12 +11230,60 @@ html body.woocommerce-checkout #payment div.payment_box {
 }
 
 /* Fix: cart-drawer item row (unit price + qty stepper + line subtotal)
-   doesn't fit on one line below ~480px — subtotal got clipped off the
+   doesn't fit on one line below ~480px Ã¢ subtotal got clipped off the
    edge of the drawer instead of wrapping. */
 @media (max-width: 480px) {
 	#lily-cart-drawer .lily-cart-item__row {
 		flex-wrap: wrap;
 		row-gap: 6px;
+	}
+}
+
+/* ==========================================================================
+   Add-to-cart success toast - quiet branded confirmation, shown only on a
+   real successful add. Cream surface, tan border/icon, espresso text.
+   Never a browser alert; never shown on WooCommerce errors.
+   ========================================================================== */
+.lily-added-toast {
+	position: fixed;
+	inset-block-start: clamp(112px, 15vh, 132px);
+	inset-inline: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	width: fit-content;
+	margin-inline: auto;
+	max-width: min(360px, calc(100vw - 44px));
+	padding: 12px 18px;
+	border: 1px solid rgba(172, 125, 97, 0.5);
+	border-radius: var(--lily-pill);
+	background: var(--lily-surface);
+	color: var(--lily-dark-brown);
+	font-family: var(--lily-font-body);
+	font-size: 0.9rem;
+	line-height: 1.4;
+	box-shadow: var(--lily-shadow-sm);
+	opacity: 0;
+	transform: translateY(-8px);
+	transition: opacity 220ms ease, transform 220ms var(--lily-ease);
+	pointer-events: none;
+}
+
+.lily-added-toast.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.lily-added-toast svg {
+	flex-shrink: 0;
+	color: var(--lily-tan);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lily-added-toast {
+		transition: none;
 	}
 }
 

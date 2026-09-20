@@ -445,6 +445,15 @@
 			var input = wrap.querySelector('input.qty');
 			if (!input) { return; }
 
+			/* Cart Drawer only: minimum quantity is 1. The minus control is
+			   disabled at 1 and the value can never drop below it — removal
+			   stays on the dedicated Remove action. */
+			var isDrawerQty = !!wrap.closest('#lily-cart-drawer');
+			var syncMin = function () {
+				var min = input.min !== '' && !isNaN(parseFloat(input.min)) ? parseFloat(input.min) : 1;
+				minus.disabled = (parseFloat(input.value) || min) <= min;
+			};
+
 			function clamp(value) {
 				var min = input.min !== '' && !isNaN(parseFloat(input.min)) ? parseFloat(input.min) : 1;
 				var max = input.max !== '' && !isNaN(parseFloat(input.max)) ? parseFloat(input.max) : Infinity;
@@ -457,6 +466,7 @@
 				var next = clamp(current + delta * step);
 				if (next === current) { return; }
 				input.value = next;
+				if (isDrawerQty) { syncMin(); }
 				input.dispatchEvent(new Event('change', { bubbles: true }));
 				input.dispatchEvent(new Event('input', { bubbles: true }));
 			}
@@ -477,6 +487,12 @@
 
 			wrap.insertBefore(minus, input);
 			wrap.appendChild(plus);
+
+			if (isDrawerQty) {
+				input.addEventListener('input', syncMin);
+				input.addEventListener('change', syncMin);
+				syncMin();
+			}
 		});
 	}
 
@@ -575,6 +591,44 @@
 			var start = text.indexOf('{');
 			if (start < 0) { throw new Error('Invalid JSON'); }
 			return JSON.parse(text.slice(start));
+		});
+	}
+
+	/* --------------------------------------------------------------------
+	 * Add-to-cart success toast — a quiet branded confirmation at the top
+	 * center of the viewport. Shown only on a REAL successful add;
+	 * WooCommerce failures keep their native notice surfaces (drawer
+	 * notices / page messages) with no toast.
+	 * ------------------------------------------------------------------ */
+	function lilyShowAddedToast() {
+		var i18n = window.lilyI18n || {};
+		var label = i18n.addedToCart || 'Product added to cart successfully';
+
+		var toast = document.querySelector('.lily-added-toast');
+		if (!toast) {
+			toast = document.createElement('div');
+			toast.className = 'lily-added-toast';
+			toast.setAttribute('role', 'status');
+			toast.setAttribute('aria-live', 'polite');
+			toast.innerHTML =
+				'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"></path></svg>'
+				+ '<span class="lily-added-toast__text"></span>';
+			document.body.appendChild(toast);
+		}
+
+		toast.querySelector('.lily-added-toast__text').textContent = label;
+		toast.classList.add('is-visible');
+
+		window.clearTimeout(toast.dataset.lilyToastTimer);
+		toast.dataset.lilyToastTimer = window.setTimeout(function () {
+			toast.classList.remove('is-visible');
+		}, 3200);
+	}
+
+	/* Native WooCommerce AJAX add-to-cart (Shop grid cards). */
+	if (window.jQuery) {
+		window.jQuery(document.body).on('added_to_cart', function () {
+			lilyShowAddedToast();
 		});
 	}
 
@@ -704,7 +758,14 @@
 				var keyEl = item ? item.querySelector('[data-cart_item_key]') : null;
 				input.addEventListener('change', function () {
 					if (!keyEl) { return; }
-					updateItem({ key: keyEl.dataset.cart_item_key, qty: parseFloat(input.value) || 0 });
+					/* Minimum quantity is 1: empty/0/negative input snaps back
+					   to 1 instead of reaching the cart as a removal. */
+					var qty = parseFloat(input.value);
+					if (isNaN(qty) || qty < 1) {
+						qty = 1;
+						input.value = 1;
+					}
+					updateItem({ key: keyEl.dataset.cart_item_key, qty: qty });
 				});
 			});
 		}
@@ -743,6 +804,7 @@
  					if (data.added === true) {
  						hideNotices();
  						applyState(data);
+ 						lilyShowAddedToast();
  						open();
  					} else {
  						// Preserve real WooCommerce error behavior — no fake success, no drawer.
@@ -774,19 +836,20 @@
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
 				body: body
 			})
-				.then(lilyParseJson)
-				.then(function (data) {
-					btn.disabled = false;
-					if (data.added === true) {
-						hideNotices();
-						applyState(data);
-						open();
-					} else {
-						// Real WooCommerce notices (stock, RX validation) — no fake success.
-						showNotices(data.notices);
-						open(); // reveal the reason the add failed
-					}
-				})
+ 			.then(lilyParseJson)
+ 			.then(function (data) {
+ 				btn.disabled = false;
+ 				if (data.added === true) {
+ 					hideNotices();
+ 					applyState(data);
+ 					lilyShowAddedToast();
+ 					open();
+ 				} else {
+ 					// Real WooCommerce notices (stock, RX validation) — no fake success.
+ 					showNotices(data.notices);
+ 					open(); // reveal the reason the add failed
+ 				}
+ 			})
 				.catch(function () {
 					btn.disabled = false;
 					window.location.href = btn.href; // graceful fallback to native WooCommerce flow

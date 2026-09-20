@@ -53,6 +53,7 @@ function lily_enqueue_assets() {
 			'increaseQty' => esc_html__( 'Increase quantity', 'lily' ),
 			'decreaseQty' => esc_html__( 'Decrease quantity', 'lily' ),
 			'selectPowerForBothEyes' => esc_html__( 'Please select the prescription power for both eyes.', 'lily' ),
+			'addedToCart' => esc_html__( 'Product added to cart successfully', 'lily' ),
 		)
 	);
 

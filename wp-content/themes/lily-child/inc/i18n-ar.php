@@ -60,6 +60,7 @@ function lily_ar_dictionary() {
 		'Learn more'                   => 'اعرفي المزيد',
 		'Announcement'                 => 'إعلان',
 		'Our brands'                   => 'ماركاتنا',
+		'Switch to %s'                 => 'التبديل إلى %s',
 
 		// ── Navigation ───────────────────────────────────────────────
 		'Shop'                         => 'تسوقي',
@@ -461,6 +462,7 @@ function lily_ar_dictionary() {
 		'Calculated at checkout'       => 'يُحسب أثناء إتمام الطلب',
 		'CHECKOUT'                     => 'إتمام الطلب',
 		'Your Cart'                    => 'سلة التسوق',
+		'Product added to cart successfully' => 'تمت إضافة المنتج إلى السلة بنجاح',
 		'Close cart'                   => 'إغلاق السلة',
 		'Shopping cart'                => 'سلة التسوق',
 		'Remove %s from cart'          => 'احذفي %s من السلة',

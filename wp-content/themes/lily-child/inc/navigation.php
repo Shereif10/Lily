@@ -13,6 +13,45 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/* Lily language switcher — small flag icon only.
+   TRP's shortcode switcher renders a dropdown control (current language
+   name + arrow + hidden dropdown list). The Lily header wants a single
+   quiet flag that switches to the other language directly, so this
+   render-time filter replaces TRP's markup with one anchor to the other
+   published language carrying that language's own flag (TRP URL/flag
+   logic, no new assets). Works in both EN and AR. */
+add_filter( 'trp_shortcode_ls_html_v2', 'lily_flag_only_language_switcher', 10, 3 );
+
+/**
+ * Render the language switcher as a single flag link to the other language.
+ *
+ * @param string $html   TRP switcher HTML.
+ * @param array  $list   Language items (current first, code/name/url/flag).
+ * @param array  $config TRP switcher config.
+ * @return string
+ */
+function lily_flag_only_language_switcher( $html, $list, $config ) {
+	if ( ! is_array( $list ) || count( $list ) < 2 ) {
+		return $html; // Not a two-language setup — keep TRP's own switcher.
+	}
+
+	$other = $list[1];
+
+	if ( empty( $other['url'] ) || empty( $other['flag'] ) ) {
+		return $html;
+	}
+
+	$label = isset( $other['name'] ) && is_string( $other['name'] ) ? $other['name'] : '';
+
+	return sprintf(
+		'<a class="lily-lang-flag" href="%1$s" title="%2$s" aria-label="%3$s" data-no-translation>%4$s</a>',
+		esc_url( $other['url'] ),
+		esc_attr( $label ),
+		esc_attr( sprintf( __( 'Switch to %s', 'lily' ), $label ) ),
+		(string) $other['flag'] // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- flag img escaped by TranslatePress.
+	);
+}
+
 /**
  * Default navigation settings.
  *

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LILY_THEME_VERSION', '0.5.0' );
+define( 'LILY_THEME_VERSION', '0.5.1' );
 define( 'LILY_THEME_DIR', get_stylesheet_directory() );
 define( 'LILY_THEME_URI', get_stylesheet_directory_uri() );
 
